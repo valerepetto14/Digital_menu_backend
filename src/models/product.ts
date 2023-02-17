@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
-import { Category } from './category';
+import { CategoryModel } from './category';
 
 export class Product extends Model {
   public id!: string;
@@ -44,7 +44,7 @@ export const ProductModel = sequelize.define<Product>('products',{
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'categories',
+        model: CategoryModel,
         key: 'id'
       }
     }

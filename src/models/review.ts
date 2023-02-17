@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
+import { TicketModel } from './ticket';
 
 export class Review extends Model {
   public id!: string;
@@ -18,7 +19,7 @@ export const ReviewModel = sequelize.define<Review>('reviews',{
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'tickets',
+        model: TicketModel,
         key: 'id'
       }
     },

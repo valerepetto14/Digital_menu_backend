@@ -1,5 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
+import { CardModel } from './card';
+import { UserModel } from './user';
+import { TableModel } from './table';
 
 export class Ticket extends Model {
 	public id!: string;
@@ -21,7 +24,7 @@ export const TicketModel = sequelize.define<Ticket>('tickets',{
 		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-			model: 'tables',
+			model: TableModel,
 			key: 'id'
 		}
 	},
@@ -29,7 +32,7 @@ export const TicketModel = sequelize.define<Ticket>('tickets',{
 		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-			model: 'cards',
+			model: CardModel,
 			key: 'id'
 		}
 	},
@@ -37,7 +40,7 @@ export const TicketModel = sequelize.define<Ticket>('tickets',{
 		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-			model: 'users',
+			model: UserModel,
 			key: 'id'
 		}
 	},

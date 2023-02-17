@@ -6,7 +6,7 @@ import { TableModel } from './table';
 import { ProductModel } from './product';
 import { CategoryModel } from './category';
 import { SessionModel } from './session';
-
+import { TicketRowModel } from './ticketsRow';
 
 
 ReviewModel.belongsTo(TicketModel, {
@@ -42,4 +42,12 @@ TicketModel.belongsTo(CardModel, {
 // Add association to User model
 TicketModel.belongsTo(UserModel, {
   foreignKey: 'userId'
+});
+
+ProductModel.belongsToMany(TicketModel, {
+    through: 'ticketrow',
+});
+
+TicketModel.belongsToMany(ProductModel, {
+    through: 'ticketrow',
 });
