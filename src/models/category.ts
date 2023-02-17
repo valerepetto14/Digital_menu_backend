@@ -1,8 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import Product from './product';
 
-class Category extends Model {
+export class Category extends Model {
   public id!: string;
   public name!: string;
 
@@ -10,24 +9,16 @@ class Category extends Model {
   public readonly updatedAt!: Date;
 }
 
-Category.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  name: {
-    type: DataTypes.STRING(255),
-    allowNull: false
+export const CategoryModel = sequelize.define('categories', {
+    id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+  },{
+    timestamps:true
   }
-}, {
-  tableName: 'categories',
-  sequelize
-});
-
-// Add association to Product model
-Category.hasMany(Product, {
-  foreignKey: 'categoryId'
-});
-
-export default Category;
+)
