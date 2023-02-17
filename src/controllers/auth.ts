@@ -58,7 +58,7 @@ export const Login = async (req:Request, res:Response, next:NextFunction) => {
                     token: token,
                     expiration: new Date(Date.now() + 3600000)
                 })
-                return res.status(200).cookie("token", token, {httpOnly: true}).json({message: "User logged in", session: newSession});
+                return res.status(200).cookie("token", token, {httpOnly: true, sameSite: true}).json({message: "User logged in", session: newSession});
             } else {
                 throw INCORRECT_CREDENTIALS
             }

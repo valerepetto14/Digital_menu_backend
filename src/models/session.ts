@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
+import { UserModel } from './user';
 
 export class Session extends Model {
   public id!: string;
@@ -24,7 +25,7 @@ export const SessionModel = sequelize.define<Session>('sessions',{
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'users',
+            model: UserModel,
             key: 'id'
         }
     },
