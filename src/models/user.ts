@@ -1,9 +1,9 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import Session from './session';
-import Ticket from './ticket';
+import { Session } from './session';
+import { Ticket } from './ticket';
 
-class User extends Model {
+export class User extends Model {
   public id!: string;
   public email!: string;
   public firstName!: string;
@@ -16,47 +16,41 @@ class User extends Model {
   public readonly updatedAt!: Date;
 }
 
-User.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  phoneMumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  }
+export const UserModel = sequelize.define('users',{
+	id: {
+		type: DataTypes.STRING,
+		primaryKey: true
+	},
+	email: {
+		type: DataTypes.STRING(60),
+		allowNull: false,
+	},
+	firstName: {
+		type: DataTypes.STRING(20),
+		allowNull: false,
+	},
+	lastName: {
+		type: DataTypes.STRING(20),
+		allowNull: false,
+	},
+	phoneMumber: {
+		type: DataTypes.STRING(15),
+		allowNull: false,
+	},
+	type: {
+		type: DataTypes.STRING(20),
+		allowNull: false,
+		validate: {
+			isIn: [['admin', 'employee']]
+		}
+	},
+	password: {
+		type: DataTypes.STRING(256),
+		allowNull: false,
+	}
 }, {
-  sequelize
+	timestamps: true
 });
 
-// Add association to Ticket model
-User.hasMany(Ticket, {
-  foreignKey: 'ticketId'
-});
-
-// Add association to Session model
-User.belongsTo(Session, {
-    foreignKey: 'sessionId'
-  });
 
 export default User;

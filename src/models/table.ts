@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import Ticket from './ticket';
+import { Ticket } from './ticket';
 
-class Table extends Model {
+export class Table extends Model {
   public id!: string;
   public number!: number;
 
@@ -10,22 +10,15 @@ class Table extends Model {
   public readonly updatedAt!: Date;
 }
 
-Table.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  number: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  }
+export const TableModel = sequelize.define('tables',{
+	id: {
+		type: DataTypes.STRING,
+		primaryKey: true
+	},
+	number: {
+		type: DataTypes.INTEGER,
+		allowNull: false
+	}
 }, {
-  sequelize
+	timestamps: true
 });
-
-// Add association to Ticket model
-Table.hasMany(Ticket, {
-    foreignKey: 'tableId'
-});  
-
-export default Table;

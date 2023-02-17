@@ -1,8 +1,8 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
-import Category from './category';
+import { Category } from './category';
 
-class Product extends Model {
+export class Product extends Model {
   public id!: string;
   public name!: string;
   public description!: string;
@@ -15,47 +15,39 @@ class Product extends Model {
   public readonly updatedAt!: Date;
 }
 
-Product.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  name: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  },
-  currentPrice: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false
-  },
-  status: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
-  available: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
-  categoryId: {
-    type: DataTypes.UUIDV4,
-    allowNull: false,
-    references: {
-      model: Category,
-      key: 'id'
+export const ProductModel = sequelize.define('products',{
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    currentPrice: {
+      type: DataTypes.STRING(15),
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    available: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    categoryId: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      references: {
+        model: 'categories',
+        key: 'id'
+      }
     }
-  }
 }, {
-  tableName: 'products',
-  sequelize
+	timestamps: true
 });
-
-// Add association to category model
-Product.hasOne(Category, {
-    foreignKey: 'categoryId'
-});  
-
-export default Product;
