@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import Ticket from './ticket';
+import { Ticket } from './ticket';
 
-class Review extends Model {
+export class Review extends Model {
   public id!: string;
   public ticketId!: string;
 
@@ -10,38 +10,51 @@ class Review extends Model {
   public readonly updatedAt!: Date;
 }
 
-Review.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  ticketId: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  service: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  attention: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  environment: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  }
+export const ReviewModel = sequelize.define('reviews',{
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    ticketId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: 'tickets',
+        key: 'id'
+      }
+    },
+    service: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isIn: [[1, 2, 3, 4, 5]],
+        isInt : true
+      }
+    },
+    attention: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isIn: [[1, 2, 3, 4, 5]],
+        isInt : true
+      }
+    },
+    environment: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isIn: [[1, 2, 3, 4, 5]],
+        isInt : true
+      }
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        isIn: [[1, 2, 3, 4, 5]],
+        isInt : true
+      }
+    }
 }, {
-  sequelize
+	timestamps: true
 });
-
-// Add association to Ticket model
-Review.belongsTo(Ticket, {
-    foreignKey: 'ticketId'
-});  
-
-export default Review;

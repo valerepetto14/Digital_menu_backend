@@ -1,26 +1,21 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import Ticket from './ticket';
+import { Ticket } from './ticket';
 
-class Card extends Model {
+export class Card extends Model {
   public id!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-Card.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  }
-}, {
-  sequelize
-});
-
-// Add association to Ticket model
-Card.hasMany(Ticket, {
-  foreignKey: 'ticketId'
-});
-
-export default Ticket;
+export const CardModel = sequelize.define('cards',
+	{
+	id: {
+		type: DataTypes.STRING,
+		primaryKey: true
+	}
+	},{
+		timestamps:true
+  	}
+);

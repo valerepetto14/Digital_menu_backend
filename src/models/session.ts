@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import User from './user';
 
-class Session extends Model {
+
+export class Session extends Model {
   public id!: string;
   public token!: string;
   public userId!: string;
@@ -12,30 +12,27 @@ class Session extends Model {
   public readonly updatedAt!: Date;
 }
 
-Session.init({
-  id: {
-    type: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  token: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  userId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  expiration: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  }
+export const SessionModel = sequelize.define('sessions',{
+    id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+    token: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+        model: 'users',
+        key: 'id'
+        }
+    },
+    expiration: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 }, {
-  sequelize
+    timestamps: true
 });
-
-// Add association to User model
-Session.belongsTo(User, {
-  foreignKey: 'userId'
-});
-
-export default Session;
