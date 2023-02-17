@@ -1,9 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { Table } from './table';
-import { Card } from './card';
-import { User } from './user';
-import { Review } from './review';
 
 export class Ticket extends Model {
 	public id!: string;
@@ -16,33 +12,33 @@ export class Ticket extends Model {
 	public readonly updatedAt!: Date;
 }
 
-export const TicketModel = sequelize.define('tickets',{
+export const TicketModel = sequelize.define<Ticket>('tickets',{
 	id: {
-		type: DataTypes.STRING,
+		type: DataTypes.UUID,
 		primaryKey: true
 	},
 	tableId: {
-		type: DataTypes.STRING(50),
+		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-		model: 'tables',
-		key: 'id'
+			model: 'tables',
+			key: 'id'
 		}
 	},
 	cardId: {
-		type: DataTypes.STRING(50),
+		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-		model: 'cards',
-		key: 'id'
+			model: 'cards',
+			key: 'id'
 		}
 	},
 	userId: {
-		type: DataTypes.STRING(50),
+		type: DataTypes.UUID,
 		allowNull: false,
 		references : {
-		model: 'users',
-		key: 'id'
+			model: 'users',
+			key: 'id'
 		}
 	},
 	status: {

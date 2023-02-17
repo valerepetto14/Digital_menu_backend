@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-
 export class Session extends Model {
   public id!: string;
   public token!: string;
@@ -12,9 +11,9 @@ export class Session extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const SessionModel = sequelize.define('sessions',{
+export const SessionModel = sequelize.define<Session>('sessions',{
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         primaryKey: true
     },
     token: {
@@ -22,15 +21,15 @@ export const SessionModel = sequelize.define('sessions',{
         allowNull: false,
     },
     userId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         references: {
-        model: 'users',
-        key: 'id'
+            model: 'users',
+            key: 'id'
         }
     },
     expiration: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false,
     }
 }, {
