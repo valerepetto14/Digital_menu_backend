@@ -9,9 +9,9 @@ export class Category extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const CategoryModel = sequelize.define('categories', {
+export const CategoryModel = sequelize.define<Category>('categories', {
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         primaryKey: true
     },
     name: {

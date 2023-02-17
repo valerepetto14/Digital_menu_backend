@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { Ticket } from './ticket';
 
 export class Card extends Model {
   public id!: string;
@@ -9,10 +8,10 @@ export class Card extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const CardModel = sequelize.define('cards',
+export const CardModel = sequelize.define<Card>('cards',
 	{
 	id: {
-		type: DataTypes.STRING,
+		type: DataTypes.UUID,
 		primaryKey: true
 	}
 	},{
