@@ -6,7 +6,6 @@ import { TableModel } from './table';
 import { ProductModel } from './product';
 import { CategoryModel } from './category';
 import { SessionModel } from './session';
-import { TicketRowModel } from './ticketsRow';
 
 
 ReviewModel.belongsTo(TicketModel, {
@@ -45,9 +44,11 @@ TicketModel.belongsTo(UserModel, {
 });
 
 ProductModel.belongsToMany(TicketModel, {
-    through: 'ticketrow',
+    through: 'ticketRows',
+    foreignKey: 'productId',
 });
 
 TicketModel.belongsToMany(ProductModel, {
-    through: 'ticketrow',
+    through: 'ticketRows',
+    foreignKey: 'ticketId',
 });
