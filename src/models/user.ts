@@ -1,7 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
-import { Session } from './session';
-import { Ticket } from './ticket';
 
 export class User extends Model {
   public id!: string;
@@ -16,9 +14,9 @@ export class User extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const UserModel = sequelize.define('users',{
+export const UserModel = sequelize.define<User>('users',{
 	id: {
-		type: DataTypes.STRING,
+		type: DataTypes.UUID,
 		primaryKey: true
 	},
 	email: {
@@ -33,7 +31,7 @@ export const UserModel = sequelize.define('users',{
 		type: DataTypes.STRING(20),
 		allowNull: false,
 	},
-	phoneMumber: {
+	phoneNumber: {
 		type: DataTypes.STRING(15),
 		allowNull: false,
 	},
@@ -51,6 +49,3 @@ export const UserModel = sequelize.define('users',{
 }, {
 	timestamps: true
 });
-
-
-export default User;

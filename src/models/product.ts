@@ -15,9 +15,9 @@ export class Product extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const ProductModel = sequelize.define('products',{
+export const ProductModel = sequelize.define<Product>('products',{
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true
     },
     name: {
@@ -41,7 +41,7 @@ export const ProductModel = sequelize.define('products',{
       allowNull: false
     },
     categoryId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'categories',

@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { Ticket } from './ticket';
 
 export class Table extends Model {
   public id!: string;
@@ -10,9 +9,9 @@ export class Table extends Model {
   public readonly updatedAt!: Date;
 }
 
-export const TableModel = sequelize.define('tables',{
+export const TableModel = sequelize.define<Table>('tables',{
 	id: {
-		type: DataTypes.STRING,
+		type: DataTypes.UUID,
 		primaryKey: true
 	},
 	number: {
