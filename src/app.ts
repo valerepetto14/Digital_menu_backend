@@ -4,9 +4,8 @@ import path from "path";
 import sequelize from "./database/connection";
 
 //import models of database from "./models";
-import './models/relationships'
-
-
+import "./models/ticketsRow";
+import "./models/relationships"
 //import routes
 import { router as authRoute } from "./routes/auth";
 

@@ -1,8 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { Ticket } from './ticket';
-import { Product } from './product';
-
+import { TicketModel } from './ticket';
+import { ProductModel } from './product';
 
 export interface TicketRow extends Model {
     ticketId: string;
@@ -13,18 +12,18 @@ export interface TicketRow extends Model {
     updatedAt: Date;
 }
 
-export const TicketRowModel = sequelize.define<TicketRow>('TicketRow', {
+export const TicketRowModel = sequelize.define<TicketRow>('ticketRow', {
     ticketId: {
       type: DataTypes.UUID,
       references: {
-        model: Ticket,
+        model: TicketModel,
         key: 'id'
       }
     },
-    ProductId: {
+    productId: {
       type: DataTypes.UUID,
       references: {
-        model: Product,
+        model: ProductModel,
         key: 'id'
       }
     },
@@ -39,4 +38,4 @@ export const TicketRowModel = sequelize.define<TicketRow>('TicketRow', {
     },{
         timestamps:true
     }
-  );
+);

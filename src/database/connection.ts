@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize(
-    "menu_proyecto",
+    "menu_dev",
     "dev_proyecto",
     "anashe", {
         host: "54.233.144.140",
