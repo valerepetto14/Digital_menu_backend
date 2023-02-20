@@ -1,12 +1,11 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class Category extends Model {
-  public id!: string;
-  public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface Category extends Model {
+    id: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const CategoryModel = sequelize.define<Category>('categories', {

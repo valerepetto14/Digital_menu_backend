@@ -4,15 +4,14 @@ import { CardModel } from './card';
 import { UserModel } from './user';
 import { TableModel } from './table';
 
-export class Ticket extends Model {
-	public id!: string;
-	public tableId!: string;
-	public cardId!: string;
-	public userId!: string;
-	public status!: string;
-	
-	public readonly createdAt!: Date;
-	public readonly updatedAt!: Date;
+export interface Ticket extends Model {
+	id: string;
+	tableId: string;
+	cardId: string;
+	userId: string;
+	status: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export const TicketModel = sequelize.define<Ticket>('tickets',{

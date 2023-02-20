@@ -2,17 +2,16 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { CategoryModel } from './category';
 
-export class Product extends Model {
-  public id!: string;
-  public name!: string;
-  public description!: string;
-  public currentPrice!: number;
-  public status!: boolean;
-  public available!: boolean;
-  public categoryId!: string; // foreign key
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface Product extends Model {
+    id: string;
+    name: string;
+    description: string;
+    currentPrice: number;
+    status: boolean;
+    available: boolean;
+    categoryId: string; // foreign key
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const ProductModel = sequelize.define<Product>('products',{
