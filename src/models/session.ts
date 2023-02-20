@@ -2,14 +2,13 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 import { UserModel } from './user';
 
-export class Session extends Model {
-  public id!: string;
-  public token!: string;
-  public userId!: string;
-  public expiration!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface Session extends Model {
+    id: string;
+    token: string;
+    userId: string;
+    expiration: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const SessionModel = sequelize.define<Session>('sessions',{

@@ -1,17 +1,16 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class User extends Model {
-  public id!: string;
-  public email!: string;
-  public firstName!: string;
-  public lastName!: string;
-  public phoneNumber!: string;
-  public type!: string;
-  public password!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface User extends Model {
+  	id: string;
+  	email: string;
+  	firstName: string;
+  	lastName: string;
+  	phoneNumber: string;
+  	type: string;
+  	password: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export const UserModel = sequelize.define<User>('users',{

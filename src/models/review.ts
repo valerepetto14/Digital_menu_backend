@@ -2,12 +2,11 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 import { TicketModel } from './ticket';
 
-export class Review extends Model {
-  public id!: string;
-  public ticketId!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+export interface Review extends Model {
+    id: string;
+    ticketId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const ReviewModel = sequelize.define<Review>('reviews',{
