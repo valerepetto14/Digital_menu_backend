@@ -44,7 +44,7 @@ export const TicketModel = sequelize.define<Ticket>('tickets',{
 		}
 	},
 	status: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(20),
 		allowNull: false,
 		validate: {
 		isIn: [['send', 'inProgress', 'done']]

@@ -1,3 +1,4 @@
+import './ticketsRow'
 import { UserModel } from './user';
 import { ReviewModel } from './review';
 import { CardModel } from './card';
@@ -6,11 +7,19 @@ import { TableModel } from './table';
 import { ProductModel } from './product';
 import { CategoryModel } from './category';
 import { SessionModel } from './session';
+import { OptIngredientProductModel } from './optIngredientProduct';
+import { TicketRowModel } from './ticketsRow';
+import { OptIngredientModel } from './optIngredient';
+import { TicketRowOptIngredientModel } from './ticketsRowOptIngredient';
 
 
 ReviewModel.belongsTo(TicketModel, {
     foreignKey: 'ticketId'
-});  
+});
+
+TicketModel.hasOne(ReviewModel, {
+    foreignKey: 'ticketId'
+});
 
 CategoryModel.hasMany(ProductModel, {
     foreignKey: 'categoryId'
@@ -18,37 +27,51 @@ CategoryModel.hasMany(ProductModel, {
 
 ProductModel.belongsTo(CategoryModel, {
     foreignKey: 'categoryId'
-});  
+});
+
+UserModel.hasOne(SessionModel, {
+    foreignKey: 'userId'
+})
 
 SessionModel.belongsTo(UserModel, {
     foreignKey: 'userId'
 });
-  
-TableModel.hasMany(TicketModel, {
-    foreignKey: 'tableId'
-});  
-
-// Add association to Table model
-TicketModel.belongsTo(TableModel, {
-    foreignKey: 'tableId'
-});  
 
 // Add association to Card model
 TicketModel.belongsTo(CardModel, {
-  foreignKey: 'cardId'
+    foreignKey: 'cardId'
 });
 
-// Add association to User model
-TicketModel.belongsTo(UserModel, {
-  foreignKey: 'userId'
-});
 
 ProductModel.belongsToMany(TicketModel, {
-    through: 'ticketRows',
+    through: TicketRowModel,
     foreignKey: 'productId',
 });
 
 TicketModel.belongsToMany(ProductModel, {
-    through: 'ticketRows',
+    through: TicketRowModel,
     foreignKey: 'ticketId',
+    as: 'products'
 });
+
+ProductModel.belongsToMany(OptIngredientModel, {
+    through: OptIngredientProductModel,
+    foreignKey: 'productId',
+    otherKey: 'optIngredientId',
+    as : 'optIngredients'
+});
+
+OptIngredientModel.belongsToMany(ProductModel, {
+    through: OptIngredientProductModel,
+    foreignKey: 'optIngredientId',
+    otherKey: 'productId',
+});
+
+
+TicketRowOptIngredientModel.belongsTo(TicketRowModel, {
+    foreignKey: 'ticketRowId'
+})
+
+TicketRowModel.hasMany(TicketRowOptIngredientModel, {
+    foreignKey: 'ticketRowId'
+})

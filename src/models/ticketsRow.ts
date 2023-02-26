@@ -4,17 +4,25 @@ import { TicketModel } from './ticket';
 import { ProductModel } from './product';
 
 export interface TicketRow extends Model {
+    id: string;
     ticketId: string;
     ProductId: string;
     quantity: number;
     unitPrice: number;
+    
     createdAt: Date;
     updatedAt: Date;
 }
 
 export const TicketRowModel = sequelize.define<TicketRow>('ticketRow', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      unique: true
+    },
     ticketId: {
       type: DataTypes.UUID,
+      primaryKey: true,
       references: {
         model: TicketModel,
         key: 'id'
@@ -22,6 +30,7 @@ export const TicketRowModel = sequelize.define<TicketRow>('ticketRow', {
     },
     productId: {
       type: DataTypes.UUID,
+      primaryKey: true,
       references: {
         model: ProductModel,
         key: 'id'
