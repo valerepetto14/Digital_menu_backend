@@ -14,7 +14,7 @@ export const CategoryModel = sequelize.define<Category>('categories', {
         primaryKey: true
     },
     name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false
     }
   },{
