@@ -11,7 +11,7 @@ import { router as authRoute } from "./routes/auth";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler";
-
+import { isAuthenticated } from "./middlewares/auth";
 
 //config dotenv
 dotenv.config({ path: path.join(__dirname, "./.env") });
@@ -25,8 +25,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
-app.use("/api/auth", authRoute);
-
+app.use("/auth", authRoute);
+app.use('/', isAuthenticated);
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);
 
