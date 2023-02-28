@@ -69,3 +69,21 @@ export const Login = async (req:Request, res:Response, next:NextFunction) => {
         return next(error);
     }
 }
+
+export const logout = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const header = req.headers.authorization;
+        if (header){
+            const token = header.split(' ')[1];
+            await SessionModel.destroy({
+                where: {
+                    token: token
+                }
+            });
+        }
+        return res.status(200).json({message: "User logged out"});
+    } catch (error) {
+        next(error);
+    }
+}
+
