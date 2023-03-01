@@ -9,7 +9,7 @@ import { errorResponse } from "../models/errors"
 import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS } from "../utils/errors";
 import { SessionModel } from "../models/session";
 
-export const Register = async (req:Request, res:Response, next:NextFunction) => {
+export const signUp = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const {error, value } = registerSchema.validate(req.body);
         if (error){
@@ -36,7 +36,7 @@ export const Register = async (req:Request, res:Response, next:NextFunction) => 
     }
 }
 
-export const Login = async (req:Request, res:Response, next:NextFunction) => {
+export const signIn = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const { error, value } = loginSchema.validate(req.body);
         if (error) {
@@ -58,7 +58,15 @@ export const Login = async (req:Request, res:Response, next:NextFunction) => {
                     token: token,
                     expiration: new Date(Date.now() + 3600000)
                 })
-                return res.status(200).cookie("token", token, {httpOnly: true, sameSite: true}).json({message: "User logged in", session: newSession});
+                const response = {
+                    userId : user.id,
+                    gmail: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    type: user.type,
+                    token: token
+                };
+                return res.status(200).json({message: "User logged in", user: response});
             } else {
                 throw INCORRECT_CREDENTIALS
             }
@@ -86,4 +94,3 @@ export const logout = async (req:Request, res:Response, next:NextFunction) => {
         next(error);
     }
 }
-
