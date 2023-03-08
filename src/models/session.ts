@@ -1,11 +1,12 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { UserModel } from './user';
+import { UserModel, User } from './user';
 
 export interface Session extends Model {
     id: string;
     token: string;
     userId: string;
+    user?: User;
     expiration: string;
     createdAt: Date;
     updatedAt: Date;

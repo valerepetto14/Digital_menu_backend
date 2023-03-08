@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "backend": "npx ts-node src/app.ts"
+    "backend": "tsc && node dist/app.js"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +22,10 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "joi": "^17.7.1",
