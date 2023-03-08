@@ -4,12 +4,14 @@ import { SessionModel } from '../models/session';
 import { UserModel } from '../models/user';
 import { UNAUTHORIZED } from '../utils/errors';
 
-
 export const isAuthenticated = async (req:Request, res: Response, next: NextFunction) => {
     try {
-        const headerToken = req.headers.authorization;
-        if (headerToken){
-            const token = headerToken.split(' ')[1];
+        console.log('start middleware isAuthenticated', req.url)
+        if(req.url === '/auth/signin' || req.url === '/auth/signup'){
+            return next();
+        }
+        const token = req.cookies.token;
+        if (token){
             const payload = verify(token, process.env.TOKEN_SIGN as string);
             console.log('token', token);
             const session = await SessionModel.findAll({
@@ -17,8 +19,9 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
                     token: token,
                 }
             });
-            console.log('session',session);
+            console.log('session', session);
             if (session.length > 0) {
+                console.log('session found', session);
                 if(new Date(session[0].expiration) > new Date()){
                     const user = await UserModel.findAll({
                         where: {
@@ -27,10 +30,9 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
                         attributes: ['id', 'email', 'firstName', 'lastName', 'type']
                     });
                     if(user){
-                        console.log(user[0]);
-                        Object.assign(req, user[0]);
+                        req.user = user[0];
                     }
-                    next();
+                    return next();
                 }
                 else {
                     await SessionModel.destroy({
@@ -49,24 +51,10 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
 
 export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const header = req.headers.authorization;
-        if (header){
-            const token = header.split(' ')[1];
-            const payload = verify(token, process.env.TOKEN_SIGN as string);
-            const session = await SessionModel.findAll({
-                where: {
-                    token: token,
-                }
-            })
-            if (session.length > 0) {
-                const user = await UserModel.findAll({
-                    where: {
-                        id: session[0].userId
-                    }
-                })
-                if(user[0].type === 'admin'){
-                    next();
-                }
+        const user = req.user;
+        if (user){
+            if(user.type === 'admin'){
+                next();
             }
         }
         throw UNAUTHORIZED;

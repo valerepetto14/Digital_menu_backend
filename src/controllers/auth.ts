@@ -11,6 +11,7 @@ import { SessionModel } from "../models/session";
 
 export const signUp = async (req:Request, res:Response, next:NextFunction) => {
     try {
+        console.log('start signup');
         const {error, value } = registerSchema.validate(req.body);
         if (error){
             throw new errorResponse(error.message, 400);
@@ -38,8 +39,10 @@ export const signUp = async (req:Request, res:Response, next:NextFunction) => {
 
 export const signIn = async (req:Request, res:Response, next:NextFunction) => {
     try {
+        console.log('start signin');
         const { error, value } = loginSchema.validate(req.body);
         if (error) {
+            console.log(process.env.TOKEN_SIGN);
             throw new errorResponse(error.message, 400);
         }
         const user = await UserModel.findOne({where: {email: value.email}});
@@ -60,13 +63,13 @@ export const signIn = async (req:Request, res:Response, next:NextFunction) => {
                 })
                 const response = {
                     userId : user.id,
-                    gmail: user.email,
+                    email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     type: user.type,
                     token: token
                 };
-                return res.status(200).json({message: "User logged in", user: response});
+                return res.status(200).cookie("token", token, {httpOnly: true}).json({message: "User logged in", user: response});
             } else {
                 throw INCORRECT_CREDENTIALS
             }
@@ -78,18 +81,17 @@ export const signIn = async (req:Request, res:Response, next:NextFunction) => {
     }
 }
 
-export const logout = async (req:Request, res:Response, next:NextFunction) => {
+export const signOut = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const header = req.headers.authorization;
-        if (header){
-            const token = header.split(' ')[1];
+        const user = req.user;
+        if(user){
             await SessionModel.destroy({
                 where: {
-                    token: token
+                    userId: user.id
                 }
-            });
+            })
+            res.status(200).clearCookie("token").json({message: "User logged out"});
         }
-        return res.status(200).json({message: "User logged out"});
     } catch (error) {
         next(error);
     }
