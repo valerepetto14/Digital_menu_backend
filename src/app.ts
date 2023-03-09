@@ -11,6 +11,7 @@ import "./models/relationships"
 import { router as authRoute } from "./routes/auth";
 import { router as userRoute } from "./routes/users";
 import { router as categoryRoute } from "./routes/categories";
+import { router as optIngredientRoute } from "./routes/optIngredients";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler";
@@ -38,6 +39,7 @@ app.use('/', isAuthenticated);
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
 app.use("/categories", categoryRoute);
+app.use("/optingredients", optIngredientRoute);
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);
 

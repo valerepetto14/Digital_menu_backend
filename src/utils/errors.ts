@@ -6,3 +6,5 @@ export const UNAUTHORIZED = new errorResponse("Unauthorized", 401);
 export const USER_NOT_FOUND = new errorResponse("User not found", 400);
 export const CATEGORY_NOT_FOUND = new errorResponse("Category not found", 400);
 export const CATEGORY_ALREADY_EXIST = new errorResponse("Category already exist", 400);
+export const OPTINGREDIENT_NOT_FOUND = new errorResponse("Ingredient not found", 400);
+export const OPTINGREDIENT_ALREADY_EXIST = new errorResponse("Ingredient already exist", 400);
