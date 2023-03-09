@@ -37,7 +37,8 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
         const getCategory = await CategoryModel.findByPk(value.id);
         if (getCategory){
             await getCategory.destroy();
-        }
+            return res.status(200).json({message: "Category deleted"});
+        } 
         throw CATEGORY_NOT_FOUND;
     } catch (error) {
         next(error);
@@ -47,17 +48,17 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
 
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {error, value} = categoryUpdateSchema.validate(req.params);
-        if(error){
-            throw new errorResponse(error.message, 400);
-        }
-        console.log('VALUE', value);
-        const getCategory = await CategoryModel.findOne({where: {id: value.id}});
+        const id = req.params.id
+        const getCategory = await CategoryModel.findOne({where: {id: id}});
         if (getCategory){
-            await getCategory.update({
+            const {error, value } = categoryUpdateSchema.validate(req.body);
+            if(error){
+                throw new errorResponse(error.message, 400);
+            }
+            const categoryUpdated = await getCategory.update({
                 name: value.name
             });
-            return res.status(200).json({message: "Category updated", category: getCategory});
+            return res.status(200).json({message: "Category updated", category: categoryUpdated});
         } else {
             throw CATEGORY_NOT_FOUND;
         } 

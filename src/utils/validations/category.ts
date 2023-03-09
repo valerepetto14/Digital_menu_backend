@@ -9,6 +9,5 @@ export const categoryDeleteSchema = Joi.object({
 })
 
 export const categoryUpdateSchema = Joi.object({
-    id: Joi.string().required(),
     name: Joi.string().min(3).required(),
 })

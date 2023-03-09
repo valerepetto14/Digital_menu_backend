@@ -33,3 +33,28 @@ export const validateUser = async (req:Request, res:Response, next:NextFunction)
         next(error);
     }
 }
+
+
+const deleteUser = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const id = req.params.id;
+        const user = await UserModel.findByPk(id);
+        if(user){
+            await user.destroy();
+            return res.status(200).json({message: "User deleted"});
+        }
+        throw USER_NOT_FOUND;
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export const getUsers = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const users = await UserModel.findAll();
+        return res.status(200).json({message: "Users found", users: users});
+    } catch (error) {
+        next(error);
+    }
+}
