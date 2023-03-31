@@ -1,4 +1,4 @@
-import { addCategory, deleteCategory, updateCategory, getCategories } from "../controllers/categories";
+import { addCategory, deleteCategory, updateCategory, getCategories } from "../controllers/categories.controller";
 import { Router } from "express";
 
 export const router = Router();

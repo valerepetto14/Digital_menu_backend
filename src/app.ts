@@ -8,14 +8,14 @@ import cookieParser from "cookie-parser";
 //import models of database from "./models";
 import "./models/relationships"
 //import routes
-import { router as authRoute } from "./routes/auth";
-import { router as userRoute } from "./routes/users";
-import { router as categoryRoute } from "./routes/categories";
-import { router as optIngredientRoute } from "./routes/optIngredients";
+import { router as authRoute } from "./routes/auth.routes";
+import { router as userRoute } from "./routes/users.routes";
+import { router as categoryRoute } from "./routes/categories.routes";
+import { router as optIngredientRoute } from "./routes/optIngredients.routes";
 
 //import middlewares
-import { errorHandler } from "./middlewares/errosHandler";
-import { isAuthenticated } from "./middlewares/auth";
+import { errorHandler } from "./middlewares/errosHandler.middleware";
+import { isAuthenticated } from "./middlewares/auth.middlware";
 import cors from "cors";
 //config dotenv
 dotenv.config({ path: path.join(__dirname, "./.env") });

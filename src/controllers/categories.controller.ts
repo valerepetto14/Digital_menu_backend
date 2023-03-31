@@ -1,6 +1,6 @@
 import { Category, CategoryModel } from "../models/category";
 import { Request, Response, NextFunction } from "express";
-import { categoryAddSchema, categoryDeleteSchema, categoryUpdateSchema } from "../utils/validations/category";
+import { categoryAddSchema, categoryDeleteSchema, categoryUpdateSchema } from "../utils/validations/category.validate";
 import { errorResponse } from "../models/errors";
 import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
@@ -58,7 +58,7 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
             const categoryUpdated = await getCategory.update({
                 name: value.name
             });
-            return res.status(200).json({message: "Category updated", category: categoryUpdated});
+            return res.status(200).json({message: "Category updated"});
         } else {
             throw CATEGORY_NOT_FOUND;
         } 

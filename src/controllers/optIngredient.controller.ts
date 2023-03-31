@@ -1,6 +1,6 @@
 import { OptIngredient, OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
-import { optIngredientAddSchema, optIngredientDeleteSchema, optIngredientUpdateParamSchema, optIngredientUpdateBodySchema } from "../utils/validations/optIngredient";
+import { optIngredientAddSchema, optIngredientDeleteSchema, optIngredientUpdateParamSchema, optIngredientUpdateBodySchema } from "../utils/validations/optIngredient.validate";
 import { errorResponse } from "../models/errors";
 import uuid4 from "uuid4";
 import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST } from "../utils/errors";
@@ -66,7 +66,7 @@ export const updateOptIngregient = async (req: Request, res: Response, next: Nex
                 status: value.status
             });
 
-            return res.status(200).json({ message: "Ingredient updated", optIngredient: getOptIngredient });
+            return res.status(200).json({ message: "Ingredient updated" });
 
         } else {
             throw OPTINGREDIENT_NOT_FOUND;
@@ -78,6 +78,15 @@ export const updateOptIngregient = async (req: Request, res: Response, next: Nex
 
 export const getOptIngregient = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const id = req.params.id;
+        if(id){
+            const getOptIngredient = await OptIngredientModel.findOne({ where: { id: id } });
+            if (getOptIngredient) {
+                return res.status(200).json({ message: "Ingredient found", optIngredient: getOptIngredient });
+            } else {
+                throw OPTINGREDIENT_NOT_FOUND;
+            }
+        }
         const optIngredients = await OptIngredientModel.findAll();
         return res.status(200).json({ message: "Ingredients found", optIngredients: optIngredients });
     } catch (error) {
