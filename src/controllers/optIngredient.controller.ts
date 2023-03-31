@@ -6,21 +6,16 @@ import uuid4 from "uuid4";
 import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST } from "../utils/errors";
 
 
-export const addOptIngregient = async (req: Request, res: Response, next: NextFunction) => {
+export const addOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { error, value } = optIngredientAddSchema.validate(req.body);
-        if (error) {
-            throw new errorResponse(error.message, 400);
-        }
-        console.log('VALUE', value);
-        const existOptIngredient = await OptIngredientModel.findOne({ where: { name: value.name } });
+        const existOptIngredient = await OptIngredientModel.findOne({ where: { name: req.body.name } });
         if (!existOptIngredient) {
             const newOptIngredient = await OptIngredientModel.create({
                 id: uuid4(),
-                name: value.name,
-                price: value.price,
-                addOrRem: value.addOrRem,
-                status: value.status
+                name: req.body.value.name,
+                price: req.body.value.price,
+                addOrRem: req.body.value.addOrRem,
+                status: req.body.value.status
             })
             return res.status(201).json({ message: "Ingredient created", category: newOptIngredient });
         }
@@ -30,14 +25,9 @@ export const addOptIngregient = async (req: Request, res: Response, next: NextFu
     }
 }
 
-export const deleteOptIngregient = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { error, value } = optIngredientDeleteSchema.validate(req.params);
-        if (error) {
-            throw new errorResponse(error.message, 400);
-        }
-        console.log('VALUE', value);
-        const getOptIngredient = await OptIngredientModel.findByPk(value.id);
+        const getOptIngredient = await OptIngredientModel.findByPk(req.params.id);
         if (getOptIngredient) {
             await getOptIngredient.destroy();
             return res.status(204).json({});
@@ -48,22 +38,17 @@ export const deleteOptIngregient = async (req: Request, res: Response, next: Nex
         next(error);
     }
 }
-export const updateOptIngregient = async (req: Request, res: Response, next: NextFunction) => {
+export const updateOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
         const getOptIngredient = await OptIngredientModel.findOne({ where: { id: id } });
         if (getOptIngredient) {
-            const { error, value } = optIngredientUpdateBodySchema.validate(req.body);
-
-            if (error) {
-                throw new errorResponse(error.message, 400);
-            }
 
             await getOptIngredient.update({
-                name: value.name,
-                price: value.price,
-                addOrRem: value.addOrRem,
-                status: value.status
+                name: req.body.name,
+                price: req.body.price,
+                addOrRem: req.body.addOrRem,
+                status: req.body.status
             });
 
             return res.status(200).json({ message: "Ingredient updated" });
@@ -76,7 +61,7 @@ export const updateOptIngregient = async (req: Request, res: Response, next: Nex
     }
 }
 
-export const getOptIngregient = async (req: Request, res: Response, next: NextFunction) => {
+export const getOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
         if(id){

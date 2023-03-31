@@ -8,16 +8,12 @@ import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
 
 export const addCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {error, value} = categoryAddSchema.validate(req.body);
-        if(error){
-            throw new errorResponse(error.message, 400);
-        }
-        console.log('VALUE', value);
-        const existCategory = await CategoryModel.findOne({where: {name: value.name}});
+
+        const existCategory = await CategoryModel.findOne({where: {name: req.body.name}});
         if(!existCategory){
             const newCategory = await CategoryModel.create({
                 id: uuid4(),
-                name: value.name
+                name: req.body.name
             })
             return res.status(201).json({message: "Category created", category: newCategory});
         }
@@ -29,12 +25,7 @@ export const addCategory = async (req: Request, res: Response, next: NextFunctio
 
 export const deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {error, value } = categoryDeleteSchema.validate(req.params);
-        if(error){
-            throw new errorResponse(error.message, 400);
-        }
-        console.log('VALUE', value);
-        const getCategory = await CategoryModel.findByPk(value.id);
+        const getCategory = await CategoryModel.findByPk(req.params.id);
         if (getCategory){
             await getCategory.destroy();
             return res.status(200).json({message: "Category deleted"});
@@ -51,12 +42,8 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
         const id = req.params.id
         const getCategory = await CategoryModel.findOne({where: {id: id}});
         if (getCategory){
-            const {error, value } = categoryUpdateSchema.validate(req.body);
-            if(error){
-                throw new errorResponse(error.message, 400);
-            }
             const categoryUpdated = await getCategory.update({
-                name: value.name
+                name: req.body.name
             });
             return res.status(200).json({message: "Category updated"});
         } else {

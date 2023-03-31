@@ -9,7 +9,7 @@ import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS } from "../utils/errors";
 
 export const signUp = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        console.log('start signup');
+    
         const body = req.body;
         const userExists = await checkIfUserExists(body.email);
         if(!userExists){
