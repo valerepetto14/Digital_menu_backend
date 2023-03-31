@@ -1,12 +1,9 @@
 import './ticketsRow'
-import { UserModel } from './user';
 import { ReviewModel } from './review';
 import { CardModel } from './card';
 import { TicketModel } from './ticket';
-import { TableModel } from './table';
 import { ProductModel } from './product';
 import { CategoryModel } from './category';
-import { SessionModel } from './session';
 import { OptIngredientProductModel } from './optIngredientProduct';
 import { TicketRowModel } from './ticketsRow';
 import { OptIngredientModel } from './optIngredient';
@@ -29,19 +26,10 @@ ProductModel.belongsTo(CategoryModel, {
     foreignKey: 'categoryId'
 });
 
-UserModel.hasOne(SessionModel, {
-    foreignKey: 'userId'
-})
-
-SessionModel.belongsTo(UserModel, {
-    foreignKey: 'userId'
-});
-
 // Add association to Card model
 TicketModel.belongsTo(CardModel, {
     foreignKey: 'cardId'
 });
-
 
 ProductModel.belongsToMany(TicketModel, {
     through: TicketRowModel,
@@ -66,7 +54,6 @@ OptIngredientModel.belongsToMany(ProductModel, {
     foreignKey: 'optIngredientId',
     otherKey: 'productId',
 });
-
 
 TicketRowOptIngredientModel.belongsTo(TicketRowModel, {
     foreignKey: 'ticketRowId'

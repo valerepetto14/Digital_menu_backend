@@ -1,10 +1,12 @@
-import { addOptIngregient, deleteOptIngregient, updateOptIngregient, getOptIngregient } from "../controllers/optIngredient.controller";
+import { addOptIngredient, deleteOptIngredient, updateOptIngredient, getOptIngredient } from "../controllers/optIngredient.controller";
+import { optIngredientAddSchema, optIngredientDeleteSchema, optIngredientUpdateBodySchema } from '../utils/validations/optIngredient.validate';
+import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { Router } from "express";
 
 export const router = Router();
 
-router.post('/', addOptIngregient);
-router.delete('/:id', deleteOptIngregient);
-router.put('/:id', updateOptIngregient);
-router.get('/', getOptIngregient);
-router.get('/:id', getOptIngregient);
+router.post('/', bodyValidate(optIngredientAddSchema), addOptIngredient);
+router.delete('/:id', bodyValidate(optIngredientDeleteSchema), deleteOptIngredient);
+router.put('/:id', bodyValidate(optIngredientUpdateBodySchema), updateOptIngredient);
+router.get('/:id', bodyValidate(optIngredientDeleteSchema), getOptIngredient);
+router.get('/', getOptIngredient);
