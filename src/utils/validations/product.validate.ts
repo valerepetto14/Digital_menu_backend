@@ -1,13 +1,3 @@
-
-//   categoryId: {
-//     type: DataTypes.UUID,
-//     allowNull: false,
-//     references: {
-//       model: CategoryModel,
-//       key: 'id'
-//     }
-//   }
-
 import * as Joi from 'joi';
 
 export const productAddSchema = Joi.object({
@@ -16,7 +6,8 @@ export const productAddSchema = Joi.object({
     currentPrice: Joi.string().required(),
     status: Joi.boolean().required(),
     available: Joi.boolean().required(),
-    categoryId: Joi.string().required()
+    categoryId: Joi.string().required(),
+    optIngredientsId: Joi.array().items(Joi.string())
 })
 
 export const productDeleteSchema = Joi.object({
