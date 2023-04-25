@@ -1,11 +1,13 @@
-import { addCategory, deleteCategory, updateCategory, getCategories } from "../controllers/categories.controller";
-import { categoryAddSchema, categoryDeleteSchema, categoryUpdateSchema } from '../utils/validations/category.validate';
+import { addCategory, deleteCategory, updateCategory, getCategories, getCategory } from "../controllers/categories.controller";
+import { categoryAddSchema, categoryUpdateSchema } from '../utils/validations/category.validate';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
+import { isAuthenticated } from "../middlewares/auth.middlware";
 import { Router } from "express";
 
 export const router = Router();
 
-router.post('/', bodyValidate(categoryAddSchema), addCategory);
-router.delete('/:id', bodyValidate(categoryDeleteSchema), deleteCategory);
-router.put('/:id', bodyValidate(categoryUpdateSchema), updateCategory);
 router.get('/', getCategories);
+router.get('/:id', getCategory)
+router.post('/', isAuthenticated, bodyValidate(categoryAddSchema), addCategory);
+router.put('/:id', isAuthenticated, bodyValidate(categoryUpdateSchema), updateCategory);
+router.delete('/:id', isAuthenticated, deleteCategory);

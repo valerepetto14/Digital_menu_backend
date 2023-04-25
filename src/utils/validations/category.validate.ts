@@ -1,13 +1,10 @@
 import * as Joi from 'joi';
 
 export const categoryAddSchema = Joi.object({
-    name: Joi.string().min(3).required(),
-})
-
-export const categoryDeleteSchema = Joi.object({
-    id: Joi.string().required()
+    title: Joi.string().min(3).required(),
 })
 
 export const categoryUpdateSchema = Joi.object({
-    name: Joi.string().min(3).required(),
+    title: Joi.string().min(3).required(),
 })
+

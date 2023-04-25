@@ -1,19 +1,16 @@
-import { Category, CategoryModel } from "../models/category";
+import { CategoryModel } from "../models/category";
 import { Request, Response, NextFunction } from "express";
-import { categoryAddSchema, categoryDeleteSchema, categoryUpdateSchema } from "../utils/validations/category.validate";
-import { errorResponse } from "../models/errors";
 import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
 
 
 export const addCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        const existCategory = await CategoryModel.findOne({where: {name: req.body.name}});
+        const existCategory = await CategoryModel.findOne({where: {title: req.body.title}});
         if(!existCategory){
             const newCategory = await CategoryModel.create({
                 id: uuid4(),
-                name: req.body.name
+                title: req.body.title
             })
             return res.status(201).json({message: "Category created", category: newCategory});
         }
@@ -43,7 +40,7 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
         const getCategory = await CategoryModel.findOne({where: {id: id}});
         if (getCategory){
             const categoryUpdated = await getCategory.update({
-                name: req.body.name
+                title: req.body.title
             });
             return res.status(200).json({message: "Category updated"});
         } else {
@@ -58,6 +55,21 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
     try {
         const categories = await CategoryModel.findAll();
         return res.status(200).json({message: "Categories found", categories: categories});
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id;
+        if(id){
+            const category = await CategoryModel.findOne({where: {id: id}});
+            if(category){
+                return res.status(200).json({message: "Category found", category: category});
+            }
+            throw CATEGORY_NOT_FOUND;
+        }
     } catch (error) {
         next(error);
     }

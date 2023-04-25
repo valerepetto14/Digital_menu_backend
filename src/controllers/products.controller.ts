@@ -1,19 +1,32 @@
 import { Product, ProductModel } from "../models/product";
+import { CategoryModel } from "../models/category";
+import { OptIngredientModel, OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
-import { productAddSchema, productDeleteSchema, productUpdateBodySchema, productUpdateParamSchema } from "../utils/validations/product.validate";
-import { errorResponse } from "../models/errors";
 import uuid4 from "uuid4";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST } from "../utils/errors";
 
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { name, description, currentPrice, status, available, categoryId, optIngredientsId } = req.body;
         const existProduct = await ProductModel.findOne({where: {name: req.body.name}});
         if(!existProduct){
             const newProduct = await ProductModel.create({
                 id: uuid4(),
-                name: req.body.name
+                name,
+                description,
+                currentPrice,
+                status,
+                available,
+                categoryId
             })
+            if(optIngredientsId && optIngredientsId.length > 0){
+                let ingredientsOpt: OptIngredient[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
+                    let ingredient = await OptIngredientModel.findByPk(ingredientId);
+                    return ingredient!;
+                }));
+                await newProduct.addOptIngredients(ingredientsOpt);
+            }
             return res.status(201).json({message: "Product created", product: newProduct});
         }
         throw PRODUCT_ALREADY_EXIST;
@@ -62,7 +75,12 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
     try {
         const id = req.params.id;
         if(id){
-            const getProduct = await ProductModel.findOne({ where: { id: id } });
+            const getProduct = await ProductModel.findOne({ 
+                where: { id: id },
+                include: [{
+                    model: CategoryModel,
+                }] 
+            });
             if (getProduct) {
                 return res.status(200).json({ message: "Product found", product: getProduct });
             } else {
