@@ -3,7 +3,7 @@ import sequelize from '../database/connection';
 
 export interface Category extends Model {
     id: string;
-    name: string;
+    tile: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -13,7 +13,7 @@ export const CategoryModel = sequelize.define<Category>('categories', {
         type: DataTypes.UUID,
         primaryKey: true
     },
-    name: {
+    title: {
         type: DataTypes.STRING(30),
         allowNull: false
     }

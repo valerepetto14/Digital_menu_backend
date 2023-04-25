@@ -12,6 +12,7 @@ import { router as authRoute } from "./routes/auth.routes";
 import { router as userRoute } from "./routes/users.routes";
 import { router as categoryRoute } from "./routes/categories.routes";
 import { router as optIngredientRoute } from "./routes/optIngredients.routes";
+import { router as productsRoute } from "./routes/product.routes";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
@@ -35,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 //routes
-app.use('/', isAuthenticated);
+
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
 app.use("/categories", categoryRoute);
@@ -46,7 +47,7 @@ app.use(errorHandler);
 app.listen(3000, () => {
     try {
         console.log("Server started on port" + process.env.PORT);
-        sequelize.sync({force:true}).then(() => {
+        sequelize.sync({force: true}).then(() => {
             console.log("base de datos creada");
         });
     } catch (error) {

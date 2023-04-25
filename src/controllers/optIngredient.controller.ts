@@ -1,9 +1,7 @@
 import { OptIngredient, OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
-import { optIngredientAddSchema, optIngredientDeleteSchema, optIngredientUpdateParamSchema, optIngredientUpdateBodySchema } from "../utils/validations/optIngredient.validate";
-import { errorResponse } from "../models/errors";
 import uuid4 from "uuid4";
-import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST } from "../utils/errors";
+import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST, INGREDIENT_REMOVED_NOT_ADDED_PRICE } from "../utils/errors";
 
 
 export const addOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
@@ -12,10 +10,10 @@ export const addOptIngredient = async (req: Request, res: Response, next: NextFu
         if (!existOptIngredient) {
             const newOptIngredient = await OptIngredientModel.create({
                 id: uuid4(),
-                name: req.body.value.name,
-                price: req.body.value.price,
-                addOrRem: req.body.value.addOrRem,
-                status: req.body.value.status
+                name: req.body.name,
+                price: req.body.price,
+                addOrRem: req.body.addOrRem,
+                status: req.body.status
             })
             return res.status(201).json({ message: "Ingredient created", category: newOptIngredient });
         }
@@ -42,15 +40,17 @@ export const updateOptIngredient = async (req: Request, res: Response, next: Nex
     try {
         const id = req.params.id;
         const getOptIngredient = await OptIngredientModel.findOne({ where: { id: id } });
+        const { name, price, addOrRem, status } = req.body;
         if (getOptIngredient) {
-
+            if(addOrRem === 'Remove' && price > 0){
+                throw INGREDIENT_REMOVED_NOT_ADDED_PRICE;
+            }
             await getOptIngredient.update({
-                name: req.body.name,
-                price: req.body.price,
-                addOrRem: req.body.addOrRem,
-                status: req.body.status
+                name: name,
+                price: price,
+                addOrRem: addOrRem,
+                status: status
             });
-
             return res.status(200).json({ message: "Ingredient updated" });
 
         } else {

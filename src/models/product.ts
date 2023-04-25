@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { CategoryModel } from './category';
+import { OptIngredientModel, OptIngredient } from './optIngredient';
 
 export interface Product extends Model {
     id: string;
@@ -12,7 +13,8 @@ export interface Product extends Model {
     categoryId: string; // foreign key
     createdAt: Date;
     updatedAt: Date;
-}
+    addOptIngredients: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
+  }
 
 export const ProductModel = sequelize.define<Product>('products',{
     id: {
@@ -38,6 +40,10 @@ export const ProductModel = sequelize.define<Product>('products',{
     available: {
       type: DataTypes.BOOLEAN,
       allowNull: false
+    },
+    image : {
+      type: DataTypes.STRING(255),
+      allowNull: true
     },
     categoryId: {
       type: DataTypes.UUID,

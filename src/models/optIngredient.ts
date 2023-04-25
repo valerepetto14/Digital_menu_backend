@@ -28,7 +28,7 @@ export const OptIngredientModel = sequelize.define<OptIngredient>('optIngredient
         type: DataTypes.STRING(20),
         allowNull: false,
         validate: {
-			isIn: [['Add', 'Remove']]
+			isIn: [['ADD', 'REMOVE']]
 		}
     },
     status: {
