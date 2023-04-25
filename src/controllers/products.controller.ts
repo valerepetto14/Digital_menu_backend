@@ -4,7 +4,7 @@ import { OptIngredientModel, OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST } from "../utils/errors";
-
+import { pagination } from "../utils/functions";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -71,15 +71,58 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
     }
 }
 
+export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let { limit, page } = req.query as any;
+        let { limite, pagina, offset } = pagination(parseInt(limit), parseInt(page));
+        console.log(limite, pagina, offset)
+        const products = await ProductModel.findAll({
+            include: [
+                {
+                    model: CategoryModel,
+                    attributes: ['id', 'title']
+                },
+                {
+                    model: OptIngredientModel,
+                    as : 'optIngredients',
+                    attributes : ['id', 'name', 'price', 'status', 'addOrRem']
+                }
+            ],
+            limit: limite,
+            offset: offset
+        });
+        const countProducts = await ProductModel.count();
+
+        let response = {
+            message: "Products found",
+            products: products,
+            page: pagina,
+            totalPages: Math.ceil(countProducts / limite),
+            limit: limite
+        }
+        return res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const getProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
         if(id){
             const getProduct = await ProductModel.findOne({ 
                 where: { id: id },
-                include: [{
-                    model: CategoryModel,
-                }] 
+                include: [
+                    {
+                        model: CategoryModel,
+                        attributes: ['id', 'title']
+                    },
+                    {
+                        model: OptIngredientModel,
+                        as : 'optIngredients',
+                        attributes : ['id', 'name', 'price', 'status', 'addOrRem']
+                    }
+                ] 
             });
             if (getProduct) {
                 return res.status(200).json({ message: "Product found", product: getProduct });
@@ -87,8 +130,6 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
                 throw PRODUCT_NOT_FOUND;
             }
         }
-        const products = await ProductModel.findAll();
-        return res.status(200).json({ message: "Products found", products: products });
     } catch (error) {
         next(error);
     }

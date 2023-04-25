@@ -16,7 +16,6 @@ import { router as productsRoute } from "./routes/product.routes";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
-import { isAuthenticated } from "./middlewares/auth.middlware";
 import cors from "cors";
 //config dotenv
 dotenv.config({ path: path.join(__dirname, "./.env") });
@@ -41,13 +40,14 @@ app.use("/auth", authRoute);
 app.use("/users", userRoute);
 app.use("/categories", categoryRoute);
 app.use("/optingredients", optIngredientRoute);
+app.use("/products", productsRoute);
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);
 
 app.listen(3000, () => {
     try {
         console.log("Server started on port" + process.env.PORT);
-        sequelize.sync({force: true}).then(() => {
+        sequelize.sync().then(() => {
             console.log("base de datos creada");
         });
     } catch (error) {

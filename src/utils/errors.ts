@@ -10,4 +10,4 @@ export const OPTINGREDIENT_NOT_FOUND = new errorResponse("Ingredient not found",
 export const OPTINGREDIENT_ALREADY_EXIST = new errorResponse("Ingredient already exist", 400);
 export const INGREDIENT_REMOVED_NOT_ADDED_PRICE = new errorResponse("Ingredient removed not added price", 400);
 export const PRODUCT_NOT_FOUND = new errorResponse("Ingredient not found", 400);
-export const PRODUCT_ALREADY_EXIST = new errorResponse("Ingredient already exist", 400);
+export const PRODUCT_ALREADY_EXIST = new errorResponse("Product already exist", 400);
