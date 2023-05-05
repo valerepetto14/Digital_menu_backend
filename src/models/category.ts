@@ -1,23 +1,28 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export interface Category extends Model {
-    id: string;
-    tile: string;
-    createdAt: Date;
-    updatedAt: Date;
+export class CategoryModel extends Model {
+  public id!: string;
+  public title!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-export const CategoryModel = sequelize.define<Category>('categories', {
+CategoryModel.init(
+  {
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
     },
     title: {
-        type: DataTypes.STRING(30),
-        allowNull: false
+      type: DataTypes.STRING(30),
+      allowNull: false
     }
-  },{
-    timestamps:true
+  },
+  {
+    sequelize,
+    tableName: 'categories',
+    timestamps: true
   }
-)
+);

@@ -1,10 +1,9 @@
-import { UserModel, User } from "../models/user";
+import { UserModel } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { compare, hash } from "bcrypt";
 import uuid4 from "uuid4";
 import jwt from "jsonwebtoken"
 import { checkIfUserExists } from "../utils/checks";
-import { errorResponse } from "../models/errors"
 import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS } from "../utils/errors";
 
 export const signUp = async (req:Request, res:Response, next:NextFunction) => {

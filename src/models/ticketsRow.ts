@@ -3,38 +3,37 @@ import sequelize from '../database/connection';
 import { TicketModel } from './ticket';
 import { ProductModel } from './product';
 
-export interface TicketRow extends Model {
-    id: string;
-    ticketId: string;
-    ProductId: string;
-    quantity: number;
-    unitPrice: number;
-    
-    createdAt: Date;
-    updatedAt: Date;
+export class TicketRowModel extends Model {
+    public id!: string;
+    public ticketId!: string;
+    public productId!: string;
+    public quantity!: number;
+    public unitPrice!: number;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
-export const TicketRowModel = sequelize.define<TicketRow>('ticketRow', {
+TicketRowModel.init({
     id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      unique: true
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
     },
     ticketId: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      references: {
-        model: TicketModel,
-        key: 'id'
-      }
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: TicketModel,
+            key: 'id'
+        }
     },
     productId: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      references: {
-        model: ProductModel,
-        key: 'id'
-      }
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            model: ProductModel,
+            key: 'id'
+        }
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -44,7 +43,8 @@ export const TicketRowModel = sequelize.define<TicketRow>('ticketRow', {
         type: DataTypes.INTEGER,
         allowNull: false,
     }
-    },{
-        timestamps:true
-    }
-);
+}, {
+    sequelize,
+    tableName: 'ticketRows',
+    timestamps: true
+});

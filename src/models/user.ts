@@ -1,22 +1,23 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 
-export interface User extends Model {
-  	id: string;
-  	email: string;
-  	firstName: string;
-  	lastName: string;
-  	phoneNumber: string;
-  	type: string;
-  	password: string;
-	createdAt: Date;
-	updatedAt: Date;
+export class UserModel extends Model {
+	public id!: string;
+	public email!: string;
+	public firstName!: string;
+	public lastName!: string;
+	public phoneNumber!: string;
+	public type!: string;
+	public password!: string;
+	public readonly createdAt!: Date;
+	public readonly updatedAt!: Date;
 }
 
-export const UserModel = sequelize.define<User>('users',{
+UserModel.init({
 	id: {
 		type: DataTypes.UUID,
-		primaryKey: true
+		primaryKey: true,
+		defaultValue: DataTypes.UUIDV4
 	},
 	email: {
 		type: DataTypes.STRING(60),
@@ -46,5 +47,9 @@ export const UserModel = sequelize.define<User>('users',{
 		allowNull: false,
 	}
 }, {
+	sequelize,
+	tableName: 'users',
 	timestamps: true
 });
+
+export default UserModel;

@@ -5,6 +5,7 @@ export const productAddSchema = Joi.object({
     description: Joi.string().min(3).required(),
     currentPrice: Joi.string().required(),
     status: Joi.boolean().required(),
+    image: Joi.string().required(),
     available: Joi.boolean().required(),
     categoryId: Joi.string().required(),
     optIngredientsId: Joi.array().items(Joi.string())

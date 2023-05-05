@@ -1,6 +1,6 @@
-import { Product, ProductModel } from "../models/product";
+import { ProductModel } from "../models/product";
 import { CategoryModel } from "../models/category";
-import { OptIngredientModel, OptIngredient } from "../models/optIngredient";
+import { OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST } from "../utils/errors";
@@ -8,7 +8,7 @@ import { pagination } from "../utils/functions";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, description, currentPrice, status, available, categoryId, optIngredientsId } = req.body;
+        const { name, description, currentPrice, status, image, available, categoryId, optIngredientsId } = req.body;
         const existProduct = await ProductModel.findOne({where: {name: req.body.name}});
         if(!existProduct){
             const newProduct = await ProductModel.create({
@@ -17,11 +17,12 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
                 description,
                 currentPrice,
                 status,
+                image,
                 available,
                 categoryId
             })
             if(optIngredientsId && optIngredientsId.length > 0){
-                let ingredientsOpt: OptIngredient[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
+                let ingredientsOpt: OptIngredientModel[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
                     let ingredient = await OptIngredientModel.findByPk(ingredientId);
                     return ingredient!;
                 }));
@@ -80,12 +81,14 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
             include: [
                 {
                     model: CategoryModel,
-                    attributes: ['id', 'title']
+                    as: 'category',
+                    attributes: ['title']
                 },
                 {
                     model: OptIngredientModel,
                     as : 'optIngredients',
-                    attributes : ['id', 'name', 'price', 'status', 'addOrRem']
+                    attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
+                    through: { attributes: [] }
                 }
             ],
             limit: limite,
