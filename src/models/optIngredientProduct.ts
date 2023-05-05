@@ -1,17 +1,16 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { OptIngredientModel } from './optIngredient';
 import { ProductModel } from './product';
 
-export interface OptIngredientProduct extends Model {
-    productId: string;
-    ingredientId: string;
-
-    createdAt: Date;
-    updatedAt: Date;
+export class OptIngredientProductModel extends Model {
+    public productId!: string;
+    public optIngredientId!: string;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
-export const OptIngredientProductModel = sequelize.define<OptIngredientProduct>('optIngredientsProduct', {
+OptIngredientProductModel.init({
     productId: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -29,6 +28,7 @@ export const OptIngredientProductModel = sequelize.define<OptIngredientProduct>(
 		}
     }
 }, {
+    sequelize,
+    tableName: 'optIngredientsProduct',
     timestamps: true
-}
-)
+});

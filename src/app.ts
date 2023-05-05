@@ -20,8 +20,6 @@ import cors from "cors";
 //config dotenv
 dotenv.config({ path: path.join(__dirname, "./.env") });
 
-
-
 const app:Application = express();
 
 //middlewares
@@ -47,7 +45,7 @@ app.use(errorHandler);
 app.listen(3000, () => {
     try {
         console.log("Server started on port" + process.env.PORT);
-        sequelize.sync().then(() => {
+        sequelize.sync({force: true}).then(() => {
             console.log("base de datos creada");
         });
     } catch (error) {

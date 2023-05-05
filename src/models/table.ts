@@ -1,22 +1,27 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export interface Table extends Model {
-  	id: string;
-  	number: number;
-  	createdAt: Date;
-  	updatedAt: Date;
+export class TableModel extends Model {
+	public id!: string;
+	public number!: number;
+	public readonly createdAt!: Date;
+	public readonly updatedAt!: Date;
 }
 
-export const TableModel = sequelize.define<Table>('tables',{
+TableModel.init({
 	id: {
 		type: DataTypes.UUID,
-		primaryKey: true
+		primaryKey: true,
+		defaultValue: DataTypes.UUIDV4
 	},
 	number: {
 		type: DataTypes.INTEGER,
 		allowNull: false
 	}
 }, {
+	sequelize,
+	tableName: 'tables',
 	timestamps: true
 });
+
+export default TableModel;

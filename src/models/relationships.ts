@@ -1,4 +1,3 @@
-import './ticketsRow'
 import { ReviewModel } from './review';
 import { CardModel } from './card';
 import { TicketModel } from './ticket';
@@ -23,7 +22,8 @@ CategoryModel.hasMany(ProductModel, {
 });
 
 ProductModel.belongsTo(CategoryModel, {
-    foreignKey: 'categoryId'
+    foreignKey: 'categoryId',
+    as: 'category'
 });
 
 // Add association to Card model

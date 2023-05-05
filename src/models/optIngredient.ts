@@ -1,42 +1,47 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export interface OptIngredient extends Model {
-    id: string;
-    name: string;
-    addOrRem: boolean;
-
-    createdAt: Date;
-    updatedAt: Date;
+export class OptIngredientModel extends Model {
+  public id!: string;
+  public name!: string;
+  public price?: string;
+  public addOrRem!: 'ADD' | 'REMOVE';
+  public status!: boolean;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-export const OptIngredientModel = sequelize.define<OptIngredient>('optIngredients', {
+OptIngredientModel.init(
+  {
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
     },
     name: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: false
     },
     price: {
-        type: DataTypes.STRING(15),
-        allowNull: true,
-        defaultValue: '0'
+      type: DataTypes.STRING(15),
+      allowNull: true,
+      defaultValue: '0'
     },
     addOrRem: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-        validate: {
-			isIn: [['ADD', 'REMOVE']]
-		}
+      type: DataTypes.ENUM('ADD', 'REMOVE'),
+      allowNull: false
     },
     status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
-  },{
-    timestamps:true
+  },
+  {
+    sequelize,
+    tableName: 'optIngredients',
+    timestamps: true
   }
-)
+);
+
+export default OptIngredientModel;

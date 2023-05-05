@@ -1,4 +1,4 @@
-import { OptIngredient, OptIngredientModel } from "../models/optIngredient";
+import { OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST, INGREDIENT_REMOVED_NOT_ADDED_PRICE } from "../utils/errors";

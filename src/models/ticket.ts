@@ -1,23 +1,27 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, BelongsToManyAddAssociationMixin} from 'sequelize';
 import sequelize from '../database/connection';
 import { CardModel } from './card';
-import { UserModel } from './user';
-import { TableModel } from './table';
+import UserModel from './user';
+import TableModel from './table';
+import { ProductModel } from './product';
 
-export interface Ticket extends Model {
-	id: string;
-	tableId: string;
-	cardId: string;
-	userId: string;
-	status: string;
-	createdAt: Date;
-	updatedAt: Date;
+export class TicketModel extends Model {
+	public id!: string;
+	public tableId!: string;
+	public cardId!: string;
+	public userId!: string;
+	public status!: string;
+	public readonly createdAt!: Date;
+	public readonly updatedAt!: Date;
+	//function that add products to ticket because of the many to many relationship
+	public addProduct!: BelongsToManyAddAssociationMixin<ProductModel, string>;
 }
 
-export const TicketModel = sequelize.define<Ticket>('tickets',{
+TicketModel.init({
 	id: {
 		type: DataTypes.UUID,
-		primaryKey: true
+		primaryKey: true,
+		defaultValue: DataTypes.UUIDV4
 	},
 	tableId: {
 		type: DataTypes.UUID,
@@ -51,6 +55,7 @@ export const TicketModel = sequelize.define<Ticket>('tickets',{
 		}
 	}
 }, {
+	sequelize,
+	tableName: 'tickets',
 	timestamps: true
 });
-

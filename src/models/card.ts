@@ -1,19 +1,25 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export interface Card extends Model {
-  	id: string;
-	createdAt: Date;
-	updatedAt: Date;
+export class CardModel extends Model {
+  public id!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-export const CardModel = sequelize.define<Card>('cards',
-	{
-	id: {
-		type: DataTypes.UUID,
-		primaryKey: true
-	}
-	},{
-		timestamps:true
-  	}
+CardModel.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    }
+  },
+  {
+    sequelize,
+    tableName: 'cards',
+    timestamps: true
+  }
 );
+
+export default CardModel;
