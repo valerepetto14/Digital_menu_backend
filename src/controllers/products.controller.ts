@@ -3,7 +3,7 @@ import { CategoryModel } from "../models/category";
 import { OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
-import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST } from "../utils/errors";
+import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID } from "../utils/errors";
 import { pagination } from "../utils/functions";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -76,8 +76,16 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
     try {
         let { limit, page } = req.query as any;
         let { limite, pagina, offset } = pagination(parseInt(limit), parseInt(page));
+        let { active } = req.query as any;
+        let where = {
+            status: true
+        };
+        if(active){
+            where = {status: true};
+        }
         console.log(limite, pagina, offset)
         const products = await ProductModel.findAll({
+            where: where,
             include: [
                 {
                     model: CategoryModel,
@@ -133,6 +141,38 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
                 throw PRODUCT_NOT_FOUND;
             }
         }
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getProductsByCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const categoryId = req.params.categoryId;
+        if(categoryId){
+            const category = await CategoryModel.findByPk(categoryId)
+            if(category){
+                const products = await ProductModel.findAll({
+                    include: [
+                        {
+                            model: CategoryModel,
+                            as: 'category',
+                            attributes: ['id', 'title'],
+                            where: { id: categoryId }
+                        },
+                        {
+                            model: OptIngredientModel,
+                            as : 'optIngredients',
+                            attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
+                            through: { attributes: [] }
+                        }
+                    ] 
+                })
+                return res.status(200).json({message: "Products found", products: products});
+            }
+            throw CATEGORY_NOT_FOUND;
+        }
+        throw MISSING_CATEGORY_ID;
     } catch (error) {
         next(error);
     }

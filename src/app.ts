@@ -45,7 +45,7 @@ app.use(errorHandler);
 app.listen(3000, () => {
     try {
         console.log("Server started on port" + process.env.PORT);
-        sequelize.sync({force: true}).then(() => {
+        sequelize.sync().then(() => {
             console.log("base de datos creada");
         });
     } catch (error) {
