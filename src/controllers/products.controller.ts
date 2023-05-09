@@ -36,18 +36,18 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const getProduct = await ProductModel.findByPk(req.params.id);
-        if (getProduct){
-            await getProduct.destroy();
-            return res.status(200).json({message: "Product deleted"});
-        } 
-        throw PRODUCT_NOT_FOUND;
-    } catch (error) {
-        next(error);
-    }
-}
+// export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const getProduct = await ProductModel.findByPk(req.params.id);
+//         if (getProduct){
+//             await getProduct.destroy();
+//             return res.status(200).json({message: "Product deleted"});
+//         } 
+//         throw PRODUCT_NOT_FOUND;
+//     } catch (error) {
+//         next(error);
+//     }
+// }
 
 
 export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -77,11 +77,9 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
         let { limit, page } = req.query as any;
         let { limite, pagina, offset } = pagination(parseInt(limit), parseInt(page));
         let { active } = req.query as any;
-        let where = {
-            status: true
-        };
+        let where = {};
         if(active){
-            where = {status: true};
+            where = { status: active };
         }
         console.log(limite, pagina, offset)
         const products = await ProductModel.findAll({
@@ -173,6 +171,22 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
             throw CATEGORY_NOT_FOUND;
         }
         throw MISSING_CATEGORY_ID;
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+    //low logic delete
+    try {
+        const getProduct = await ProductModel.findByPk(req.params.id);
+        if (getProduct){
+            await getProduct.update({
+                status: false
+            });
+            return res.status(200).json({message: "Product deleted"});
+        } 
+        throw PRODUCT_NOT_FOUND;
     } catch (error) {
         next(error);
     }
