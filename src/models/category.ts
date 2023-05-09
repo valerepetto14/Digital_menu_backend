@@ -4,6 +4,7 @@ import sequelize from '../database/connection';
 export class CategoryModel extends Model {
   public id!: string;
   public title!: string;
+  public status!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -18,6 +19,11 @@ CategoryModel.init(
     title: {
       type: DataTypes.STRING(30),
       allowNull: false
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   },
   {

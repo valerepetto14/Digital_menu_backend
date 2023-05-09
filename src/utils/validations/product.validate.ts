@@ -11,10 +11,6 @@ export const productAddSchema = Joi.object({
     optIngredientsId: Joi.array().items(Joi.string())
 })
 
-export const productDeleteSchema = Joi.object({
-    id: Joi.string().required()
-})
-
 export const productUpdateParamSchema = Joi.object({
     id: Joi.string().required()
 })

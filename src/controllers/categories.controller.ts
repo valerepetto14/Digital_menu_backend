@@ -22,10 +22,11 @@ export const addCategory = async (req: Request, res: Response, next: NextFunctio
 
 export const deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const getCategory = await CategoryModel.findByPk(req.params.id);
-        if (getCategory){
-            await getCategory.destroy();
-            return res.status(200).json({message: "Category deleted"});
+        const category = await CategoryModel.findByPk(req.params.id);
+        if (category){
+            await category.update({
+                status: false
+            })
         } 
         throw CATEGORY_NOT_FOUND;
     } catch (error) {
