@@ -1,6 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { CategoryModel } from './category';
+import { SubCategoryModel } from './subCategory';
 import { OptIngredientModel } from './optIngredient';
 
 export class ProductModel extends Model {
@@ -12,6 +13,7 @@ export class ProductModel extends Model {
     public available!: boolean;
     public image!: string;
     public categoryId!: string;
+    public subCategoryId!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
     public addOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
@@ -54,6 +56,14 @@ ProductModel.init({
         allowNull: false,
         references : {
           model: CategoryModel,
+          key: 'id'
+        }
+    },
+    subCategoryId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references : {
+          model: SubCategoryModel,
           key: 'id'
         }
     }
