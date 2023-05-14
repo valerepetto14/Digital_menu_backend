@@ -1,4 +1,5 @@
 import { CategoryModel } from "../models/category";
+import { SubCategoryModel } from "../models/subCategory";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
@@ -54,7 +55,15 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
 
 export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const categories = await CategoryModel.findAll();
+        const categories = await CategoryModel.findAll({
+            include: [
+                {
+                    model: SubCategoryModel,
+                    as: 'subCategories',
+                    attributes: ['id', 'title']
+                }
+            ]
+        });
         return res.status(200).json({message: "Categories found", categories: categories});
     } catch (error) {
         next(error);

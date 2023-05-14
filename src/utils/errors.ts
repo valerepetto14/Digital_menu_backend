@@ -12,6 +12,7 @@ export const UNAUTHORIZED = new errorResponse("Unauthorized", 401);
 export const CATEGORY_NOT_FOUND = new errorResponse("Category not found", 404);
 export const MISSING_CATEGORY_ID = new errorResponse("Missing category id", 400);
 export const CATEGORY_ALREADY_EXIST = new errorResponse("Category already exist", 400);
+export const CATEGORY_OR_SUBCATEGORY_NOT_FOUND = new errorResponse("Category or subcategory not found", 404);
 
 //optIngredients
 export const OPTINGREDIENT_NOT_FOUND = new errorResponse("Ingredient not found", 404);
