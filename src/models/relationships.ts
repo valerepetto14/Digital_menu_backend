@@ -78,7 +78,8 @@ TicketRowModel.hasMany(TicketRowOptIngredientModel, {
 // Category <--> SubCategory
 
 CategoryModel.hasMany(SubCategoryModel, {
-    foreignKey: 'categoryId'
+    foreignKey: 'categoryId',
+    as: 'subCategories'
 });
 SubCategoryModel.belongsTo(CategoryModel, {
     foreignKey: 'categoryId'
@@ -87,7 +88,7 @@ SubCategoryModel.belongsTo(CategoryModel, {
 // Product <--> Category
 
 CategoryModel.hasMany(ProductModel, {
-    foreignKey: 'categoryId'
+    foreignKey: 'categoryId',
 });
 ProductModel.belongsTo(CategoryModel, {
     foreignKey: 'categoryId'
@@ -99,7 +100,8 @@ SubCategoryModel.hasMany(ProductModel, {
     foreignKey: 'subCategoryId'
 });
 ProductModel.belongsTo(SubCategoryModel, {
-    foreignKey: 'subCategoryId'
+    foreignKey: 'subCategoryId',
+    as: 'subCategory'
 });
 
 

@@ -17,6 +17,8 @@ export class ProductModel extends Model {
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
     public addOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
+    public removeOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
+    public setOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
 }
 
 ProductModel.init({
