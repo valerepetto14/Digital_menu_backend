@@ -11,4 +11,4 @@ router.get('/:id', getProduct);
 router.get('/category/:categoryId', getProductsByCategory);
 router.post('/', isAuthenticated, bodyValidate(productAddSchema), addProduct);
 router.delete('/:id', isAuthenticated, deleteProduct);
-router.put('/:id', isAuthenticated, bodyValidate(productUpdateBodySchema), updateProduct);
+router.put('/:id', isAuthenticated, updateProduct);

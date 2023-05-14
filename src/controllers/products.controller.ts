@@ -8,18 +8,18 @@ import { pagination } from "../utils/functions";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, description, currentPrice, status, image, available, categoryId, optIngredientsId } = req.body;
+        const { name, description, currentPrice, status, image, available, categoryId, optIngredientsId, subCategoryId } = req.body;
         const existProduct = await ProductModel.findOne({where: {name: req.body.name}});
         if(!existProduct){
             const newProduct = await ProductModel.create({
-                id: uuid4(),
                 name,
                 description,
                 currentPrice,
                 status,
                 image,
                 available,
-                categoryId
+                categoryId,
+                subCategoryId
             })
             if(optIngredientsId && optIngredientsId.length > 0){
                 let ingredientsOpt: OptIngredientModel[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
@@ -76,12 +76,13 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
     try {
         let { limit, page } = req.query as any;
         let { limite, pagina, offset } = pagination(parseInt(limit), parseInt(page));
-        let { active } = req.query as any;
+        let { status } = req.query as any;
+        status = status === 'true' ? true : (status === 'false' ? false : null);
         let where = {};
-        if(active){
-            where = { status: active };
+        if(status != null){
+            where = { status: status };
         }
-        console.log(limite, pagina, offset)
+        console.log(where);
         const products = await ProductModel.findAll({
             where: where,
             include: [

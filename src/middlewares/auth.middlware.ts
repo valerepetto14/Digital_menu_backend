@@ -10,6 +10,9 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
             return next();
         }
         const token = req.cookies.token;
+        if(!token){
+            throw UNAUTHORIZED;
+        }
         const payload = verify(token, process.env.TOKEN_SIGN as string) as any;
 
         console.log('token', token);
