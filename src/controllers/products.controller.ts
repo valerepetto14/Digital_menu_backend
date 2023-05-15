@@ -4,7 +4,7 @@ import { SubCategoryModel } from "../models/subCategory";
 import { OptIngredientModel } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
-import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND } from "../utils/errors";
+import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND } from "../utils/errors";
 import { pagination } from "../utils/functions";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -190,6 +190,37 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
             throw CATEGORY_NOT_FOUND;
         }
         throw MISSING_CATEGORY_ID;
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getProductsBySubCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { subCategoryId } = req.params;
+        if(subCategoryId){
+            const subCategoryExist = await checkSubCategoryExists(subCategoryId);
+            if(subCategoryExist){
+                const products = await ProductModel.findAll({
+                    include: [
+                        {
+                            model: SubCategoryModel,
+                            as: 'subCategory',
+                            attributes: ['id', 'title'],
+                            where: { id: subCategoryId }
+                        },
+                        {
+                            model: OptIngredientModel,
+                            as : 'optIngredients',
+                            attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
+                            through: { attributes: [] }
+                        }
+                    ] 
+                })
+                return res.status(200).json({message: "Products found", products: products});
+            }
+            throw SUB_CATEGORY_NOT_FOUND;
+        }
     } catch (error) {
         next(error);
     }
