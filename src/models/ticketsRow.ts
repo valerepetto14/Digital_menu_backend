@@ -36,8 +36,7 @@ TicketRowModel.init({
         }
     },
     quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        type: DataTypes.INTEGER, 
     },
     unitPrice: {
         type: DataTypes.INTEGER,

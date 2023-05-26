@@ -19,6 +19,7 @@ export class ProductModel extends Model {
     public addOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
     public removeOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
     public setOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
+    public getOptIngredients!: (options?: Object) => Promise<OptIngredientModel[]>;
 }
 
 ProductModel.init({

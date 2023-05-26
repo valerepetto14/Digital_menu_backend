@@ -65,7 +65,7 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
                         let ingredient = await OptIngredientModel.findByPk(ingredientId);
                         return ingredient!;
                     }));
-                    await productUpdated.setOptIngredients(ingredientsOpt);
+                    await productUpdated.addOptIngredients(ingredientsOpt);
                 }
                 return res.status(200).json({message: "Product updated", product: productUpdated});
             }
@@ -90,7 +90,7 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
         }
         console.log(where);
         const products = await ProductModel.findAll({
-            where: where,
+            attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available'],
             include: [
                 {
                     model: CategoryModel,
@@ -109,8 +109,6 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
                     through: { attributes: [] }
                 }
             ],
-            limit: limite,
-            offset: offset
         });
         const countProducts = await ProductModel.count();
 
@@ -133,6 +131,7 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
         if(id){
             const getProduct = await ProductModel.findOne({ 
                 where: { id: id },
+                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available'],
                 include: [
                     {
                         model: CategoryModel,
