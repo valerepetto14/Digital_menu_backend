@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { TicketModel } from './ticket';
 import { ProductModel } from './product';
@@ -9,6 +9,7 @@ export class TicketRowModel extends Model {
     public productId!: string;
     public quantity!: number;
     public unitPrice!: number;
+    public optIngredient!: Array<any>;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -36,11 +37,16 @@ TicketRowModel.init({
         }
     },
     quantity: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     unitPrice: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    optIngredient: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        allowNull: true
     }
 }, {
     sequelize,
