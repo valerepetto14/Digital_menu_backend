@@ -1,0 +1,19 @@
+//example of a json body to create a ticket
+
+
+{
+    "tableId": "1556a2c6-9e04-4fea-bb45-d2f9bb0a38b6",
+    "products": [
+        {
+            "productId": "1556a2c6-9e04-4fea-bb45-d2f9bb0a38b6",
+            "quantity": 1,
+            "unitPrice": 1,
+            "optIngredient": [
+                {
+                    "ingredientId": "1556a2c6-9e04-4fea-bb45-d2f9bb0a38b6",
+                    "quantity": 1
+                }
+            ]
+        }
+    ]
+}

@@ -31,22 +31,6 @@ TicketModel.init({
 			key: 'id'
 		}
 	},
-	cardId: {
-		type: DataTypes.UUID,
-		allowNull: false,
-		references : {
-			model: CardModel,
-			key: 'id'
-		}
-	},
-	userId: {
-		type: DataTypes.UUID,
-		allowNull: false,
-		references : {
-			model: UserModel,
-			key: 'id'
-		}
-	},
 	status: {
 		type: DataTypes.STRING(20),
 		allowNull: false,

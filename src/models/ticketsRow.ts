@@ -15,11 +15,6 @@ export class TicketRowModel extends Model {
 }
 
 TicketRowModel.init({
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
-    },
     ticketId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -41,10 +36,10 @@ TicketRowModel.init({
         allowNull: false,
     },
     unitPrice: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(20),
         allowNull: false,
     },
-    optIngredient: {
+    optIngredients: {
         type: DataTypes.ARRAY(DataTypes.JSON),
         allowNull: true
     }

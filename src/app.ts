@@ -13,6 +13,9 @@ import { router as categoryRoute } from "./routes/categories.routes";
 import { router as optIngredientRoute } from "./routes/optIngredients.routes";
 import { router as productsRoute } from "./routes/product.routes";
 import { router as subCategoriesRoute } from "./routes/subCategories.routes";
+import { router as ticketRoute } from "./routes/ticket.routes";
+import { router as cardRoute } from "./routes/card.routes";
+import { router as tableRoute } from "./routes/table.routes";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
@@ -40,6 +43,10 @@ app.use("/categories", categoryRoute);
 app.use("/optingredients", optIngredientRoute);
 app.use("/products", productsRoute);
 app.use("/subcategories", subCategoriesRoute);
+app.use("/tickets", ticketRoute);
+app.use('/cards', cardRoute)
+app.use('/tables', tableRoute)
+
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);
 

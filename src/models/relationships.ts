@@ -7,7 +7,7 @@ import { SubCategoryModel } from './subCategory';
 import { OptIngredientProductModel } from './optIngredientProduct';
 import { TicketRowModel } from './ticketsRow';
 import { OptIngredientModel } from './optIngredient';
-import { TicketRowOptIngredientModel } from './ticketsRowOptIngredient';
+// import { TicketRowOptIngredientModel } from './ticketsRowOptIngredient';
 
 //Review <--> Ticket
 
@@ -67,13 +67,13 @@ OptIngredientModel.belongsToMany(ProductModel, {
 
 // TicketRow <--> TicketRowOptIngredient
 
-TicketRowOptIngredientModel.belongsTo(TicketRowModel, {
-    foreignKey: 'ticketRowId'
-})
+// TicketRowOptIngredientModel.belongsTo(TicketRowModel, {
+//     foreignKey: 'ticketRowId'
+// })
 
-TicketRowModel.hasMany(TicketRowOptIngredientModel, {
-    foreignKey: 'ticketRowId'
-})
+// TicketRowModel.hasMany(TicketRowOptIngredientModel, {
+//     foreignKey: 'ticketRowId'
+// })
 
 // Category <--> SubCategory
 
