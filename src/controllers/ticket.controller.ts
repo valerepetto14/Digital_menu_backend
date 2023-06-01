@@ -47,19 +47,27 @@ export const addTicket = async (req: Request, res: Response, next: NextFunction)
 export const getTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const response:any = {};
+        let response:any = {};
         const ticket = await TicketModel.findByPk(id)
-        response['ticket'] = ticket;
+        response = ticket;
         if (ticket) {
             const ticketRows = await TicketRowModel.findAll({
                 where: {
                     ticketId: id
-                }
+                },
+                include: [{
+                    model: ProductModel,
+                    include: [{
+                        model: CategoryModel
+                    }]
+                }]
             });
-            response.ticket['ticketRows'] = ticketRows;
+            response['ticketRows'] = ticketRows;
+            console.log(ticketRows);
             return res.status(200).json({
                 message: 'Ticket found',
-                ticket: response
+                ticket: response,
+                rows: ticketRows
             });
         } else {
             throw TABLE_NOT_FOUND;
