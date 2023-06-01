@@ -8,7 +8,7 @@ let currentRetry = 0; // Contador de intentos actual
 const connectToDatabase = () => {
   return new Promise((resolve, reject) => {
     sequelize
-      .sync({ force: false })
+      .sync({ force: true })
       .then(() => {
         console.log("Base de datos creada");
         resolve();
