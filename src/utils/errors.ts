@@ -26,3 +26,6 @@ export const PRODUCT_ALREADY_EXIST = new errorResponse("Product already exist", 
 //subCategories 
 export const SUB_CATEGORY_NOT_FOUND = new errorResponse("Sub category not found", 404);
 export const SUB_CATEGORY_ALREADY_EXISTS = new errorResponse("Sub category already exists", 400);
+
+//tables
+export const TABLE_NOT_FOUND = new errorResponse("Table not found", 404);

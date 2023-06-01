@@ -49,14 +49,14 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
         const { id } = req.params;
         const response:any = {};
         const ticket = await TicketModel.findByPk(id)
-        const ticketRows = await TicketRowModel.findAll({
-            where: {
-                ticketId: id
-            }
-        });
         response['ticket'] = ticket;
-        response['ticketRows'] = ticketRows;
         if (ticket) {
+            const ticketRows = await TicketRowModel.findAll({
+                where: {
+                    ticketId: id
+                }
+            });
+            response.ticket['ticketRows'] = ticketRows;
             return res.status(200).json({
                 message: 'Ticket found',
                 ticket: response
