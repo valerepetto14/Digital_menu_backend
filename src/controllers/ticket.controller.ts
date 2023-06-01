@@ -50,8 +50,11 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
         const ticket = await TicketModel.findByPk(id,{
             include: [{
                 model: ProductModel,
+                attributes: ['id', 'title', 'description', 'currentPrice', 'status'],
+                as: 'products',
                 include: [{
-                    model: CategoryModel
+                    model: CategoryModel,
+                    attributes: ['id', 'title'],
                 }]
             }]
         })
