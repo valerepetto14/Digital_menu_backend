@@ -14,6 +14,7 @@ export class ProductModel extends Model {
     public image!: string;
     public categoryId!: string;
     public subCategoryId!: string;
+    public TicketRowModel!: any;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
     public addOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;

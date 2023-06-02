@@ -7,6 +7,7 @@ import { SubCategoryModel } from './subCategory';
 import { OptIngredientProductModel } from './optIngredientProduct';
 import { TicketRowModel } from './ticketsRow';
 import { OptIngredientModel } from './optIngredient';
+import { TableModel } from './table';
 // import { TicketRowOptIngredientModel } from './ticketsRowOptIngredient';
 
 //Review <--> Ticket
@@ -15,33 +16,9 @@ ReviewModel.belongsTo(TicketModel, {
     foreignKey: 'ticketId'
 });
 
+
 TicketModel.hasOne(ReviewModel, {
     foreignKey: 'ticketId'
-});
-
-// Category <--> Product
-
-CategoryModel.hasMany(ProductModel, {
-    foreignKey: 'categoryId'
-});
-
-ProductModel.belongsTo(CategoryModel, {
-    foreignKey: 'categoryId',
-    as: 'category'
-});
-
-// Add association to Card model
-// Ticket <--> Card
-
-TicketModel.belongsTo(CardModel, {
-    foreignKey: 'cardId'
-});
-
-// Product <--> Ticket
-
-ProductModel.belongsToMany(TicketModel, {
-    through: TicketRowModel,
-    foreignKey: 'productId',
 });
 
 TicketModel.belongsToMany(ProductModel, {
@@ -50,7 +27,22 @@ TicketModel.belongsToMany(ProductModel, {
     as: 'products'
 });
 
-// Product <--> OptIngredient
+
+TicketModel.belongsTo(CardModel, {
+    foreignKey: 'cardId'
+});
+
+TicketModel.belongsTo(TableModel, {
+    foreignKey: 'tableId',
+    as: 'table'
+});
+
+
+
+ProductModel.belongsToMany(TicketModel, {
+    through: TicketRowModel,
+    foreignKey: 'productId',
+});
 
 ProductModel.belongsToMany(OptIngredientModel, {
     through: OptIngredientProductModel,
@@ -59,49 +51,52 @@ ProductModel.belongsToMany(OptIngredientModel, {
     as : 'optIngredients'
 });
 
+ProductModel.belongsTo(SubCategoryModel, {
+    foreignKey: 'subCategoryId',
+    as: 'subCategory'
+});
+
+ProductModel.belongsTo(CategoryModel, {
+    foreignKey: 'categoryId'
+});
+
+
+
+
+
 OptIngredientModel.belongsToMany(ProductModel, {
     through: OptIngredientProductModel,
     foreignKey: 'optIngredientId',
     otherKey: 'productId',
 });
 
-// TicketRow <--> TicketRowOptIngredient
 
-// TicketRowOptIngredientModel.belongsTo(TicketRowModel, {
-//     foreignKey: 'ticketRowId'
-// })
 
-// TicketRowModel.hasMany(TicketRowOptIngredientModel, {
-//     foreignKey: 'ticketRowId'
-// })
-
-// Category <--> SubCategory
 
 CategoryModel.hasMany(SubCategoryModel, {
     foreignKey: 'categoryId',
     as: 'subCategories'
 });
-SubCategoryModel.belongsTo(CategoryModel, {
-    foreignKey: 'categoryId'
-});
-
-// Product <--> Category
 
 CategoryModel.hasMany(ProductModel, {
     foreignKey: 'categoryId',
 });
-ProductModel.belongsTo(CategoryModel, {
+
+
+
+
+
+SubCategoryModel.belongsTo(CategoryModel, {
     foreignKey: 'categoryId'
 });
-
-// Product <--> SubCategory
 
 SubCategoryModel.hasMany(ProductModel, {
     foreignKey: 'subCategoryId'
 });
-ProductModel.belongsTo(SubCategoryModel, {
-    foreignKey: 'subCategoryId',
-    as: 'subCategory'
+
+
+
+TableModel.hasMany(TicketModel, {
+    foreignKey: 'tableId',
+    as: 'tickets'
 });
-
-

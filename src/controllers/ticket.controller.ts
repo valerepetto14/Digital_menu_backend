@@ -5,8 +5,9 @@ import { ProductModel } from "../models/product";
 import { OptIngredientModel } from "../models/optIngredient";
 import { OptIngredientProductModel } from "../models/optIngredientProduct";
 import { TableModel } from "../models/table";
-import { TABLE_NOT_FOUND } from "../utils/errors";
+import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from "../utils/errors";
 import { CategoryModel } from "../models/category";
+import { SubCategoryModel } from "../models/subCategory";
 
 export const addTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -47,24 +48,52 @@ export const addTicket = async (req: Request, res: Response, next: NextFunction)
 export const getTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const ticket = await TicketModel.findByPk(id,{
-            include: [{
-                model: ProductModel,
-                attributes: ['id', 'title', 'description', 'currentPrice', 'status'],
-                as: 'products',
-                include: [{
-                    model: CategoryModel,
-                    attributes: ['id', 'title'],
-                }]
-            }]
-        })
-        if (ticket) {
+        const ticket = await TicketModel.findAll({
+            where: {
+              id: id,
+            },
+            attributes: ['id', 'status', 'createdAt'],
+            include: [
+                {
+                    model: TableModel,
+                    as: 'table',
+                    attributes: ['number'],
+                },
+                {
+                    model: ProductModel,
+                    as : 'products',
+                    attributes: ['id', 'name', 'description', 'currentPrice', 'status'],
+                    through: { attributes: [
+                        'quantity',
+                        'unitPrice',
+                        'optIngredients'
+                    ] },
+                    include: [
+                        {
+                            model: CategoryModel,
+                            attributes: ['id', 'title'],
+                        },
+                        {
+                            model: SubCategoryModel,
+                            attributes: ['id', 'title'],
+                            as: 'subCategory'
+                        }
+                    ],
+                },
+            ],
+        });
+        if (ticket && ticket.length > 0) {
+            const totalPrice = ticket[0].products.reduce((total, product) => {
+                return total + product.TicketRowModel.unitPrice;
+            }, 0);
+
+            ticket[0].setDataValue('totalPrice', totalPrice);
             return res.status(200).json({
                 message: 'Ticket found',
-                ticket: ticket
+                ticket: ticket[0]
             });
         } else {
-            throw TABLE_NOT_FOUND;
+            throw TICKET_NOT_FOUND;
         }
     } catch (error) {
         next(error);

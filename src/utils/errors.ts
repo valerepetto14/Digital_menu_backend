@@ -29,3 +29,6 @@ export const SUB_CATEGORY_ALREADY_EXISTS = new errorResponse("Sub category alrea
 
 //tables
 export const TABLE_NOT_FOUND = new errorResponse("Table not found", 404);
+
+//tickets
+export const TICKET_NOT_FOUND = new errorResponse("Ticket not found", 404);

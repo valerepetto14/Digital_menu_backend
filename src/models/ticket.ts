@@ -11,6 +11,7 @@ export class TicketModel extends Model {
 	public cardId!: string;
 	public userId!: string;
 	public status!: string;
+	public products!: ProductModel[];
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 	//function that add products to ticket because of the many to many relationship
