@@ -6,6 +6,7 @@ import { ProductModel } from './product';
 export class OptIngredientProductModel extends Model {
     public productId!: string;
     public optIngredientId!: string;
+    public addOrRem!: 'ADD' | 'REMOVE';
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -26,6 +27,10 @@ OptIngredientProductModel.init({
 			model: OptIngredientModel,
 			key: 'id'
 		}
+    },
+    addOrRem: {
+        type: DataTypes.ENUM('ADD', 'REMOVE'),
+        allowNull: false
     }
 }, {
     sequelize,

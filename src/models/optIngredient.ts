@@ -5,7 +5,6 @@ export class OptIngredientModel extends Model {
   public id!: string;
   public name!: string;
   public price?: string;
-  public addOrRem!: 'ADD' | 'REMOVE';
   public status!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -26,10 +25,6 @@ OptIngredientModel.init(
       type: DataTypes.STRING(15),
       allowNull: true,
       defaultValue: '0'
-    },
-    addOrRem: {
-      type: DataTypes.ENUM('ADD', 'REMOVE'),
-      allowNull: false
     },
     status: {
       type: DataTypes.BOOLEAN,
