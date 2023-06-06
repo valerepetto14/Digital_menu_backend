@@ -2,14 +2,14 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 import { TicketModel } from './ticket';
 import { ProductModel } from './product';
-
+import { OptIngredientProductTicketRow } from '../utils/types/interfaces';
 export class TicketRowModel extends Model {
     public id!: string;
     public ticketId!: string;
     public productId!: string;
     public quantity!: number;
     public unitPrice!: number;
-    public optIngredient!: Array<any>;
+    public optIngredient!: Array<OptIngredientProductTicketRow>;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }

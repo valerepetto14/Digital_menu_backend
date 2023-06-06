@@ -51,7 +51,7 @@ ReviewModel.init({
             isInt : true
         }
     },
-    description: {
+    food: {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {

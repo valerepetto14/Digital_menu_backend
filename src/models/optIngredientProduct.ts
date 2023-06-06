@@ -28,10 +28,16 @@ OptIngredientProductModel.init({
 			key: 'id'
 		}
     },
-    addOrRem: {
-        type: DataTypes.ENUM('ADD', 'REMOVE'),
-        allowNull: false
-    }
+    defaultQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    maxQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
 }, {
     sequelize,
     tableName: 'optIngredientsProduct',

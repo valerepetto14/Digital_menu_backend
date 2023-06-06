@@ -3,11 +3,11 @@ import { TicketModel } from "../models/ticket";
 import { TicketRowModel } from "../models/ticketsRow";
 import { ProductModel } from "../models/product";
 import { OptIngredientModel } from "../models/optIngredient";
-import { OptIngredientProductModel } from "../models/optIngredientProduct";
 import { TableModel } from "../models/table";
 import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from "../utils/errors";
 import { CategoryModel } from "../models/category";
 import { SubCategoryModel } from "../models/subCategory";
+import { OptIngredientProductTicketRow }  from "../utils/types/interfaces";
 
 export const addTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -100,9 +100,9 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-const getOptingredientToTicketRow = async (optIngredients: Array<OptIngredientRowTicket>) => {
+const getOptingredientToTicketRow = async (optIngredients: Array<OptIngredientProductTicketRow>) => {
     try {
-        const response:Array<OptIngredientRowTicket> = [];
+        const response:Array<OptIngredientProductTicketRow> = [];
         for (const optIngredient of optIngredients) {
             const optIngredientFound = await OptIngredientModel.findByPk(optIngredient.optIngredientId);
             if (optIngredientFound) {

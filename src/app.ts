@@ -16,6 +16,7 @@ import { router as subCategoriesRoute } from "./routes/subCategories.routes";
 import { router as ticketRoute } from "./routes/ticket.routes";
 import { router as cardRoute } from "./routes/card.routes";
 import { router as tableRoute } from "./routes/table.routes";
+import { router as reviewRoute } from "./routes/reviews.routes";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
@@ -46,6 +47,7 @@ app.use("/subcategories", subCategoriesRoute);
 app.use("/tickets", ticketRoute);
 app.use('/cards', cardRoute)
 app.use('/tables', tableRoute)
+app.use('/reviews', reviewRoute)
 
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);

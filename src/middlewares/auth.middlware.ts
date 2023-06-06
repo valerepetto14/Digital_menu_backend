@@ -1,9 +1,10 @@
 import { Request, NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { UserModel } from '../models/user';
+import User from '../models/user';
 import { UNAUTHORIZED } from '../utils/errors';
+import { AuthRequest } from "../controllers/auth.controller";
 
-export const isAuthenticated = async (req:Request, res: Response, next: NextFunction) => {
+export const isAuthenticated = async (req:AuthRequest, res: Response, next: NextFunction) => {
     try {
         console.log('start middleware isAuthenticated', req.url)
         if(req.url === '/auth/signin' || req.url === '/auth/signup'){
@@ -16,7 +17,7 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
         const payload = verify(token, process.env.TOKEN_SIGN as string) as any;
 
         console.log('token', token);
-        const user = await UserModel.findOne({
+        const user = await User.findOne({
             where: {
                 email: payload.email
             }
@@ -31,7 +32,7 @@ export const isAuthenticated = async (req:Request, res: Response, next: NextFunc
     }
 }
 
-export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
         if (user){

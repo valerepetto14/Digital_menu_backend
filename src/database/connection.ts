@@ -1,9 +1,10 @@
 import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize(
-    "digital_menu",
-    "valentin",
-    "valentin", {
+    'digital_menu',
+    'valentin',
+    'valentin'
+    , {
         host: "localhost",
         dialect: 'postgres',
     }

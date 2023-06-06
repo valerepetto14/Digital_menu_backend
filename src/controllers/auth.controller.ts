@@ -5,6 +5,14 @@ import uuid4 from "uuid4";
 import jwt from "jsonwebtoken"
 import { checkIfUserExists } from "../utils/checks";
 import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS } from "../utils/errors";
+import { extend } from "joi";
+
+
+export interface AuthRequest extends Request {
+    user?: any;
+    token?: string;
+}
+
 
 export const signUp = async (req:Request, res:Response, next:NextFunction) => {
     try {
@@ -67,7 +75,7 @@ export const signIn = async (req:Request, res:Response, next:NextFunction) => {
     }
 }
 
-export const signOut = async (req:Request, res:Response, next:NextFunction) => {
+export const signOut = async (req:AuthRequest, res:Response, next:NextFunction) => {
     try {
         const user = req.user;
         if(user){

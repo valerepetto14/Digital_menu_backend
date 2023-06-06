@@ -1,8 +1,10 @@
 import { UserModel } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { USER_NOT_FOUND } from "../utils/errors";
+import { AuthRequest } from "./auth.controller";
 
-export const validateUser = async (req:Request, res:Response, next:NextFunction) => {
+
+export const validateUser = async (req:AuthRequest, res:Response, next:NextFunction) => {
     try {
         const user = req.user;
         if(user){
