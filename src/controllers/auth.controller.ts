@@ -1,4 +1,4 @@
-import { UserModel } from "../models/user";
+import { User } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { compare, hash } from "bcrypt";
 import uuid4 from "uuid4";
@@ -21,7 +21,7 @@ export const signUp = async (req:Request, res:Response, next:NextFunction) => {
         const userExists = await checkIfUserExists(body.email);
         if(!userExists){
             const passHash = await hash(body.password, 10);
-            const newUser = await UserModel.create({
+            const newUser = await User.create({
                 id: uuid4(),
                 email: body.email,
                 firstName: body.firstName,
@@ -43,7 +43,7 @@ export const signIn = async (req:Request, res:Response, next:NextFunction) => {
     try {
         console.log('start signin');
         const body = req.body;
-        const user = await UserModel.findOne({where: {email: body.email}});
+        const user = await User.findOne({where: {email: body.email}});
         if(user){
             const passMatch = await compare(body.password, user.password);
             if(passMatch){

@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { CategoryModel } from './category';
+import { Category} from './category';
 
-export class SubCategoryModel extends Model {
+export class SubCategory extends Model {
   public id!: string;
   public title!: string;
   public status!: boolean;
@@ -11,7 +11,7 @@ export class SubCategoryModel extends Model {
   public readonly updatedAt!: Date;
 }
 
-SubCategoryModel.init(
+SubCategory.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -31,7 +31,7 @@ SubCategoryModel.init(
         type: DataTypes.UUID,
         allowNull: false,
         references : {
-          model: CategoryModel,
+          model: Category,
           key: 'id'
         }
     }

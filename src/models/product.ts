@@ -1,10 +1,10 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
-import { CategoryModel } from './category';
-import { SubCategoryModel } from './subCategory';
-import { OptIngredientModel } from './optIngredient';
+import { Category } from './category';
+import { SubCategory } from './subCategory';
+import { OptIngredient } from './optIngredient';
 
-export class ProductModel extends Model {
+export class Product extends Model {
     public id!: string;
     public name!: string;
     public description!: string;
@@ -17,13 +17,13 @@ export class ProductModel extends Model {
     public TicketRowModel!: any;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public addOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
-    public removeOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
-    public setOptIngredients!: (optIngredients: OptIngredientModel[], options?: Object) => Promise<any>;
-    public getOptIngredients!: (options?: Object) => Promise<OptIngredientModel[]>;
+    public addOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
+    public removeOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
+    public setOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
+    public getOptIngredients!: (options?: Object) => Promise<OptIngredient[]>;
 }
 
-ProductModel.init({
+Product.init({
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -59,7 +59,7 @@ ProductModel.init({
         type: DataTypes.UUID,
         allowNull: false,
         references : {
-          model: CategoryModel,
+          model: Category,
           key: 'id'
         }
     },
@@ -67,7 +67,7 @@ ProductModel.init({
         type: DataTypes.UUID,
         allowNull: false,
         references : {
-          model: SubCategoryModel,
+          model: SubCategory,
           key: 'id'
         }
     }

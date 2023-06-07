@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class CategoryModel extends Model {
+export class Category extends Model {
   public id!: string;
   public title!: string;
   public status!: boolean;
@@ -9,7 +9,7 @@ export class CategoryModel extends Model {
   public readonly updatedAt!: Date;
 }
 
-CategoryModel.init(
+Category.init(
   {
     id: {
       type: DataTypes.UUID,

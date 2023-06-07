@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
-import { TicketModel } from './ticket';
+import { Ticket } from './ticket';
 
-export class ReviewModel extends Model {
+export class Review extends Model {
     public id!: string;
     public ticketId!: string;
     public service!: number;
@@ -13,7 +13,7 @@ export class ReviewModel extends Model {
     public readonly updatedAt!: Date;
 }
 
-ReviewModel.init({
+Review.init({
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -23,7 +23,7 @@ ReviewModel.init({
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: TicketModel,
+            model: Ticket,
             key: 'id'
         }
     },

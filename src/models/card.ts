@@ -1,13 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class CardModel extends Model {
+export class Card extends Model {
   public id!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-CardModel.init(
+Card.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -22,4 +22,4 @@ CardModel.init(
   }
 );
 
-export default CardModel;
+export default Card;

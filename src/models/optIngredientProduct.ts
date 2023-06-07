@@ -1,9 +1,9 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
-import { OptIngredientModel } from './optIngredient';
-import { ProductModel } from './product';
+import { OptIngredient } from './optIngredient';
+import { Product } from './product';
 
-export class OptIngredientProductModel extends Model {
+export class OptIngredientProduct extends Model {
     public productId!: string;
     public optIngredientId!: string;
     public addOrRem!: 'ADD' | 'REMOVE';
@@ -11,12 +11,12 @@ export class OptIngredientProductModel extends Model {
     public readonly updatedAt!: Date;
 }
 
-OptIngredientProductModel.init({
+OptIngredientProduct.init({
     productId: {
         type: DataTypes.UUID,
         primaryKey: true,
         references : {
-			model: ProductModel,
+			model: Product,
 			key: 'id'
 		}
     },
@@ -24,7 +24,7 @@ OptIngredientProductModel.init({
         type: DataTypes.UUID,
         primaryKey: true,
         references : {
-			model: OptIngredientModel,
+			model: OptIngredient,
 			key: 'id'
 		}
     },

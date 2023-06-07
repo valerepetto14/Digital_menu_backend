@@ -1,4 +1,4 @@
-import { UserModel } from "../models/user";
+import { User } from "../models/user";
 import { Request, Response, NextFunction } from "express";
 import { USER_NOT_FOUND } from "../utils/errors";
 import { AuthRequest } from "./auth.controller";
@@ -8,7 +8,7 @@ export const validateUser = async (req:AuthRequest, res:Response, next:NextFunct
     try {
         const user = req.user;
         if(user){
-            const userData = await UserModel.findOne({
+            const userData = await User.findOne({
                 where: {
                     email: user.email
                 }
@@ -27,7 +27,7 @@ export const validateUser = async (req:AuthRequest, res:Response, next:NextFunct
 export const deleteUser = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const id = req.params.id;
-        const user = await UserModel.findByPk(id);
+        const user = await User.findByPk(id);
         if(user){
             await user.destroy();
             return res.status(200).json({message: "User deleted"});
@@ -41,7 +41,7 @@ export const deleteUser = async (req:Request, res:Response, next:NextFunction) =
 export const updateUser = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const id = req.params.id;
-        const user = await UserModel.findByPk(id);
+        const user = await User.findByPk(id);
         if(user){
             const userUpdated = await user.update({
                 email: req.body.email,
@@ -60,7 +60,7 @@ export const updateUser = async (req:Request, res:Response, next:NextFunction) =
 
 export const getUsers = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const users = await UserModel.findAll();
+        const users = await User.findAll();
         return res.status(200).json({message: "Users found", users: users});
     } catch (error) {
         next(error);

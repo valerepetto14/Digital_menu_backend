@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { ReviewModel } from "../models/review";
-import { TicketModel } from "../models/ticket";
+import { Review } from "../models/review";
+import { Ticket } from "../models/ticket";
 import { TICKET_NOT_FOUND } from "../utils/errors";
 
 
 export const createReview = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const ticketId = req.params.id;
-        const ticket = await TicketModel.findByPk(ticketId);
+        const ticket = await Ticket.findByPk(ticketId);
         if(ticket){
-            const review = await ReviewModel.create({
+            const review = await Review.create({
                 ticketId: ticket.id,
                 service : req.body.service,
                 food: req.body.food,

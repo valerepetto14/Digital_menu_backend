@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class TableModel extends Model {
+export class Table extends Model {
 	public id!: string;
 	public number!: number;
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 }
 
-TableModel.init({
+Table.init({
 	id: {
 		type: DataTypes.UUID,
 		primaryKey: true,
@@ -24,4 +24,4 @@ TableModel.init({
 	timestamps: true
 });
 
-export default TableModel;
+export default Table;

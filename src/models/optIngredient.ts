@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class OptIngredientModel extends Model {
+export class OptIngredient extends Model {
   public id!: string;
   public name!: string;
   public price?: string;
@@ -10,7 +10,7 @@ export class OptIngredientModel extends Model {
   public readonly updatedAt!: Date;
 }
 
-OptIngredientModel.init(
+OptIngredient.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -39,4 +39,4 @@ OptIngredientModel.init(
   }
 );
 
-export default OptIngredientModel;
+export default OptIngredient;

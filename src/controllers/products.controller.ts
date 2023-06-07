@@ -1,7 +1,7 @@
-import { ProductModel } from "../models/product";
-import { CategoryModel } from "../models/category";
-import { SubCategoryModel } from "../models/subCategory";
-import { OptIngredientModel } from "../models/optIngredient";
+import { Product } from "../models/product";
+import { Category } from "../models/category";
+import { SubCategory } from "../models/subCategory";
+import { OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND } from "../utils/errors";
@@ -10,12 +10,12 @@ import { pagination } from "../utils/functions";
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { name, description, currentPrice, status, image, available, categoryId, optIngredientsId, subCategoryId } = req.body;
-        const existProduct = await ProductModel.findOne({where: {name: req.body.name}});
+        const existProduct = await Product.findOne({where: {name: req.body.name}});
         if(!existProduct){
             const categoryExist = await checkCategoryExists(categoryId);
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
             if(categoryExist && subCategoryExist){
-                const newProduct = await ProductModel.create({
+                const newProduct = await Product.create({
                     name,
                     description,
                     currentPrice,
@@ -26,8 +26,8 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
                     subCategoryId
                 })
                 if(optIngredientsId && optIngredientsId.length > 0){
-                    let ingredientsOpt: OptIngredientModel[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
-                        let ingredient = await OptIngredientModel.findByPk(ingredientId);
+                    let ingredientsOpt: OptIngredient[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
+                        let ingredient = await OptIngredient.findByPk(ingredientId);
                         return ingredient!;
                     }));
                     await newProduct.addOptIngredients(ingredientsOpt);
@@ -46,7 +46,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
 export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id
-        const getProduct = await ProductModel.findOne({where: {id: id}});
+        const getProduct = await Product.findOne({where: {id: id}});
         if (getProduct){
             const categoryExist = await checkCategoryExists(req.body.categoryId);
             const subCategoryExist = await checkSubCategoryExists(req.body.subCategoryId);
@@ -61,8 +61,8 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
                     subCategoryId: req.body.subCategoryId
                 });
                 if(req.body.optIngredientsId && req.body.optIngredientsId.length > 0){
-                    let ingredientsOpt: OptIngredientModel[] = await Promise.all(req.body.optIngredientsId.map(async (ingredientId: string) => {
-                        let ingredient = await OptIngredientModel.findByPk(ingredientId);
+                    let ingredientsOpt: OptIngredient[] = await Promise.all(req.body.optIngredientsId.map(async (ingredientId: string) => {
+                        let ingredient = await OptIngredient.findByPk(ingredientId);
                         return ingredient!;
                     }));
                     await productUpdated.addOptIngredients(ingredientsOpt);
@@ -89,28 +89,28 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
             where = { status: status };
         }
         console.log(where);
-        const products = await ProductModel.findAll({
+        const products = await Product.findAll({
             attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available'],
             include: [
                 {
-                    model: CategoryModel,
+                    model: Category,
                     as: 'category',
                     attributes: ['id', 'title']
                 },
                 {
-                    model: SubCategoryModel,
+                    model: SubCategory,
                     as: 'subCategory',
                     attributes: ['id', 'title']
                 },
                 {
-                    model: OptIngredientModel,
+                    model: OptIngredient,
                     as : 'optIngredients',
                     attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
                     through: { attributes: [] }
                 }
             ],
         });
-        const countProducts = await ProductModel.count();
+        const countProducts = await Product.count();
 
         let response = {
             message: "Products found",
@@ -129,22 +129,22 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
     try {
         const id = req.params.id;
         if(id){
-            const getProduct = await ProductModel.findOne({ 
+            const getProduct = await Product.findOne({ 
                 where: { id: id },
                 attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available'],
                 include: [
                     {
-                        model: CategoryModel,
+                        model: Category,
                         attributes: ['id', 'title'],
                         as: 'category'
                     },
                     {
-                        model: SubCategoryModel,
+                        model: SubCategory,
                         attributes: ['id', 'title'],
                         as: 'subCategory'
                     },
                     {
-                        model: OptIngredientModel,
+                        model: OptIngredient,
                         as : 'optIngredients',
                         attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
                         through: { attributes: [] }
@@ -168,16 +168,16 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
         if(categoryId){
             const categoryExist = await checkCategoryExists(categoryId);
             if(categoryExist){
-                const products = await ProductModel.findAll({
+                const products = await Product.findAll({
                     include: [
                         {
-                            model: CategoryModel,
+                            model: Category,
                             as: 'category',
                             attributes: ['id', 'title'],
                             where: { id: categoryId }
                         },
                         {
-                            model: OptIngredientModel,
+                            model: OptIngredient,
                             as : 'optIngredients',
                             attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
                             through: { attributes: [] }
@@ -200,16 +200,16 @@ export const getProductsBySubCategory = async (req: Request, res: Response, next
         if(subCategoryId){
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
             if(subCategoryExist){
-                const products = await ProductModel.findAll({
+                const products = await Product.findAll({
                     include: [
                         {
-                            model: SubCategoryModel,
+                            model: SubCategory,
                             as: 'subCategory',
                             attributes: ['id', 'title'],
                             where: { id: subCategoryId }
                         },
                         {
-                            model: OptIngredientModel,
+                            model: OptIngredient,
                             as : 'optIngredients',
                             attributes : ['id', 'name', 'price', 'status', 'addOrRem'],
                             through: { attributes: [] }
@@ -229,7 +229,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
     //low logic delete
     try {
         const { id } = req.params;
-        const getProduct = await ProductModel.findByPk(id);
+        const getProduct = await Product.findByPk(id);
         if (getProduct){
             await getProduct.update({
                 status: false

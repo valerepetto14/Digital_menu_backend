@@ -1,28 +1,28 @@
 import { Request, Response, NextFunction } from "express";
-import { TicketModel } from "../models/ticket";
-import { TicketRowModel } from "../models/ticketsRow";
-import { ProductModel } from "../models/product";
-import { OptIngredientModel } from "../models/optIngredient";
-import { TableModel } from "../models/table";
+import { Ticket } from "../models/ticket";
+import { TicketRow } from "../models/ticketsRow";
+import { Product } from "../models/product";
+import { OptIngredient } from "../models/optIngredient";
+import { Table } from "../models/table";
 import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from "../utils/errors";
-import { CategoryModel } from "../models/category";
-import { SubCategoryModel } from "../models/subCategory";
+import { Category } from "../models/category";
+import { SubCategory } from "../models/subCategory";
 import { OptIngredientProductTicketRow }  from "../utils/types/interfaces";
 
 export const addTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tableId, products } = req.body;
-        const table = await TableModel.findByPk(tableId);
+        const table = await Table.findByPk(tableId);
         if (table != null) {
-            const ticket = await TicketModel.create({
+            const ticket = await Ticket.create({
                 tableId: table.id,
                 status: 'send'
             });
             for (const product of products) {
-                const productFound = await ProductModel.findByPk(product.productId);
+                const productFound = await Product.findByPk(product.productId);
                 console.log(productFound);
                 if (productFound) {
-                    const ticketRow = await TicketRowModel.create({
+                    const ticketRow = await TicketRow.create({
                         ticketId: ticket.id,
                         productId: productFound.id,
                         quantity: product.quantity,
@@ -48,19 +48,19 @@ export const addTicket = async (req: Request, res: Response, next: NextFunction)
 export const getTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const ticket = await TicketModel.findAll({
+        const ticket = await Ticket.findAll({
             where: {
               id: id,
             },
             attributes: ['id', 'status', 'createdAt'],
             include: [
                 {
-                    model: TableModel,
+                    model: Table,
                     as: 'table',
                     attributes: ['number'],
                 },
                 {
-                    model: ProductModel,
+                    model: Product,
                     as : 'products',
                     attributes: ['id', 'name', 'description', 'currentPrice', 'status'],
                     through: { attributes: [
@@ -70,11 +70,11 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
                     ] },
                     include: [
                         {
-                            model: CategoryModel,
+                            model: Category,
                             attributes: ['id', 'title'],
                         },
                         {
-                            model: SubCategoryModel,
+                            model: SubCategory,
                             attributes: ['id', 'title'],
                             as: 'subCategory'
                         }
@@ -104,7 +104,7 @@ const getOptingredientToTicketRow = async (optIngredients: Array<OptIngredientPr
     try {
         const response:Array<OptIngredientProductTicketRow> = [];
         for (const optIngredient of optIngredients) {
-            const optIngredientFound = await OptIngredientModel.findByPk(optIngredient.optIngredientId);
+            const optIngredientFound = await OptIngredient.findByPk(optIngredient.optIngredientId);
             if (optIngredientFound) {
                 response.push({
                     optIngredientId: optIngredient.optIngredientId,

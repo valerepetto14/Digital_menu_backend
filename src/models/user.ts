@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import sequelize from '../database/connection';
 
-export class UserModel extends Model {
+export class User extends Model {
 	public id!: string;
 	public email!: string;
 	public firstName!: string;
@@ -13,7 +13,7 @@ export class UserModel extends Model {
 	public readonly updatedAt!: Date;
 }
 
-UserModel.init({
+User.init({
 	id: {
 		type: DataTypes.UUID,
 		primaryKey: true,
@@ -52,4 +52,4 @@ UserModel.init({
 	timestamps: true
 });
 
-export default UserModel;
+export default User;
