@@ -1,6 +1,6 @@
-import { CategoryModel } from "../models/category";
-import { SubCategoryModel } from "../models/subCategory";
-import { OptIngredientModel } from "../models/optIngredient";
+import { Category } from "../models/category";
+import { SubCategory } from "../models/subCategory";
+import { OptIngredient } from "../models/optIngredient";
 
 export const pagination = (limit: number, page: number) => {
     return {
@@ -11,7 +11,7 @@ export const pagination = (limit: number, page: number) => {
 };
 
 export const checkCategoryExists = async (id: string) => {
-    const category = await CategoryModel.findByPk(id);
+    const category = await Category.findByPk(id);
     if (category) 
         return true;
     return false;
@@ -19,7 +19,7 @@ export const checkCategoryExists = async (id: string) => {
 
 export const checkSubCategoryExists = async (id: string) => {
     try {
-        const subCategory = await SubCategoryModel.findByPk(id);
+        const subCategory = await SubCategory.findByPk(id);
         if (subCategory) 
             return true;
         return false;  
@@ -31,7 +31,7 @@ export const checkSubCategoryExists = async (id: string) => {
 export const checkOptIngredientExists = async (ids:Array<string>) => {
     try {
         for (let i of ids) {
-            const optIngredient = await OptIngredientModel.findByPk(i);
+            const optIngredient = await OptIngredient.findByPk(i);
             if (!optIngredient) 
                 return false;
         }

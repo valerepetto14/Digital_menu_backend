@@ -1,5 +1,5 @@
-import { CategoryModel } from "../models/category";
-import { SubCategoryModel } from "../models/subCategory";
+import { Category } from "../models/category";
+import { SubCategory } from "../models/subCategory";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
@@ -7,9 +7,9 @@ import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
 
 export const addCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const existCategory = await CategoryModel.findOne({where: {title: req.body.title}});
+        const existCategory = await Category.findOne({where: {title: req.body.title}});
         if(!existCategory){
-            const newCategory = await CategoryModel.create({
+            const newCategory = await Category.create({
                 id: uuid4(),
                 title: req.body.title
             })
@@ -23,7 +23,7 @@ export const addCategory = async (req: Request, res: Response, next: NextFunctio
 
 export const deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const category = await CategoryModel.findByPk(req.params.id);
+        const category = await Category.findByPk(req.params.id);
         if (category){
             await category.update({
                 status: false
@@ -39,7 +39,7 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id
-        const getCategory = await CategoryModel.findOne({where: {id: id}});
+        const getCategory = await Category.findOne({where: {id: id}});
         if (getCategory){
             const categoryUpdated = await getCategory.update({
                 title: req.body.title
@@ -55,10 +55,10 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
 
 export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const categories = await CategoryModel.findAll({
+        const categories = await Category.findAll({
             include: [
                 {
-                    model: SubCategoryModel,
+                    model: SubCategory,
                     as: 'subCategories',
                     attributes: ['id', 'title']
                 }
@@ -74,7 +74,7 @@ export const getCategory = async (req: Request, res: Response, next: NextFunctio
     try {
         const id = req.params.id;
         if(id){
-            const category = await CategoryModel.findOne({where: {id: id}});
+            const category = await Category.findOne({where: {id: id}});
             if(category){
                 return res.status(200).json({message: "Category found", category: category});
             }

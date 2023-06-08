@@ -7,6 +7,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/MpNmfp93/Caprese-Salad.jpg",
+      cookingTime: 20,
       categoryId: "7dab8b4c-7d77-4522-8b85-8bba9d1d4ef4",
       subCategoryId: "3fb473e8-475f-4224-b9c0-21888060d2ad"
     },
@@ -18,6 +19,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/vm8xBFs2/Stuffed-Mushrooms.jpg",
+      cookingTime: 25,
       categoryId: "7dab8b4c-7d77-4522-8b85-8bba9d1d4ef4",
       subCategoryId: "3fb473e8-475f-4224-b9c0-21888060d2ad"
     },
@@ -29,6 +31,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/J4R6R0Fb/Bruschetta.jpg",
+      cookingTime: 20,
       categoryId: "7dab8b4c-7d77-4522-8b85-8bba9d1d4ef4",
       subCategoryId: "3fb473e8-475f-4224-b9c0-21888060d2ad"
     },
@@ -40,6 +43,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/8zSr2fnS/Spinach-and-Artichoke-Dip.jpg",
+      cookingTime: 30,
       categoryId: "7dab8b4c-7d77-4522-8b85-8bba9d1d4ef4",
       subCategoryId: "3fb473e8-475f-4224-b9c0-21888060d2ad"
     },
@@ -51,6 +55,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/jq8GLzrs/Fried-Calamari.jpg",
+      cookingTime: 7,
       categoryId: "7dab8b4c-7d77-4522-8b85-8bba9d1d4ef4",
       subCategoryId: "3fb473e8-475f-4224-b9c0-21888060d2ad"
     },
@@ -62,6 +67,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/fyVbdD25/Margherita-Pizza.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d9709511-9a7a-4c4c-a7c4-2a3c6f559aea"
     },
@@ -73,6 +79,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/VNw5hyvL/Meat-Lovers-Pizza.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d9709511-9a7a-4c4c-a7c4-2a3c6f559aea"
     },
@@ -84,6 +91,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/zBsfT4sr/Veggie-Pizza.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d9709511-9a7a-4c4c-a7c4-2a3c6f559aea"
     },
@@ -95,6 +103,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/4xsmLkm4/White-Pizza.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d9709511-9a7a-4c4c-a7c4-2a3c6f559aea"
     },
@@ -106,6 +115,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/ry1Z6xfV/BBQ-Pork-Pizza.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d9709511-9a7a-4c4c-a7c4-2a3c6f559aea"
     },
@@ -117,6 +127,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Yq8X0kcT/Beef-Sirloin-Steak.jpg",
+      cookingTime: 12,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "67a01d7a-3811-4fb1-aa8f-ebc7e415f10d"
     },
@@ -128,6 +139,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/yNCSzgQK/Grilled-Chicken-Breast.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "67a01d7a-3811-4fb1-aa8f-ebc7e415f10d"
     },
@@ -139,6 +151,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Y9srMTrF/Pork-Ribs.jpg",
+      cookingTime: 120,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "67a01d7a-3811-4fb1-aa8f-ebc7e415f10d"
     },
@@ -150,6 +163,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/28qqbFgm/Lamb-Chops.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "67a01d7a-3811-4fb1-aa8f-ebc7e415f10d"
     },
@@ -161,6 +175,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/wT3N5dyC/Barbacoa-Taco-Smoked-Brisket.jpg",
+      cookingTime: 90,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "67a01d7a-3811-4fb1-aa8f-ebc7e415f10d"
     },
@@ -172,6 +187,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/6QFbK0s3/Al-Pastor-Taco.jpg",
+      cookingTime: 30,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "35239f4a-03f4-4d04-9371-2eb1b388dd8f"
     },
@@ -183,6 +199,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/pLpBdFJn/Carne-Asada-Taco.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "35239f4a-03f4-4d04-9371-2eb1b388dd8f"
     },
@@ -194,6 +211,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/3RBG18ZT/Carnitas-Taco.jpg",
+      cookingTime: 40,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "35239f4a-03f4-4d04-9371-2eb1b388dd8f"
     },
@@ -205,6 +223,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/V6YrJyPH/Fish-Taco.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "35239f4a-03f4-4d04-9371-2eb1b388dd8f"
     },
@@ -216,6 +235,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/zfwHDz6g/Barbacoa-Taco.jpg",
+      cookingTime: 30,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "35239f4a-03f4-4d04-9371-2eb1b388dd8f"
     },
@@ -227,6 +247,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Zn5dDGfy/Chicken-Noodle-Soup.jpg",
+      cookingTime: 40,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d8fa6e0d-4a4f-4e30-8f6b-9b1f45295af4"
     },
@@ -238,6 +259,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/7Yg5nYPQ/Tomato-Soup.jpg",
+      cookingTime: 30,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d8fa6e0d-4a4f-4e30-8f6b-9b1f45295af4"
     },
@@ -249,6 +271,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Yqc4Fm7W/Vegetable-Soup.jpg",
+      cookingTime: 40,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d8fa6e0d-4a4f-4e30-8f6b-9b1f45295af4"
     },
@@ -260,6 +283,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/zBXvJnTs/Miso-Soup.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d8fa6e0d-4a4f-4e30-8f6b-9b1f45295af4"
     },
@@ -271,6 +295,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/8cX68Z3X/Clam-Chowder.jpg",
+      cookingTime: 30,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "d8fa6e0d-4a4f-4e30-8f6b-9b1f45295af4"
     },
@@ -282,6 +307,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/kGvTxP26/Caesar-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -293,6 +319,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/pV5hyJwv/Taco-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -304,6 +331,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/q7ZqvNQg/Greek-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -315,6 +343,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/k4BVQQDx/Spinach-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -326,6 +355,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/MpNmfp93/Caprese-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -337,6 +367,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/NMpyTNgG/Cobb-Salad.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "6d3d3e2f-044c-4c19-832d-0d1a8ccf9c52"
     },
@@ -348,6 +379,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/d1TcF3L2/Classic-Burger.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "11fcf6e5-6e5b-4c24-a0cf-f6cb74c6d2b8"
     },
@@ -359,6 +391,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/yx448KZw/Veggie-Burger.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "11fcf6e5-6e5b-4c24-a0cf-f6cb74c6d2b8"
     },
@@ -370,6 +403,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/N0nvZmfG/BBQ-Burger.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "11fcf6e5-6e5b-4c24-a0cf-f6cb74c6d2b8"
     },
@@ -381,6 +415,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Fzytf6b1/Mushroom-Swiss-Burger.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "11fcf6e5-6e5b-4c24-a0cf-f6cb74c6d2b8"
     },
@@ -392,6 +427,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/BvbGhM3w/Bacon-Cheeseburger.jpg",
+      cookingTime: 15,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "11fcf6e5-6e5b-4c24-a0cf-f6cb74c6d2b8"
     },
@@ -403,6 +439,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/NMYTR9mD/Chicken-Alfredo.jpg",
+      cookingTime: 25,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -414,6 +451,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/CKKd0GGW/Spaghetti-Carbonara.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -425,6 +463,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/kGG2yx4Q/Lasagna-Bolognese.jpg",
+      cookingTime: 75,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -436,6 +475,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/g0MXLScz/Fettuccine-Alfredo.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -447,6 +487,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Y0Lp980s/Penne-alla-Vodka.jpg",
+      cookingTime: 25,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -458,6 +499,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/Tw7whp9p/Linguine-with-Clams.jpg",
+      cookingTime: 20,
       categoryId: "53d55cc1-829f-45bf-b2ec-9dd649f89f45",
       subCategoryId: "c95e9015-14ad-4f4d-9b4c-63ebdc7e15aa"
     },
@@ -469,6 +511,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/bwcvGXQH/Lemonade.jpg",
+      cookingTime: 8,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -480,6 +523,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/L8t8LyDd/Iced-Tea.jpg",
+      cookingTime: 10,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -491,6 +535,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/9XgRQN8J/Fruit-Punch.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -502,6 +547,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/25x3RHLd/Milkshake.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -513,6 +559,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/m2FD2ZFg/Orange-Juice.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -524,6 +571,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/MZMgr2mJ/Coke.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -535,6 +583,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/QxcwhQz6/Water-Glass.jpg",
+      cookingTime: 2,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "123e4567-e89b-12d3-a456-426655440002"
     },
@@ -546,6 +595,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/P5YPKftR/Margarita.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "b9e4e4c1-14d7-47b9-8349-0bfae3b93442"
     },
@@ -557,6 +607,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/9Xk0hw0k/Mojito.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "b9e4e4c1-14d7-47b9-8349-0bfae3b93442"
     },
@@ -568,6 +619,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/MGzKDy3n/Old-Fashioned.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "b9e4e4c1-14d7-47b9-8349-0bfae3b93442"
     },
@@ -579,6 +631,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/NFZj7SZt/Negroni.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "b9e4e4c1-14d7-47b9-8349-0bfae3b93442"
     },
@@ -590,6 +643,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/4x9hMb1w/Cosmopolitan.jpg",
+      cookingTime: 5,
       categoryId: "fe72a885-0ef2-4371-a120-7e520f531663",
       subCategoryId: "b9e4e4c1-14d7-47b9-8349-0bfae3b93442"
     },
@@ -601,6 +655,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/15TqJYDf/Cheesecake.jpg",
+      cookingTime: 7,
       categoryId: "97d3e810-5d5c-4cda-9945-078cf5f5d200",
       subCategoryId: "4d8c0b1b-eb67-4f5e-8ab1-3e9585b49aae"
     },
@@ -612,6 +667,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/C1XRmRf9/Tiramisu.jpgg",
+      cookingTime: 7,
       categoryId: "97d3e810-5d5c-4cda-9945-078cf5f5d200",
       subCategoryId: "4d8c0b1b-eb67-4f5e-8ab1-3e9585b49aae"
     },
@@ -623,6 +679,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/pVs8ndTQ/Chocolate-Cake.jpg",
+      cookingTime: 7,
       categoryId: "97d3e810-5d5c-4cda-9945-078cf5f5d200",
       subCategoryId: "4d8c0b1b-eb67-4f5e-8ab1-3e9585b49aae"
     },
@@ -634,6 +691,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/gjWMX22b/Apple-Pie.jpg",
+      cookingTime: 7,
       categoryId: "97d3e810-5d5c-4cda-9945-078cf5f5d200",
       subCategoryId: "4d8c0b1b-eb67-4f5e-8ab1-3e9585b49aae"
     },
@@ -645,6 +703,7 @@ export const productsData = [
       status: true,
       available: true,
       image: "https://i.postimg.cc/yYwDF3zR/Lemon-Tart.jpg",
+      cookingTime: 7,
       categoryId: "97d3e810-5d5c-4cda-9945-078cf5f5d200",
       subCategoryId: "4d8c0b1b-eb67-4f5e-8ab1-3e9585b49aae"
     }

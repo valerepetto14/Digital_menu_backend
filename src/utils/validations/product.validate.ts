@@ -32,6 +32,10 @@ export const productAddSchema = Joi.object({
         'boolean.base': `The available must be a type of boolean`,
         'any.required': `The available is a required field`,
     }),
+    cookingTime: Joi.number().required().messages({
+        'number.base': `The cooking time must be a number`,
+        'any.required': `The cooking time a required field`,
+    }),
     categoryId: Joi.string().required().messages({
         'string.base': `The categoryId must be a type of string`,
         'string.empty': `The categoryId cannot be an empty field`,

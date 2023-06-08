@@ -1,4 +1,4 @@
-import { OptIngredientModel } from "../models/optIngredient";
+import { OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import uuid4 from "uuid4";
 import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST, INGREDIENT_REMOVED_NOT_ADDED_PRICE } from "../utils/errors";
@@ -6,9 +6,9 @@ import { OPTINGREDIENT_NOT_FOUND, OPTINGREDIENT_ALREADY_EXIST, INGREDIENT_REMOVE
 
 export const addOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const existOptIngredient = await OptIngredientModel.findOne({ where: { name: req.body.name } });
+        const existOptIngredient = await OptIngredient.findOne({ where: { name: req.body.name } });
         if (!existOptIngredient) {
-            const newOptIngredient = await OptIngredientModel.create({
+            const newOptIngredient = await OptIngredient.create({
                 id: uuid4(),
                 name: req.body.name,
                 price: req.body.price,
@@ -25,7 +25,7 @@ export const addOptIngredient = async (req: Request, res: Response, next: NextFu
 
 export const deleteOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const getOptIngredient = await OptIngredientModel.findByPk(req.params.id);
+        const getOptIngredient = await OptIngredient.findByPk(req.params.id);
         if (getOptIngredient) {
             await getOptIngredient.destroy();
             return res.status(204).json({});
@@ -39,7 +39,7 @@ export const deleteOptIngredient = async (req: Request, res: Response, next: Nex
 export const updateOptIngredient = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
-        const getOptIngredient = await OptIngredientModel.findOne({ where: { id: id } });
+        const getOptIngredient = await OptIngredient.findOne({ where: { id: id } });
         const { name, price, addOrRem, status } = req.body;
         if (getOptIngredient) {
             if(addOrRem === 'Remove' && price > 0){
@@ -65,14 +65,14 @@ export const getOptIngredient = async (req: Request, res: Response, next: NextFu
     try {
         const id = req.params.id;
         if(id){
-            const getOptIngredient = await OptIngredientModel.findOne({ where: { id: id } });
+            const getOptIngredient = await OptIngredient.findOne({ where: { id: id } });
             if (getOptIngredient) {
                 return res.status(200).json({ message: "Ingredient found", optIngredient: getOptIngredient });
             } else {
                 throw OPTINGREDIENT_NOT_FOUND;
             }
         }
-        const optIngredients = await OptIngredientModel.findAll();
+        const optIngredients = await OptIngredient.findAll();
         return res.status(200).json({ message: "Ingredients found", optIngredients: optIngredients });
     } catch (error) {
         next(error);

@@ -1,4 +1,4 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { Model, DataTypes, Sequelize, IntegerDataType } from 'sequelize';
 import sequelize from '../database/connection';
 import { Category } from './category';
 import { SubCategory } from './subCategory';
@@ -12,6 +12,7 @@ export class Product extends Model {
     public status!: boolean;
     public available!: boolean;
     public image!: string;
+    public cookingTime!: number;
     public categoryId!: string;
     public subCategoryId!: string;
     public TicketRowModel!: any;
@@ -53,6 +54,10 @@ Product.init({
     },
     image: {
         type: DataTypes.STRING(256),
+        allowNull: false
+    },
+    cookingTime: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     categoryId: {
