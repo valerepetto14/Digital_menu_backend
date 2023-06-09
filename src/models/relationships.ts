@@ -53,11 +53,12 @@ Product.belongsToMany(OptIngredient, {
 
 Product.belongsTo(SubCategory, {
     foreignKey: 'subCategoryId',
-    as: 'subCategory'
+    as: 'subCategories'
 });
 
 Product.belongsTo(Category, {
-    foreignKey: 'categoryId'
+    foreignKey: 'categoryId',
+    as: 'categories'
 });
 
 
