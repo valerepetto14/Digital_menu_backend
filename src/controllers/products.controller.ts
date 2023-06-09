@@ -4,8 +4,9 @@ import { SubCategory } from "../models/subCategory";
 import { OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction } from "express";
 import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
-import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND } from "../utils/errors";
+import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND, MISSING_SEARCH } from "../utils/errors";
 import { pagination } from "../utils/functions";
+import { Op } from "sequelize";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -172,7 +173,7 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
                     include: [
                         {
                             model: Category,
-                            as: 'category',
+                            as: 'categories',
                             attributes: ['id', 'title'],
                             where: { id: categoryId }
                         },
@@ -204,7 +205,7 @@ export const getProductsBySubCategory = async (req: Request, res: Response, next
                     include: [
                         {
                             model: SubCategory,
-                            as: 'subCategory',
+                            as: 'subCategories',
                             attributes: ['id', 'title'],
                             where: { id: subCategoryId }
                         },
@@ -237,6 +238,46 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
             return res.status(200).json({message: "Product deleted"});
         } 
         throw PRODUCT_NOT_FOUND;
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const searchProducts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { search } = req.query as any;
+        console.log(search);
+        if(search && search != '' && search != undefined){
+            const products = await Product.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: `%${search}%`
+                    }
+                },
+                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available', 'cookingTime' ],
+                include: [
+                    {
+                        model: Category,
+                        as: 'categories',
+                        attributes: ['id', 'title']
+                    },
+                    {
+                        model: SubCategory,
+                        as: 'subCategories',
+                        attributes: ['id', 'title']
+                    },
+                    {
+                        model: OptIngredient,
+                        as : 'optIngredients',
+                        attributes : ['id', 'name', 'price', 'status'],
+                        through: { attributes: [] }
+                    }
+                ],
+            });
+            return res.status(200).json({message: "Products found", products: products});
+        } else {
+            throw MISSING_SEARCH;
+        }
     } catch (error) {
         next(error);
     }

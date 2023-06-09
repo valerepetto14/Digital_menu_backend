@@ -32,3 +32,6 @@ export const TABLE_NOT_FOUND = new errorResponse("Table not found", 404);
 
 //tickets
 export const TICKET_NOT_FOUND = new errorResponse("Ticket not found", 404);
+
+
+export const MISSING_SEARCH = new errorResponse("Missing search param", 400);
