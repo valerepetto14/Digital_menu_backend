@@ -1,11 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
+import { Json } from 'sequelize/types/utils';
 
 export class OptIngredient extends Model {
   public id!: string;
   public name!: string;
   public price?: string;
   public status!: boolean;
+  public variants?: Array<JSON>;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -28,6 +30,11 @@ OptIngredient.init(
     },
     status: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
+    variants: {
+      type: DataTypes.ARRAY,
       allowNull: false,
       defaultValue: true
     },

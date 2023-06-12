@@ -12,8 +12,9 @@ export const addOptIngredient = async (req: Request, res: Response, next: NextFu
                 id: uuid4(),
                 name: req.body.name,
                 price: req.body.price,
-                addOrRem: req.body.addOrRem,
-                status: req.body.status
+                addOrRem: req.body.addOrRem,  
+                status: req.body.status,
+                variants: req.body.variants
             })
             return res.status(201).json({ message: "Ingredient created", category: newOptIngredient });
         }
@@ -40,7 +41,7 @@ export const updateOptIngredient = async (req: Request, res: Response, next: Nex
     try {
         const id = req.params.id;
         const getOptIngredient = await OptIngredient.findOne({ where: { id: id } });
-        const { name, price, addOrRem, status } = req.body;
+        const { name, price, addOrRem, status, variants } = req.body;
         if (getOptIngredient) {
             if(addOrRem === 'Remove' && price > 0){
                 throw INGREDIENT_REMOVED_NOT_ADDED_PRICE;
@@ -49,7 +50,8 @@ export const updateOptIngredient = async (req: Request, res: Response, next: Nex
                 name: name,
                 price: price,
                 addOrRem: addOrRem,
-                status: status
+                status: status,
+                variants: variants
             });
             return res.status(200).json({ message: "Ingredient updated" });
 
