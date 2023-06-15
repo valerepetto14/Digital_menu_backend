@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Ticket } from './ticket';
 import { Product } from './product';
-import { OptIngredientProductTicketRow } from '../utils/types/interfaces';
+import { IOptIngredientProductTicketRow } from '../utils/types/interfaces';
 
 export class TicketRow extends Model {
     public id!: string;
@@ -9,7 +9,7 @@ export class TicketRow extends Model {
     public productId!: string;
     public quantity!: number;
     public unitPrice!: number;
-    public optIngredient!: Array<OptIngredientProductTicketRow>;
+    public optIngredient!: Array<IOptIngredientProductTicketRow>;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }

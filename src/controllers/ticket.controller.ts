@@ -7,7 +7,7 @@ import { Table } from "../models/table";
 import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from "../utils/errors";
 import { Category } from "../models/category";
 import { SubCategory } from "../models/subCategory";
-import { OptIngredientProductTicketRow }  from "../utils/types/interfaces";
+import { IOptIngredientProductTicketRow }  from "../utils/types/interfaces";
 
 export const addTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -100,9 +100,9 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-const getOptingredientToTicketRow = async (optIngredients: Array<OptIngredientProductTicketRow>) => {
+const getOptingredientToTicketRow = async (optIngredients: Array<IOptIngredientProductTicketRow>) => {
     try {
-        const response:Array<OptIngredientProductTicketRow> = [];
+        const response:Array<IOptIngredientProductTicketRow> = [];
         for (const optIngredient of optIngredients) {
             const optIngredientFound = await OptIngredient.findByPk(optIngredient.optIngredientId);
             if (optIngredientFound) {

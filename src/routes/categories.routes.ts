@@ -6,7 +6,6 @@ import { Router } from "express";
 
 export const categoriesRouter = Router();
 
-
 categoriesRouter.get('/', getCategories);
 categoriesRouter.get('/:id', getCategory)
 categoriesRouter.post('/', isAuthenticated, bodyValidate(categoryAddSchema), addCategory);

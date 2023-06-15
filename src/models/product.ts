@@ -39,7 +39,8 @@ export const initProduct = (sequelize: Sequelize) => {
             allowNull: false
         },
         currentPrice: {
-            type: DataTypes.STRING(15),
+            type: DataTypes.DECIMAL(10,2),
+            defaultValue: 0,
             allowNull: false
         },
         status: {

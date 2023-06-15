@@ -5,7 +5,7 @@ export class OptIngredient extends Model {
   public name!: string;
   public price?: string;
   public status!: boolean;
-  public variants?: Array<JSON>;
+  public variants?: Array<Object>;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }

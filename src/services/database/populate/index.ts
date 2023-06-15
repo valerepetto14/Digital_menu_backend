@@ -8,15 +8,17 @@ import { optIngredientsData } from "./optIngredients";
 import { productsData } from "./products";
 
 
-const startPopulate = async () => {
+export const startPopulate = async () => {
     try {
-        await Category.bulkCreate(categoriesData);
-        await SubCategory.bulkCreate(subCategoriesData);
-        await OptIngredient.bulkCreate(optIngredientsData);
-        await Product.bulkCreate(productsData);   
+        if(process.env.NODE_ENV === "development" || process.env.POPULATE_DB === "true") {
+            console.log("POPULATING DATABASE");
+            await Category.bulkCreate(categoriesData);
+            await SubCategory.bulkCreate(subCategoriesData);
+            await OptIngredient.bulkCreate(optIngredientsData);
+            await Product.bulkCreate(productsData);
+            console.log("Database populated successfully");
+        }
     } catch (error) {
         throw error
     }
 }
-
-startPopulate()
