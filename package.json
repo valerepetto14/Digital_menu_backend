@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/src/index.js",
-    "dev": "nodemon src/index.ts",
-    "populate": "tsc && node dist/src/database/populate/index.js",
+    "build": "tsc",
+    "start": "tsc && npx -r dotenv/config && node dist/src/index.js",
+    "dev": "npx nodemon -r dotenv/config src/index.ts",
+    "populate": "tsc && node dist/src/services/database/populate/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "tsc && node dist/app.js"
   },
@@ -29,6 +30,7 @@
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "bcrypt": "^5.1.0",
+    "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -39,7 +41,7 @@
     "path": "^0.12.7",
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.28.0",
+    "sequelize": "^6.31.0",
     "uuid4": "^2.0.3"
   }
 }

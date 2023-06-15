@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../database/connection';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 export class Category extends Model {
   public id!: string;
@@ -9,26 +8,28 @@ export class Category extends Model {
   public readonly updatedAt!: Date;
 }
 
-Category.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+export const initCategory = (sequelize: Sequelize) => {
+  Category.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
+      },
+      title: {
+        type: DataTypes.STRING(30),
+        allowNull: false
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      }
     },
-    title: {
-      type: DataTypes.STRING(30),
-      allowNull: false
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
+    {
+      sequelize,
+      tableName: 'categories',
+      timestamps: true
     }
-  },
-  {
-    sequelize,
-    tableName: 'categories',
-    timestamps: true
-  }
-);
+  );
+};

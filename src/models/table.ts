@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../database/connection';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 export class Table extends Model {
 	public id!: string;
@@ -8,20 +7,20 @@ export class Table extends Model {
 	public readonly updatedAt!: Date;
 }
 
-Table.init({
-	id: {
-		type: DataTypes.UUID,
-		primaryKey: true,
-		defaultValue: DataTypes.UUIDV4
-	},
-	number: {
-		type: DataTypes.INTEGER,
-		allowNull: false
-	}
-}, {
-	sequelize,
-	tableName: 'tables',
-	timestamps: true
-});
-
-export default Table;
+export const initTable = (sequelize:Sequelize) => {
+	Table.init({
+		id: {
+			type: DataTypes.UUID,
+			primaryKey: true,
+			defaultValue: DataTypes.UUIDV4
+		},
+		number: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		}
+	}, {
+		sequelize,
+		tableName: 'tables',
+		timestamps: true
+	});
+}

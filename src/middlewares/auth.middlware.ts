@@ -1,6 +1,6 @@
 import { Request, NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import User from '../models/user';
+import { User } from '../models/user';
 import { UNAUTHORIZED } from '../utils/errors';
 import { AuthRequest } from "../controllers/auth.controller";
 

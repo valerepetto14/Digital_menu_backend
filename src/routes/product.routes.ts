@@ -4,13 +4,13 @@ import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from "../middlewares/auth.middlware";
 import { Router } from "express";
 
-export const router = Router();
+export const productsRouter = Router();
 
-router.get('/', getProducts);
-router.get('/search', searchProducts);
-router.get('/:id', getProduct);
-router.get('/category/:categoryId', getProductsByCategory);
-router.get('/subCategory/:subCategoryId', getProductsBySubCategory);
-router.post('/', isAuthenticated, bodyValidate(productAddSchema), addProduct);
-router.delete('/:id', isAuthenticated, deleteProduct);
-router.put('/:id', isAuthenticated, updateProduct);
+productsRouter.get('/', getProducts);
+productsRouter.get('/search', searchProducts);
+productsRouter.get('/:id', getProduct);
+productsRouter.get('/category/:categoryId', getProductsByCategory);
+productsRouter.get('/subCategory/:subCategoryId', getProductsBySubCategory);
+productsRouter.post('/', isAuthenticated, bodyValidate(productAddSchema), addProduct);
+productsRouter.delete('/:id', isAuthenticated, deleteProduct);
+productsRouter.put('/:id', isAuthenticated, updateProduct);

@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import TableModel from '../models/table';
+import { Table } from '../models/table';
 
 export const addTable = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { number } = req.body;
-        const table = await TableModel.create({
+        const table = await Table.create({
             number
         })
         return res.status(201).json({

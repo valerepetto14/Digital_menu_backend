@@ -1,5 +1,4 @@
-import { Model, DataTypes, Sequelize, IntegerDataType } from 'sequelize';
-import sequelize from '../database/connection';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Category } from './category';
 import { SubCategory } from './subCategory';
 import { OptIngredient } from './optIngredient';
@@ -24,61 +23,63 @@ export class Product extends Model {
     public getOptIngredients!: (options?: Object) => Promise<OptIngredient[]>;
 }
 
-Product.init({
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
-    },
-    name: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    currentPrice: {
-        type: DataTypes.STRING(15),
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
-    },
-    available: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
-    },
-    image: {
-        type: DataTypes.STRING(256),
-        allowNull: false
-    },
-    cookingTime: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    categoryId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references : {
-          model: Category,
-          key: 'id'
+export const initProduct = (sequelize: Sequelize) => {
+    Product.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
+        name: {
+            type: DataTypes.STRING(50),
+            allowNull: false
+        },
+        description: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
+        currentPrice: {
+            type: DataTypes.STRING(15),
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },
+        available: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },
+        image: {
+            type: DataTypes.STRING(256),
+            allowNull: false
+        },
+        cookingTime: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        categoryId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references : {
+            model: Category,
+            key: 'id'
+            }
+        },
+        subCategoryId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references : {
+            model: SubCategory,
+            key: 'id'
+            }
         }
-    },
-    subCategoryId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references : {
-          model: SubCategory,
-          key: 'id'
+        },{
+        sequelize,
+        tableName: 'products',
+        timestamps: true
         }
-    }
-    },{
-      sequelize,
-      tableName: 'products',
-      timestamps: true
-    }
-);
+    );
+};

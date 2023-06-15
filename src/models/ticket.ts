@@ -1,8 +1,5 @@
-import { Model, DataTypes, BelongsToManyAddAssociationMixin} from 'sequelize';
-import sequelize from '../database/connection';
-import { Card } from './card';
-import User from './user';
-import Table from './table';
+import { Model, DataTypes, BelongsToManyAddAssociationMixin, Sequelize} from 'sequelize';
+import { Table } from './table';
 import { Product } from './product';
 
 export class Ticket extends Model {
@@ -18,29 +15,32 @@ export class Ticket extends Model {
 	public addProduct!: BelongsToManyAddAssociationMixin<Product, string>;
 }
 
-Ticket.init({
-	id: {
-		type: DataTypes.UUID,
-		primaryKey: true,
-		defaultValue: DataTypes.UUIDV4
-	},
-	tableId: {
-		type: DataTypes.UUID,
-		allowNull: false,
-		references : {
-			model: Table,
-			key: 'id'
+
+export const initTicket = (sequelize: Sequelize) => {
+	Ticket.init({
+		id: {
+			type: DataTypes.UUID,
+			primaryKey: true,
+			defaultValue: DataTypes.UUIDV4
+		},
+		tableId: {
+			type: DataTypes.UUID,
+			allowNull: false,
+			references : {
+				model: Table,
+				key: 'id'
+			}
+		},
+		status: {
+			type: DataTypes.STRING(20),
+			allowNull: false,
+			validate: {
+			isIn: [['send', 'inProgress', 'done']]
+			}
 		}
-	},
-	status: {
-		type: DataTypes.STRING(20),
-		allowNull: false,
-		validate: {
-		isIn: [['send', 'inProgress', 'done']]
-		}
-	}
-}, {
-	sequelize,
-	tableName: 'tickets',
-	timestamps: true
-});
+	}, {
+		sequelize,
+		tableName: 'tickets',
+		timestamps: true
+	});
+}

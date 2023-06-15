@@ -4,6 +4,6 @@ import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { addTableSchema } from '../utils/validations/table.validate';
 import { isAuthenticated } from '../middlewares/auth.middlware';
 
-export const router = Router();
+export const tableRouter = Router();
 
-router.post("/", isAuthenticated, bodyValidate(addTableSchema), addTable);
+tableRouter.post("/", isAuthenticated, bodyValidate(addTableSchema), addTable);

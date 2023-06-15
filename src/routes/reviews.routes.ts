@@ -3,6 +3,6 @@ import { createReview } from '../controllers/reviews.controller';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { addReviewSchema } from '../utils/validations/reviews.validate';
 
-export const router = Router();
+export const reviewsRouter = Router();
 
-router.post('/', bodyValidate(addReviewSchema), createReview);
+reviewsRouter.post('/', bodyValidate(addReviewSchema), createReview);

@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../database/connection';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 export class Card extends Model {
   public id!: string;
@@ -7,19 +6,19 @@ export class Card extends Model {
   public readonly updatedAt!: Date;
 }
 
-Card.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
-    },
-  },
-  {
-    sequelize,
-    tableName: 'cards',
-    timestamps: true
-  }
-);
-
-export default Card;
+export const initCard = (sequelize: Sequelize) => {
+    Card.init(
+        {
+          id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+          },
+        },
+        {
+          sequelize,
+          tableName: 'cards',
+          timestamps: true
+        }
+      );
+}
