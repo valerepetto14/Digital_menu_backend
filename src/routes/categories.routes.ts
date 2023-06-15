@@ -4,10 +4,11 @@ import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from "../middlewares/auth.middlware";
 import { Router } from "express";
 
-export const router = Router();
+export const categoriesRouter = Router();
 
-router.get('/', getCategories);
-router.get('/:id', getCategory)
-router.post('/', isAuthenticated, bodyValidate(categoryAddSchema), addCategory);
-router.put('/:id', isAuthenticated, bodyValidate(categoryUpdateSchema), updateCategory);
-router.delete('/:id', isAuthenticated, deleteCategory);
+
+categoriesRouter.get('/', getCategories);
+categoriesRouter.get('/:id', getCategory)
+categoriesRouter.post('/', isAuthenticated, bodyValidate(categoryAddSchema), addCategory);
+categoriesRouter.put('/:id', isAuthenticated, bodyValidate(categoryUpdateSchema), updateCategory);
+categoriesRouter.delete('/:id', isAuthenticated, deleteCategory);

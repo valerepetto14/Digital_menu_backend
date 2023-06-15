@@ -5,7 +5,7 @@ import { addTicketSchema } from "../utils/validations/ticket.validate";
 import { addTicket, getTicket } from "../controllers/ticket.controller";
 
 
-export const router = Router();
+export const ticketsRouter = Router();
 
-router.get("/:id", isAuthenticated, getTicket)
-router.post("/", isAuthenticated, bodyValidate(addTicketSchema), addTicket);
+ticketsRouter.get("/:id", isAuthenticated, getTicket)
+ticketsRouter.post("/", isAuthenticated, bodyValidate(addTicketSchema), addTicket);

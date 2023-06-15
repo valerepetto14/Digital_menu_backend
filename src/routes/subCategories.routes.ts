@@ -4,10 +4,10 @@ import { isAdmin, isAuthenticated } from "../middlewares/auth.middlware";
 import bodyValidate from "../middlewares/bodyValidate.middleware";
 import { addSubCategorySchema } from "../utils/validations/subCategories.validate";
 
-export const router = Router();
+export const subCategoriesRouter = Router();
 
-router.post("/", isAuthenticated, bodyValidate(addSubCategorySchema), addSubCategory);
-router.get("/", getSubCategories);
-router.get("/:id", getSubCategory);
-router.delete("/:id", isAuthenticated, deleteSubCategory);
-router.put("/:id", isAuthenticated, updateSubCategory);
+subCategoriesRouter.post("/", isAuthenticated, bodyValidate(addSubCategorySchema), addSubCategory);
+subCategoriesRouter.get("/", getSubCategories);
+subCategoriesRouter.get("/:id", getSubCategory);
+subCategoriesRouter.delete("/:id", isAuthenticated, deleteSubCategory);
+subCategoriesRouter.put("/:id", isAuthenticated, updateSubCategory);

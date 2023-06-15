@@ -1,5 +1,4 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import sequelize from '../database/connection';
 import { Ticket } from './ticket';
 import { Product } from './product';
 import { OptIngredientProductTicketRow } from '../utils/types/interfaces';
@@ -15,37 +14,39 @@ export class TicketRow extends Model {
     public readonly updatedAt!: Date;
 }
 
-TicketRow.init({
-    ticketId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Ticket,
-            key: 'id'
+export const initTicketRow = (sequelize: Sequelize) => {
+    TicketRow.init({
+        ticketId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: {
+                model: Ticket,
+                key: 'id'
+            }
+        },
+        productId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            references: {
+                model: Product,
+                key: 'id'
+            }
+        },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        unitPrice: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+        },
+        optIngredients: {
+            type: DataTypes.ARRAY(DataTypes.JSON),
+            allowNull: true
         }
-    },
-    productId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Product,
-            key: 'id'
-        }
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    unitPrice: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-    },
-    optIngredients: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
-        allowNull: true
-    }
-}, {
-    sequelize,
-    tableName: 'ticketRows',
-    timestamps: true
-});
+    }, {
+        sequelize,
+        tableName: 'ticketRows',
+        timestamps: true
+    })
+}

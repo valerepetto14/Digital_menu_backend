@@ -3,9 +3,10 @@ import { validateUser, getUsers, updateUser, deleteUser } from '../controllers/u
 import { userUpdateSchema } from '../utils/validations/users.validate';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from '../middlewares/auth.middlware';
-export const router = Router();
 
-router.get('/validate', validateUser);
-router.get('', getUsers );
-router.put('/:id', isAuthenticated, bodyValidate(userUpdateSchema), updateUser);
-router.delete('/:id', isAuthenticated, deleteUser);
+export const usersRouter = Router();
+
+usersRouter.get('/validate', validateUser);
+usersRouter.get('', getUsers );
+usersRouter.put('/:id', isAuthenticated, bodyValidate(userUpdateSchema), updateUser);
+usersRouter.delete('/:id', isAuthenticated, deleteUser);

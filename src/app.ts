@@ -1,22 +1,21 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import path from "path";
-import sequelize from "./database/connection";
 import cookieParser from "cookie-parser";
 
 //import models of database from "./models";
 import "./models/relationships"
 //import routes
-import { router as authRoute } from "./routes/auth.routes";
-import { router as userRoute } from "./routes/users.routes";
-import { router as categoryRoute } from "./routes/categories.routes";
-import { router as optIngredientRoute } from "./routes/optIngredients.routes";
-import { router as productsRoute } from "./routes/product.routes";
-import { router as subCategoriesRoute } from "./routes/subCategories.routes";
-import { router as ticketRoute } from "./routes/ticket.routes";
-import { router as cardRoute } from "./routes/card.routes";
-import { router as tableRoute } from "./routes/table.routes";
-import { router as reviewRoute } from "./routes/reviews.routes";
+import { authRouter } from "./routes/auth.routes";
+import { usersRouter } from "./routes/users.routes";
+import { categoriesRouter } from "./routes/categories.routes";
+import { optIngredientsRouter } from "./routes/optIngredients.routes";
+import { productsRouter } from "./routes/product.routes";
+import { subCategoriesRouter } from "./routes/subCategories.routes";
+import { ticketsRouter } from "./routes/ticket.routes";
+import { cardRouter } from "./routes/card.routes";
+import { tableRouter } from "./routes/table.routes";
+import { reviewsRouter } from "./routes/reviews.routes";
 
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
@@ -38,16 +37,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 //routes
 
-app.use("/auth", authRoute);
-app.use("/users", userRoute);
-app.use("/categories", categoryRoute);
-app.use("/optingredients", optIngredientRoute);
-app.use("/products", productsRoute);
-app.use("/subcategories", subCategoriesRoute);
-app.use("/tickets", ticketRoute);
-app.use('/cards', cardRoute)
-app.use('/tables', tableRoute)
-app.use('/reviews', reviewRoute)
+app.use("/auth", authRouter);
+app.use("/users", usersRouter);
+app.use("/categories", categoriesRouter);
+app.use("/optingredients", optIngredientsRouter);
+app.use("/products", productsRouter);
+app.use("/subcategories", subCategoriesRouter);
+app.use("/tickets", ticketsRouter);
+app.use('/cards', cardRouter)
+app.use('/tables', tableRouter)
+app.use('/reviews', reviewsRouter)
 
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);
