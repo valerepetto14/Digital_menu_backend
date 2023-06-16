@@ -3,6 +3,7 @@ import { Category } from './category';
 import { SubCategory } from './subCategory';
 import { OptIngredient } from './optIngredient';
 import { ProductStatus } from '../utils/types/interfaces';
+import { OptIngredientProduct } from './optIngredientProduct';
 
 export class Product extends Model {
     public id!: string;
@@ -14,13 +15,28 @@ export class Product extends Model {
     public cookingTime!: number;
     public categoryId!: string;
     public subCategoryId!: string;
-    public TicketRowModel!: any;
+    public category !: Category;
+    public subCategory !: SubCategory;
+    public optIngredients!: OptIngredient[];
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public addOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
     public removeOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
     public setOptIngredients!: (optIngredients: OptIngredient[], options?: Object) => Promise<any>;
-    public getOptIngredients!: (options?: Object) => Promise<OptIngredient[]>;
+    public addOptIngredients = async (optIngredients: OptIngredient[], options?: Object) => {
+        try {
+            await OptIngredientProduct.bulkCreate(
+                optIngredients.map(optIngredient => ({
+                    productId: this.id,
+                    optIngredientId: optIngredient.id,
+                    defaultQuantity: optIngredient.defaultQuantity,
+                    maxQuantity: optIngredient.maxQuantity,
+                    variants : optIngredient.variants
+                }))
+            );
+        } catch (error) {
+            throw error;
+        }
+    };
 }
 
 export const initProduct = (sequelize: Sequelize) => {
@@ -46,7 +62,7 @@ export const initProduct = (sequelize: Sequelize) => {
         status: {
             type: DataTypes.STRING(20),
             values: [ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.SIN_STOCK],
-            defaultValue: true
+            defaultValue: ProductStatus.ACTIVE
         },
         image: {
             type: DataTypes.STRING(256),

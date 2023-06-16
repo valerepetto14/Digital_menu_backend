@@ -10,6 +10,7 @@ export class OptIngredientProduct extends Model {
     public readonly updatedAt!: Date;
     public defaultQuantity!: number;
     public maxQuantity!: number;
+    public variants!: Array<String>;
 }
 
 export const initOptIngredientProduct = (sequelize: Sequelize) => {
@@ -40,6 +41,10 @@ export const initOptIngredientProduct = (sequelize: Sequelize) => {
             allowNull: false,
             defaultValue: 0
         },
+        variants : {
+            type: DataTypes.ARRAY(DataTypes.STRING(50)),
+            defaultValue: []
+        }
     }, {
         sequelize,
         tableName: 'optIngredientsProduct',

@@ -2,7 +2,7 @@ import { Product } from "../models/product";
 import { Category } from "../models/category";
 import { SubCategory } from "../models/subCategory";
 import { OptIngredient } from "../models/optIngredient";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, response } from "express";
 import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND, MISSING_SEARCH } from "../utils/errors";
 import { pagination } from "../utils/functions";
@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, description, currentPrice, status, image, available, categoryId, optIngredientsId, subCategoryId } = req.body;
+        const { name, description, currentPrice, status, image, cookingTime, available, categoryId, optIngredients, subCategoryId } = req.body;
         const existProduct = await Product.findOne({where: {name: req.body.name}});
         if(!existProduct){
             const categoryExist = await checkCategoryExists(categoryId);
@@ -18,6 +18,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
             if(categoryExist && subCategoryExist){
                 const newProduct = await Product.create({
                     name,
+                    cookingTime,
                     description,
                     currentPrice,
                     status,
@@ -26,10 +27,24 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
                     categoryId,
                     subCategoryId
                 })
-                if(optIngredientsId && optIngredientsId.length > 0){
-                    let ingredientsOpt: OptIngredient[] = await Promise.all(optIngredientsId.map(async (ingredientId: string) => {
-                        let ingredient = await OptIngredient.findByPk(ingredientId);
-                        return ingredient!;
+                if(optIngredients && optIngredients.length > 0){
+                    console.log('hay ingredientes opcionales')
+                    let ingredientsOpt = await Promise.all(
+                        optIngredients.map(async (ingredient:any) => {
+                            let ingredientFound = await OptIngredient.findByPk(ingredient.id);
+                            if (ingredientFound){
+                                if (ingredient.variants && ingredient.variants.length > 0){
+                                    console.log('hay variantes')
+                                    let variants = await Promise.all(
+                                        ingredient.variants.map(async (variantId: string) => {
+                                            let variant = await OptIngredient.findByPk(variantId);
+                                            return variant!.id;
+                                        })
+                                    )
+                                    ingredientFound!.variants = variants;
+                                }
+                            }
+                            return ingredientFound!;
                     }));
                     await newProduct.addOptIngredients(ingredientsOpt);
                 }
@@ -81,45 +96,33 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
 
 export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        let { limit, page } = req.query as any;
-        let { limite, pagina, offset } = pagination(parseInt(limit), parseInt(page));
-        let { status } = req.query as any;
-        status = status === 'true' ? true : (status === 'false' ? false : null);
-        let where = {};
-        if(status != null){
-            where = { status: status };
-        }
-        console.log(where);
         const products = await Product.findAll({
-            attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available', 'cookingTime' ],
+            attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime' ],
             include: [
                 {
                     model: Category,
-                    as: 'categories',
+                    as: 'category',
                     attributes: ['id', 'title']
                 },
                 {
                     model: SubCategory,
-                    as: 'subCategories',
+                    as: 'subCategory',
                     attributes: ['id', 'title']
                 },
                 {
                     model: OptIngredient,
-                    as : 'optIngredients',
-                    attributes : ['id', 'name', 'price', 'status'],
-                    through: { attributes: [] }
-                }
+                    as: 'optIngredients',
+                    attributes: ['id', 'name', 'price'],
+                    through: {attributes: []},
+                },
             ],
         });
-        const countProducts = await Product.count();
 
         let response = {
             message: "Products found",
             products: products,
-            page: pagina,
-            totalPages: Math.ceil(countProducts / limite),
-            limit: limite
         }
+
         return res.status(200).json(response);
     } catch (error) {
         next(error);
@@ -132,31 +135,49 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
         if(id){
             const getProduct = await Product.findOne({ 
                 where: { id: id },
-                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available', 'cookingTime'],
+                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
                 include: [
                     {
                         model: Category,
                         attributes: ['id', 'title'],
-                        as: 'categories'
+                        as: 'category'
                     },
                     {
                         model: SubCategory,
                         attributes: ['id', 'title'],
-                        as: 'subCategories'
+                        as: 'subCategory'
                     },
                     {
                         model: OptIngredient,
+                        attributes: ['id', 'name', 'price'],
                         as : 'optIngredients',
-                        attributes : ['id', 'name', 'price', 'status'],
-                        through: { attributes: [] }
                     }
                 ] 
             });
-            if (getProduct) {
-                return res.status(200).json({ message: "Product found", product: getProduct });
-            } else {
-                throw PRODUCT_NOT_FOUND;
+            //get variants of optIngredients
+            if(getProduct){
+                const productToJSON = getProduct.toJSON();
+                for (const optIngredient of productToJSON.optIngredients){
+                    let variantsIds = optIngredient.OptIngredientProduct.variants;
+                    delete optIngredient.OptIngredientProduct;
+                    optIngredient.variants = [];
+                    if(variantsIds && variantsIds.length > 0){
+                        for (const variantId of variantsIds){
+                            let variant = await OptIngredient.findByPk(variantId,{
+                                attributes: ['id', 'name', 'price']
+                            });
+                            optIngredient.variants.push(variant!);
+                        }
+                    }
+
+                }
+                let response = {
+                    message: "Product found",
+                    product: productToJSON,
+                }
+                return res.status(200).json({ message: "Product found", product: response });
             }
+            throw PRODUCT_NOT_FOUND;
         }
     } catch (error) {
         next(error);
