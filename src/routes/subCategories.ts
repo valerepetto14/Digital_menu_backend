@@ -1,4 +1,4 @@
-import { addSubCategory, getSubCategories, getSubCategory, deleteSubCategory, updateSubCategory } from "../controllers/subCategories.controller";
+import { addSubCategory, getSubCategories, getSubCategory, deleteSubCategory, updateSubCategory } from "../controllers/subCategories";
 import { Router } from "express";
 import { isAdmin, isAuthenticated } from "../middlewares/auth.middlware";
 import bodyValidate from "../middlewares/bodyValidate.middleware";

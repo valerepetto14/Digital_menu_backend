@@ -1,10 +1,11 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Category} from './category';
+import { SubCategoryStatus } from '../utils/types/interfaces';
 
 export class SubCategory extends Model {
   public id!: string;
   public title!: string;
-  public status!: boolean;
+  public status!: SubCategoryStatus.ACTIVE | SubCategoryStatus.INACTIVE;
   public categoryId!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -23,9 +24,9 @@ export const initSubCategory = (sequelize: Sequelize) => {
         allowNull: false
       },
       status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
+        type: DataTypes.STRING(20),
+        values: [SubCategoryStatus.ACTIVE, SubCategoryStatus.INACTIVE],
+        defaultValue: SubCategoryStatus.ACTIVE
       },
       categoryId: {
           type: DataTypes.UUID,

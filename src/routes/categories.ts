@@ -1,4 +1,4 @@
-import { addCategory, deleteCategory, updateCategory, getCategories, getCategory } from "../controllers/categories.controller";
+import { addCategory, deleteCategory, updateCategory, getCategories, getCategory } from "../controllers/categories";
 import { categoryAddSchema, categoryUpdateSchema } from '../utils/validations/category.validate';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from "../middlewares/auth.middlware";

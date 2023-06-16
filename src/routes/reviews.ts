@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createReview } from '../controllers/reviews.controller';
+import { createReview } from '../controllers/reviews';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { addReviewSchema } from '../utils/validations/reviews.validate';
 

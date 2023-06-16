@@ -23,6 +23,17 @@ export const optIngredientAddSchema = Joi.object({
         'boolean.base': `The status must be a type of boolean`,
         'any.required': `The status is a required field`,
     }),
+    variants : Joi.array().items(Joi.object({
+        name: Joi.string().min(3).required().messages({
+            'string.base': `The name must be a type of string`,
+            'string.empty': `The name cannot be an empty field`,
+            'string.min': `The name must have a minimum length of 3`,
+            'any.required': `The name is a required field`
+        }),
+    })).optional().messages({
+        'array.base': `The variants must be a type of array`,
+        'array.empty': `The variants cannot be an empty field`, 
+    }),
 })
 
 export const optIngredientDeleteSchema = Joi.object({

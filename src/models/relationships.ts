@@ -63,7 +63,13 @@ export const initRelationships = () => {
     });
 
 
+    TicketRow.belongsTo(Ticket, {
+        foreignKey: 'ticketId'
+    });
 
+    TicketRow.belongsTo(Product, {
+        foreignKey: 'productId'
+    });
 
 
     OptIngredient.belongsToMany(Product, {

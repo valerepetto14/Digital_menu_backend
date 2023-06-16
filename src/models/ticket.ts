@@ -1,18 +1,54 @@
 import { Model, DataTypes, BelongsToManyAddAssociationMixin, Sequelize} from 'sequelize';
 import { Table } from './table';
 import { Product } from './product';
+import { TicketRow } from './ticketsRow';
+import { TicketStatus } from '../utils/types/interfaces';
+import { Category } from './category';
+import { SubCategory } from './subCategory';
 
 export class Ticket extends Model {
 	public id!: string;
 	public tableId!: string;
 	public cardId!: string;
 	public userId!: string;
-	public status!: string;
+	public status!: TicketStatus.SEND | TicketStatus.IN_PROGRESS | TicketStatus.DONE;
 	public products!: Product[];
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 	//function that add products to ticket because of the many to many relationship
 	public addProduct!: BelongsToManyAddAssociationMixin<Product, string>;
+
+	public getTicketRows = async () => {
+		try {
+			const ticketRows = await TicketRow.findAll({
+				where: {
+					ticketId: this.id
+				},
+				attributes: ['quantity', 'unitPrice', 'optIngredients'],
+				include: [
+					{
+						model: Product,
+						attributes: ['id', 'name', 'currentPrice'],
+						include: [
+							{
+								model: Category,
+								attributes: ['title'],
+								as: 'categories'
+							},
+							{
+								model: SubCategory,
+								attributes: ['title'],
+								as: 'subCategories'
+							}
+						]
+					}
+				]
+			});
+			return ticketRows;	
+		} catch (error) {
+			throw error;
+		}
+	}
 }
 
 
@@ -33,10 +69,8 @@ export const initTicket = (sequelize: Sequelize) => {
 		},
 		status: {
 			type: DataTypes.STRING(20),
-			allowNull: false,
-			validate: {
-			isIn: [['send', 'inProgress', 'done']]
-			}
+			defaultValue: TicketStatus.SEND,
+			values: [TicketStatus.SEND, TicketStatus.IN_PROGRESS, TicketStatus.DONE],
 		}
 	}, {
 		sequelize,
