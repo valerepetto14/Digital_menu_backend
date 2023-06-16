@@ -1,4 +1,4 @@
-import { addOptIngredient, deleteOptIngredient, updateOptIngredient, getOptIngredient } from "../controllers/optIngredient.controller";
+import { addOptIngredient, deleteOptIngredient, updateOptIngredient, getOptIngredient } from "../controllers/optIngredient";
 import { optIngredientAddSchema, optIngredientDeleteSchema, optIngredientUpdateBodySchema } from '../utils/validations/optIngredient.validate';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from "../middlewares/auth.middlware";

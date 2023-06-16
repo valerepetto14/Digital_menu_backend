@@ -10,7 +10,7 @@ import { productsData } from "./products";
 
 export const startPopulate = async () => {
     try {
-        if(process.env.NODE_ENV === "development" || process.env.POPULATE_DB === "true") {
+        if(process.env.NODE_ENV === "development" && process.env.POPULATE_DB === "true") {
             console.log("POPULATING DATABASE");
             await Category.bulkCreate(categoriesData);
             await SubCategory.bulkCreate(subCategoriesData);

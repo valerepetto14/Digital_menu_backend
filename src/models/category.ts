@@ -1,9 +1,10 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import { CategoryStatus } from '../utils/types/interfaces';
 
 export class Category extends Model {
   public id!: string;
   public title!: string;
-  public status!: boolean;
+  public status!: CategoryStatus.ACTIVE | CategoryStatus.INACTIVE;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -21,9 +22,9 @@ export const initCategory = (sequelize: Sequelize) => {
         allowNull: false
       },
       status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
+        type: DataTypes.STRING(20),
+        values: [CategoryStatus.ACTIVE, CategoryStatus.INACTIVE],
+        defaultValue: CategoryStatus.ACTIVE
       }
     },
     {

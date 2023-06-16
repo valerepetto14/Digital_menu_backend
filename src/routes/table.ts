@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addTable } from '../controllers/table.controller';
+import { addTable } from '../controllers/table';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { addTableSchema } from '../utils/validations/table.validate';
 import { isAuthenticated } from '../middlewares/auth.middlware';

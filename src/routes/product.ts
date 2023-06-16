@@ -1,4 +1,4 @@
-import { addProduct, deleteProduct, updateProduct, getProduct, getProducts, getProductsByCategory, getProductsBySubCategory, searchProducts } from "../controllers/products.controller";
+import { addProduct, deleteProduct, updateProduct, getProduct, getProducts, getProductsByCategory, getProductsBySubCategory, searchProducts } from "../controllers/products";
 import { productAddSchema, productUpdateBodySchema } from '../utils/validations/product.validate';
 import bodyValidate from '../middlewares/bodyValidate.middleware';
 import { isAuthenticated } from "../middlewares/auth.middlware";

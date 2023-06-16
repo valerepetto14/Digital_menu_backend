@@ -1,10 +1,11 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import { OptIngredientStatus } from '../utils/types/interfaces';
 
 export class OptIngredient extends Model {
   public id!: string;
   public name!: string;
   public price?: string;
-  public status!: boolean;
+  public status!: OptIngredientStatus.ACTIVE | OptIngredientStatus.INACTIVE | OptIngredientStatus.SIN_STOCK;
   public variants?: Array<Object>;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -29,9 +30,9 @@ export const initOptIngredient = (sequelize: Sequelize) => {
         defaultValue: '0'
       },
       status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
+        type: DataTypes.STRING(20),
+        values: [OptIngredientStatus.ACTIVE, OptIngredientStatus.INACTIVE, OptIngredientStatus.SIN_STOCK],
+        defaultValue: OptIngredientStatus.ACTIVE
       },
       variants: {
         type: DataTypes.ARRAY(DataTypes.JSON),

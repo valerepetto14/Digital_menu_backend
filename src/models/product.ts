@@ -2,14 +2,14 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Category } from './category';
 import { SubCategory } from './subCategory';
 import { OptIngredient } from './optIngredient';
+import { ProductStatus } from '../utils/types/interfaces';
 
 export class Product extends Model {
     public id!: string;
     public name!: string;
     public description!: string;
     public currentPrice!: string;
-    public status!: boolean;
-    public available!: boolean;
+    public status!: ProductStatus.ACTIVE | ProductStatus.INACTIVE | ProductStatus.SIN_STOCK;
     public image!: string;
     public cookingTime!: number;
     public categoryId!: string;
@@ -44,13 +44,8 @@ export const initProduct = (sequelize: Sequelize) => {
             allowNull: false
         },
         status: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        available: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
+            type: DataTypes.STRING(20),
+            values: [ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.SIN_STOCK],
             defaultValue: true
         },
         image: {

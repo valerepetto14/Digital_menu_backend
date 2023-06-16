@@ -9,7 +9,6 @@ export const addOptIngredient = async (req: Request, res: Response, next: NextFu
         const existOptIngredient = await OptIngredient.findOne({ where: { name: req.body.name } });
         if (!existOptIngredient) {
             const newOptIngredient = await OptIngredient.create({
-                id: uuid4(),
                 name: req.body.name,
                 price: req.body.price,
                 addOrRem: req.body.addOrRem,  
