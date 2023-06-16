@@ -54,12 +54,12 @@ export const initRelationships = () => {
 
     Product.belongsTo(SubCategory, {
         foreignKey: 'subCategoryId',
-        as: 'subCategories'
+        as: 'subCategory'
     });
 
     Product.belongsTo(Category, {
         foreignKey: 'categoryId',
-        as: 'categories'
+        as: 'category'
     });
 
 

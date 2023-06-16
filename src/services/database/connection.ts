@@ -15,7 +15,6 @@ const initDatabase = async () => {
                 dialect: 'postgres',
                 logging: false,
             }
-
         );
 
         await sequelize.authenticate();

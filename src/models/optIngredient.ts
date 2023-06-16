@@ -6,7 +6,10 @@ export class OptIngredient extends Model {
   public name!: string;
   public price?: string;
   public status!: OptIngredientStatus.ACTIVE | OptIngredientStatus.INACTIVE | OptIngredientStatus.SIN_STOCK;
-  public variants?: Array<Object>;
+  public variants?: Array<String | OptIngredient>;
+  public defaultQuantity?: number;
+  public maxQuantity?: number;
+  public OptIngredientProduct?: any;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -33,11 +36,6 @@ export const initOptIngredient = (sequelize: Sequelize) => {
         type: DataTypes.STRING(20),
         values: [OptIngredientStatus.ACTIVE, OptIngredientStatus.INACTIVE, OptIngredientStatus.SIN_STOCK],
         defaultValue: OptIngredientStatus.ACTIVE
-      },
-      variants: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
-        allowNull: false,
-        defaultValue: []
       },
     },
     {
