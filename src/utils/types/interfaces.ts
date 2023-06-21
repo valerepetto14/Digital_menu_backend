@@ -9,6 +9,12 @@ export interface IVariantIngredients {
     name: string;
 }
 
+export interface IUpdateCategory {
+    title: string;
+    status: CategoryStatus;
+    subCategories: string[];
+}
+
 export enum ProductStatus {
     ACTIVE = 'active',
     INACTIVE = 'inactive',

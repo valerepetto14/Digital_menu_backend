@@ -1,13 +1,34 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { CategoryStatus } from '../utils/types/interfaces';
-
+import { IUpdateCategory } from '../utils/types/interfaces';
 export class Category extends Model {
-  public id!: string;
-  public title!: string;
-  public status!: CategoryStatus.ACTIVE | CategoryStatus.INACTIVE;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
+	public id!: string;
+	public title!: string;
+	public status!: CategoryStatus.ACTIVE | CategoryStatus.INACTIVE;
+	public readonly createdAt!: Date;
+	public readonly updatedAt!: Date;
+
+	updateCategory = async (body: IUpdateCategory) => {
+		try {
+			//update the category and you can add the subcategories
+			const categoryUpdated = await Category.update(
+				{
+					title: body.title,
+					status: body.status
+				},
+				{
+					where: {
+						id: this.id
+					}
+				}
+			);
+			//check the ids of the subcategories and 
+		} catch (error) {
+			throw error;
+		}
+  	};
+
+  }
 
 export const initCategory = (sequelize: Sequelize) => {
   Category.init(

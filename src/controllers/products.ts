@@ -5,7 +5,6 @@ import { OptIngredient } from "../models/optIngredient";
 import { Request, Response, NextFunction, response } from "express";
 import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
 import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND, MISSING_SEARCH } from "../utils/errors";
-import { pagination } from "../utils/functions";
 import { Op } from "sequelize";
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,14 +26,13 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
                     categoryId,
                     subCategoryId
                 })
+
                 if(optIngredients && optIngredients.length > 0){
-                    console.log('hay ingredientes opcionales')
                     let ingredientsOpt = await Promise.all(
                         optIngredients.map(async (ingredient:any) => {
                             let ingredientFound = await OptIngredient.findByPk(ingredient.id);
                             if (ingredientFound){
                                 if (ingredient.variants && ingredient.variants.length > 0){
-                                    console.log('hay variantes')
                                     let variants = await Promise.all(
                                         ingredient.variants.map(async (variantId: string) => {
                                             let variant = await OptIngredient.findByPk(variantId);
@@ -190,22 +188,29 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
         if(categoryId){
             const categoryExist = await checkCategoryExists(categoryId);
             if(categoryExist){
-                const products = await Product.findAll({
-                    include: [
-                        {
-                            model: Category,
-                            as: 'categories',
-                            attributes: ['id', 'title'],
-                            where: { id: categoryId }
-                        },
-                        {
-                            model: OptIngredient,
-                            as : 'optIngredients',
-                            attributes : ['id', 'name', 'price', 'status'],
-                            through: { attributes: [] }
+                const products = await Product.findAll({ 
+                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
+                include: [
+                    {
+                        model: Category,
+                        attributes: ['id', 'title'],
+                        as: 'category',
+                        where : {
+                            id: categoryId
                         }
-                    ] 
-                })
+                    },
+                    {
+                        model: SubCategory,
+                        attributes: ['id', 'title'],
+                        as: 'subCategory'
+                    },
+                    {
+                        model: OptIngredient,
+                        attributes: ['id', 'name', 'price'],
+                        as : 'optIngredients',
+                    }
+                ] 
+            });
                 return res.status(200).json({message: "Products found", products: products});
             }
             throw CATEGORY_NOT_FOUND;

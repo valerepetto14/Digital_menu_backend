@@ -5,6 +5,21 @@ import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
 
 
+export const loadCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id;
+        const category = await Category.findByPk(id);
+        if(category) {
+            res.locals.category = category;
+            next();
+        } else {
+            throw CATEGORY_NOT_FOUND;
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const addCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const existCategory = await Category.findOne({where: {title: req.body.title}});
@@ -33,21 +48,16 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
     } catch (error) {
         next(error);
     }
-}
-
+}   
 
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id
-        const getCategory = await Category.findOne({where: {id: id}});
-        if (getCategory){
-            const categoryUpdated = await getCategory.update({
-                title: req.body.title
-            });
-            return res.status(200).json({message: "Category updated"});
-        } else {
-            throw CATEGORY_NOT_FOUND;
-        } 
+        const category = res.locals.category;
+        const { title } = req.body;
+        const categoryUpdated = category.update({
+            title: title
+        });
+        return res.status(200).json({message: "Category updated", category: categoryUpdated});
     } catch (error) {
         next(error);
     }

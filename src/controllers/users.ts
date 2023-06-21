@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import { USER_NOT_FOUND } from "../utils/errors";
 import { AuthRequest } from "./auth";
 
-
 export const validateUser = async (req:AuthRequest, res:Response, next:NextFunction) => {
     try {
         const user = req.user;
@@ -42,8 +41,9 @@ export const updateUser = async (req:Request, res:Response, next:NextFunction) =
     try {
         const id = req.params.id;
         const user = await User.findByPk(id);
+
         if(user){
-            const userUpdated = await user.update({
+            await user.update({
                 email: req.body.email,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
