@@ -1,5 +1,6 @@
 import { Model, DataTypes, BelongsToManyAddAssociationMixin, Sequelize} from 'sequelize';
 import { Table } from './table';
+import { Card } from './card';
 import { Product } from './product';
 import { TicketRow } from './ticketsRow';
 import { TicketStatus } from '../utils/types/interfaces';
@@ -64,6 +65,14 @@ export const initTicket = (sequelize: Sequelize) => {
 			allowNull: false,
 			references : {
 				model: Table,
+				key: 'id'
+			}
+		},
+		cardId: {
+			type: DataTypes.UUID,
+			allowNull: false,
+			references : {
+				model: Card,
 				key: 'id'
 			}
 		},
