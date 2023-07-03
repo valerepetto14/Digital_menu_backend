@@ -214,15 +214,19 @@ export const getProductsByCategory = async (req: Request, res: Response, next: N
                     include: [
                         {
                             model: Category,
-                            as: 'categories',
                             attributes: ['id', 'title'],
+                            as: 'category',
                             where: { id: categoryId },
                         },
                         {
+                            model: SubCategory,
+                            attributes: ['id', 'title'],
+                            as: 'subCategory',
+                        },
+                        {
                             model: OptIngredient,
+                            attributes: ['id', 'name', 'price'],
                             as: 'optIngredients',
-                            attributes: ['id', 'name', 'price', 'status'],
-                            through: { attributes: [] },
                         },
                     ],
                 });
@@ -245,16 +249,20 @@ export const getProductsBySubCategory = async (req: Request, res: Response, next
                 const products = await Product.findAll({
                     include: [
                         {
-                            model: SubCategory,
-                            as: 'subCategories',
+                            model: Category,
                             attributes: ['id', 'title'],
+                            as: 'category',
+                        },
+                        {
+                            model: SubCategory,
+                            attributes: ['id', 'title'],
+                            as: 'subCategory',
                             where: { id: subCategoryId },
                         },
                         {
                             model: OptIngredient,
+                            attributes: ['id', 'name', 'price'],
                             as: 'optIngredients',
-                            attributes: ['id', 'name', 'price', 'status'],
-                            through: { attributes: [] },
                         },
                     ],
                 });
@@ -295,32 +303,21 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
                         [Op.iLike]: `%${search}%`,
                     },
                 },
-                attributes: [
-                    'id',
-                    'name',
-                    'description',
-                    'currentPrice',
-                    'status',
-                    'image',
-                    'available',
-                    'cookingTime',
-                ],
                 include: [
                     {
                         model: Category,
-                        as: 'categories',
                         attributes: ['id', 'title'],
+                        as: 'category',
                     },
                     {
                         model: SubCategory,
-                        as: 'subCategories',
                         attributes: ['id', 'title'],
+                        as: 'subCategory',
                     },
                     {
                         model: OptIngredient,
+                        attributes: ['id', 'name', 'price'],
                         as: 'optIngredients',
-                        attributes: ['id', 'name', 'price', 'status'],
-                        through: { attributes: [] },
                     },
                 ],
             });
