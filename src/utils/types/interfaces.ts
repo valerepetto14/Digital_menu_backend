@@ -12,19 +12,18 @@ export interface IVariantIngredients {
 export enum ProductStatus {
     ACTIVE = 'active',
     INACTIVE = 'inactive',
-    SIN_STOCK = 'sin stock'
+    SIN_STOCK = 'sin stock',
 }
 
 export enum TicketStatus {
-    SEND = 'send',
+    PAID = 'PAID',
     IN_PROGRESS = 'in progress',
-    DONE = 'done'
 }
 
 export enum OptIngredientStatus {
     ACTIVE = 'active',
     INACTIVE = 'inactive',
-    SIN_STOCK = 'sin stock'
+    SIN_STOCK = 'sin stock',
 }
 
 export enum CategoryStatus {
