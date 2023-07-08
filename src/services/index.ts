@@ -1,15 +1,17 @@
-import initDatabase from "./database/connection"
-import { setVariables } from "../config"
-import { startPopulate } from "./database/populate"
+import database from './database/database';
+import { setVariables } from '../config';
+import { startPopulate } from './database/populate';
+
+const db = new database();
 
 const initServices = async () => {
     try {
-        setVariables()
-        await initDatabase()
-        await startPopulate()
+        setVariables();
+        await db.initDatabase();
+        await startPopulate();
     } catch (error) {
-        throw error
+        throw error;
     }
-}
+};
 
 export default initServices;

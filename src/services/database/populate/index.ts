@@ -13,17 +13,18 @@ import { cardsData } from "./cards";
 
 export const startPopulate = async () => {
     try {
-        if(process.env.NODE_ENV === "development" && process.env.POPULATE_DB === "true") {
-            console.log("POPULATING DATABASE");
+        if (process.env.NODE_ENV === 'development' && process.env.POPULATE_DB === 'true') {
+            console.log('POPULATING DATABASE');
             await Category.bulkCreate(categoriesData);
             await SubCategory.bulkCreate(subCategoriesData);
             await Card.bulkCreate(cardsData);
             await Table.bulkCreate(tablesData);
             await OptIngredient.bulkCreate(optIngredientsData);
             await Product.bulkCreate(productsData);
-            console.log("Database populated successfully");
+            await OptIngredientProduct.bulkCreate(optIngredientProductData);
+            console.log('Database populated successfully');
         }
     } catch (error) {
-        throw error
+        throw error;
     }
-}
+};

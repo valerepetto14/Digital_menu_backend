@@ -14,7 +14,7 @@ export const addProduct = async (request: Request, response: Response, next: Nex
         if(!existProduct){
             const categoryExist = await checkCategoryExists(categoryId);
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
-            if(categoryExist && subCategoryExist){
+            if (categoryExist && subCategoryExist) {
                 const newProduct = await Product.create({
                     name,
                     cookingTime,
@@ -24,27 +24,28 @@ export const addProduct = async (request: Request, response: Response, next: Nex
                     image,
                     available,
                     categoryId,
-                    subCategoryId
-                })
-                if(optIngredients && optIngredients.length > 0){
-                    console.log('hay ingredientes opcionales')
+                    subCategoryId,
+                });
+                if (optIngredients && optIngredients.length > 0) {
+                    console.log('hay ingredientes opcionales');
                     let ingredientsOpt = await Promise.all(
-                        optIngredients.map(async (ingredient:any) => {
+                        optIngredients.map(async (ingredient: any) => {
                             let ingredientFound = await OptIngredient.findByPk(ingredient.id);
-                            if (ingredientFound){
-                                if (ingredient.variants && ingredient.variants.length > 0){
-                                    console.log('hay variantes')
+                            if (ingredientFound) {
+                                if (ingredient.variants && ingredient.variants.length > 0) {
+                                    console.log('hay variantes');
                                     let variants = await Promise.all(
                                         ingredient.variants.map(async (variantId: string) => {
                                             let variant = await OptIngredient.findByPk(variantId);
                                             return variant!.id;
                                         })
-                                    )
+                                    );
                                     ingredientFound!.variants = variants;
                                 }
                             }
                             return ingredientFound!;
-                    }));
+                        })
+                    );
                     await newProduct.addOptIngredients(ingredientsOpt);
                 }
                 return response.status(201).json({message: "Product created", product: newProduct});
@@ -55,8 +56,7 @@ export const addProduct = async (request: Request, response: Response, next: Nex
     } catch (error) {
         next(error);
     }
-}
-
+};
 
 export const updateProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -87,32 +87,32 @@ export const updateProduct = async (request: Request, response: Response, next: 
             throw CATEGORY_OR_SUBCATEGORY_NOT_FOUND;
         } else {
             throw PRODUCT_NOT_FOUND;
-        } 
+        }
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProducts = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const products = await Product.findAll({
-            attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime' ],
+            attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
             include: [
                 {
                     model: Category,
                     as: 'category',
-                    attributes: ['id', 'title']
+                    attributes: ['id', 'title'],
                 },
                 {
                     model: SubCategory,
                     as: 'subCategory',
-                    attributes: ['id', 'title']
+                    attributes: ['id', 'title'],
                 },
                 {
                     model: OptIngredient,
                     as: 'optIngredients',
                     attributes: ['id', 'name', 'price'],
-                    through: {attributes: []},
+                    through: { attributes: [] },
                 },
             ],
         });
@@ -120,13 +120,13 @@ export const getProducts = async (request: Request, response: Response, next: Ne
         let responseBody = {
             message: "Products found",
             products: products,
-        }
+        };
 
         return response.status(200).json(responseBody);
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -139,36 +139,35 @@ export const getProduct = async (request: Request, response: Response, next: Nex
                     {
                         model: Category,
                         attributes: ['id', 'title'],
-                        as: 'category'
+                        as: 'category',
                     },
                     {
                         model: SubCategory,
                         attributes: ['id', 'title'],
-                        as: 'subCategory'
+                        as: 'subCategory',
                     },
                     {
                         model: OptIngredient,
                         attributes: ['id', 'name', 'price'],
-                        as : 'optIngredients',
-                    }
-                ] 
+                        as: 'optIngredients',
+                    },
+                ],
             });
             //get variants of optIngredients
-            if(getProduct){
+            if (getProduct) {
                 const productToJSON = getProduct.toJSON();
-                for (const optIngredient of productToJSON.optIngredients){
+                for (const optIngredient of productToJSON.optIngredients) {
                     let variantsIds = optIngredient.OptIngredientProduct.variants;
                     delete optIngredient.OptIngredientProduct;
                     optIngredient.variants = [];
-                    if(variantsIds && variantsIds.length > 0){
-                        for (const variantId of variantsIds){
-                            let variant = await OptIngredient.findByPk(variantId,{
-                                attributes: ['id', 'name', 'price']
+                    if (variantsIds && variantsIds.length > 0) {
+                        for (const variantId of variantsIds) {
+                            let variant = await OptIngredient.findByPk(variantId, {
+                                attributes: ['id', 'name', 'price'],
                             });
                             optIngredient.variants.push(variant!);
                         }
                     }
-
                 }
                 let responseBody = {
                     message: "Product found",
@@ -181,21 +180,26 @@ export const getProduct = async (request: Request, response: Response, next: Nex
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProductsByCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const categoryId = request.params.categoryId;
         if(categoryId){
             const categoryExist = await checkCategoryExists(categoryId);
-            if(categoryExist){
+            if (categoryExist) {
                 const products = await Product.findAll({
                     include: [
                         {
                             model: Category,
-                            as: 'categories',
                             attributes: ['id', 'title'],
-                            where: { id: categoryId }
+                            as: 'category',
+                            where: { id: categoryId },
+                        },
+                        {
+                            model: SubCategory,
+                            attributes: ['id', 'title'],
+                            as: 'subCategory',
                         },
                         {
                             model: OptIngredient,
@@ -213,21 +217,26 @@ export const getProductsByCategory = async (request: Request, response: Response
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProductsBySubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { subCategoryId } = request.params;
         if(subCategoryId){
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
-            if(subCategoryExist){
+            if (subCategoryExist) {
                 const products = await Product.findAll({
                     include: [
                         {
-                            model: SubCategory,
-                            as: 'subCategories',
+                            model: Category,
                             attributes: ['id', 'title'],
-                            where: { id: subCategoryId }
+                            as: 'category',
+                        },
+                        {
+                            model: SubCategory,
+                            attributes: ['id', 'title'],
+                            as: 'subCategory',
+                            where: { id: subCategoryId },
                         },
                         {
                             model: OptIngredient,
@@ -244,16 +253,16 @@ export const getProductsBySubCategory = async (request: Request, response: Respo
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const deleteProduct = async (request: Request, response: Response, next: NextFunction) => {
     //low logic delete
     try {
         const { id } = request.params;
         const getProduct = await Product.findByPk(id);
-        if (getProduct){
+        if (getProduct) {
             await getProduct.update({
-                status: false
+                status: false,
             });
             return response.status(200).json({message: "Product deleted"});
         } 
@@ -261,37 +270,35 @@ export const deleteProduct = async (request: Request, response: Response, next: 
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const searchProducts = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { search } = request.query as any;
         console.log(search);
-        if(search && search != '' && search != undefined){
+        if (search && search != '' && search != undefined) {
             const products = await Product.findAll({
                 where: {
                     name: {
-                        [Op.iLike]: `%${search}%`
-                    }
+                        [Op.iLike]: `%${search}%`,
+                    },
                 },
-                attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'available', 'cookingTime' ],
                 include: [
                     {
                         model: Category,
-                        as: 'categories',
-                        attributes: ['id', 'title']
+                        attributes: ['id', 'title'],
+                        as: 'category',
                     },
                     {
                         model: SubCategory,
-                        as: 'subCategories',
-                        attributes: ['id', 'title']
+                        attributes: ['id', 'title'],
+                        as: 'subCategory',
                     },
                     {
                         model: OptIngredient,
-                        as : 'optIngredients',
-                        attributes : ['id', 'name', 'price', 'status'],
-                        through: { attributes: [] }
-                    }
+                        attributes: ['id', 'name', 'price'],
+                        as: 'optIngredients',
+                    },
                 ],
             });
             return response.status(200).json({message: "Products found", products: products});
@@ -301,4 +308,4 @@ export const searchProducts = async (request: Request, response: Response, next:
     } catch (error) {
         next(error);
     }
-}
+};
