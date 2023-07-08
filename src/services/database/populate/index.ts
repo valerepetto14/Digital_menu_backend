@@ -1,6 +1,7 @@
 import { Category } from "../../../models/category";
 import { SubCategory } from "../../../models/subCategory";
 import { OptIngredient } from "../../../models/optIngredient";
+import { OptIngredientProduct } from "../../../models/optIngredientProduct";
 import { Product } from "../../../models/product";
 import { Card } from "../../../models/card";
 import { Table } from "../../../models/table";
@@ -8,6 +9,7 @@ import { tablesData } from "./tables";
 import { categoriesData } from "./categories";
 import { subCategoriesData } from "./subcategories";
 import { optIngredientsData } from "./optIngredients";
+import { optIngredientProductData } from "./optIngredientProduct";
 import { productsData } from "./products";
 import { cardsData } from "./cards";
 

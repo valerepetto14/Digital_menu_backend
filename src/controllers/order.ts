@@ -47,7 +47,7 @@ export const createOrder = async (request: Request, response: Response, next: Ne
         const table = await getTable(tableId);
         const card = await getCard(cardId);
         const ticket = response.locals.ticket;
-        console.log('ticket', ticket);
+        
         const newOrder = await Order.create({
             ticketId: ticket.id,
             tableId: table.id,
@@ -64,9 +64,7 @@ export const addProductsToOrder = async (request: Request, response: Response, n
     try {
         const products = request.body.products;
         const order = response.locals.order;
-        console.log(
-            'order', order.id,
-        )
+
         for (const product of products) {
             const productFound = await Product.findByPk(product.productId);
             if (productFound) {

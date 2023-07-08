@@ -27,7 +27,7 @@ export const initTable = (sequelize:Sequelize) => {
 }
 
 
-export const checkIfTableExists = async (tableId: Identifier): Promise<Table> => {
+export const getTable = async (tableId: Identifier): Promise<Table> => {
 	try {
 		const table = await Table.findByPk(tableId);
 		if (table) {
