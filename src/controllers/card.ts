@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { Card } from "../models/card";
 
-export const addCard = async (req: Request, res: Response, next: NextFunction) => { 
+export const addCard = async (request: Request, response: Response, next: NextFunction) => { 
     try {
         const card = await Card.create({});
-        return res.status(201).json({
+        return response.status(201).json({
             message: 'Card created successfully',
             card: card
         }); 

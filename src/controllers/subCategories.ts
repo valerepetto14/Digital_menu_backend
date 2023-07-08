@@ -3,9 +3,9 @@ import { Request, Response, NextFunction } from "express";
 import { Category } from "../models/category";
 import { CATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND, SUB_CATEGORY_ALREADY_EXISTS } from "../utils/errors";
 
-export const addSubCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const addSubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { title, categoryId, status } = req.body;
+        const { title, categoryId, status } = request.body;
         const subCategories = await SubCategory.findAll({
             where: { title: title }
         });
@@ -18,7 +18,7 @@ export const addSubCategory = async (req: Request, res: Response, next: NextFunc
                     categoryId,
                     status 
                 });
-                return res.status(201).json({ message: "Sub category created", subCategory: subCategory });
+                return response.status(201).json({ message: "Sub category created", subCategory: subCategory });
             }
             throw CATEGORY_NOT_FOUND;
         }
@@ -28,9 +28,9 @@ export const addSubCategory = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const getSubCategories = async (req: Request, res: Response, next: NextFunction) => {
+export const getSubCategories = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        let { status } = req.query as any;
+        let { status } = request.query as any;
         status = status === 'true' ? true : (status === 'false' ? false : null);
         let where = {};
         if(status != null){
@@ -40,18 +40,18 @@ export const getSubCategories = async (req: Request, res: Response, next: NextFu
         const subCategories = await SubCategory.findAll({
             where: where,
         });
-        return res.status(200).json({ message: "Sub categories found", subCategories: subCategories });
+        return response.status(200).json({ message: "Sub categories found", subCategories: subCategories });
     } catch (error) {
         next(error)
     }
 }
 
-export const getSubCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const getSubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const id = req.params.id;
+        const id = request.params.id;
         const subCategory = await SubCategory.findByPk(id);
         if(subCategory){
-            return res.status(200).json({ message: "Sub category found", subCategory: subCategory });
+            return response.status(200).json({ message: "Sub category found", subCategory: subCategory });
         }
         throw SUB_CATEGORY_NOT_FOUND;
     } catch (error) {
@@ -59,13 +59,13 @@ export const getSubCategory = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const deleteSubCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteSubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const id = req.params.id;
+        const id = request.params.id;
         const subCategory = await SubCategory.findByPk(id);
         if (subCategory) {
             await subCategory.update({ status: false });
-            return res.status(200).json({ message: "Sub category deleted" });
+            return response.status(200).json({ message: "Sub category deleted" });
         }
         throw SUB_CATEGORY_NOT_FOUND;
     } catch (error) {
@@ -73,10 +73,10 @@ export const deleteSubCategory = async (req: Request, res: Response, next: NextF
     }
 }
 
-export const updateSubCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const updateSubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { id } = req.params;
-        const { title, categoryId, status } = req.body;
+        const { id } = request.params;
+        const { title, categoryId, status } = request.body;
         const subCategory = await SubCategory.findByPk(id);
         if(subCategory){
             await subCategory.update({
@@ -84,7 +84,7 @@ export const updateSubCategory = async (req: Request, res: Response, next: NextF
                 categoryId,
                 status
             });
-            return res.status(200).json({ message: "Sub category updated", subCategory: subCategory });
+            return response.status(200).json({ message: "Sub category updated", subCategory: subCategory });
         }
         throw SUB_CATEGORY_NOT_FOUND;
     } catch (error) {

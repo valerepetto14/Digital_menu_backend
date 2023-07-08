@@ -35,3 +35,7 @@ export const TICKET_NOT_FOUND = new errorResponse("Ticket not found", 404);
 
 
 export const MISSING_SEARCH = new errorResponse("Missing search param", 400);
+
+
+//Card
+export const CARD_NOT_FOUND = new errorResponse("Card not found", 404);

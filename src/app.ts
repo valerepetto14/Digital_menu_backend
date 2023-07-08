@@ -16,7 +16,7 @@ import { ticketsRouter } from "./routes/ticket";
 import { cardRouter } from "./routes/card";
 import { tableRouter } from "./routes/table";
 import { reviewsRouter } from "./routes/reviews";
-
+import { orderRouter } from "./routes/order";
 //import middlewares
 import { errorHandler } from "./middlewares/errosHandler.middleware";
 import cors from "cors";
@@ -47,6 +47,7 @@ app.use("/tickets", ticketsRouter);
 app.use('/cards', cardRouter)
 app.use('/tables', tableRouter)
 app.use('/reviews', reviewsRouter)
+app.use('/orders', orderRouter)
 
 //error handler, this must be the last middleware, if not, it will not work, because it will not be able to catch the errors
 app.use(errorHandler);

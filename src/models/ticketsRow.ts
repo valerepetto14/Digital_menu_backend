@@ -1,11 +1,10 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import { Ticket } from './ticket';
+import { Order } from './order';
 import { Product } from './product';
 import { IOptIngredientProductTicketRow } from '../utils/types/interfaces';
 
-export class TicketRow extends Model {
-    public id!: string;
-    public ticketId!: string;
+export class OrderRow extends Model {
+    public orderId!: string;
     public productId!: string;
     public quantity!: number;
     public unitPrice!: number;
@@ -15,12 +14,12 @@ export class TicketRow extends Model {
 }
 
 export const initTicketRow = (sequelize: Sequelize) => {
-    TicketRow.init({
-        ticketId: {
+    OrderRow.init({
+        orderId: {
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: Ticket,
+                model: Order,
                 key: 'id'
             }
         },

@@ -1,47 +1,56 @@
 import { Review } from './review';
-import { Card} from './card';
+import { Card } from './card';
 import { Ticket } from './ticket';
 import { Product } from './product';
-import { Category} from './category';
+import { Category } from './category';
 import { SubCategory } from './subCategory';
 import { OptIngredientProduct } from './optIngredientProduct';
-import { TicketRow } from './ticketsRow';
+import { OrderRow } from './orderRow';
 import { OptIngredient } from './optIngredient';
 import { Table } from './table';
+import { Order } from './order';
 // import { TicketRowOptIngredientModel } from './ticketsRowOptIngredient';
 
 //Review <--> Ticket
 
 export const initRelationships = () => {
+    //Review Relationship
     Review.belongsTo(Ticket, {
-        foreignKey: 'ticketId'
-    });
-
-
-    Ticket.hasOne(Review, {
-        foreignKey: 'ticketId'
-    });
-
-    Ticket.belongsToMany(Product, {
-        through: TicketRow,
         foreignKey: 'ticketId',
-        as: 'products'
     });
 
+    //Ticket Relationship
+    Ticket.hasOne(Review, {
+        foreignKey: 'ticketId',
+    });
 
     Ticket.belongsTo(Card, {
-        foreignKey: 'cardId'
+        foreignKey: 'cardId',
     });
 
     Ticket.belongsTo(Table, {
         foreignKey: 'tableId',
-        as: 'table'
+        as: 'table',
     });
 
+    //Order Relationship
+    Order.belongsToMany(Product, {
+        through: OrderRow,
+        foreignKey: 'orderId',
+    });
 
+    Order.belongsTo(Card, {
+        foreignKey: 'cardId',
+    });
 
-    Product.belongsToMany(Ticket, {
-        through: TicketRow,
+    Order.belongsTo(Table, {
+        foreignKey: 'tableId',
+        as: 'table',
+    });
+
+    //Product Relationship
+    Product.belongsToMany(Order, {
+        through: OrderRow,
         foreignKey: 'productId',
     });
 
@@ -49,28 +58,27 @@ export const initRelationships = () => {
         through: OptIngredientProduct,
         foreignKey: 'productId',
         otherKey: 'optIngredientId',
-        as : 'optIngredients'
+        as: 'optIngredients',
     });
 
     Product.belongsTo(SubCategory, {
         foreignKey: 'subCategoryId',
-        as: 'subCategory'
+        as: 'subCategory',
     });
 
     Product.belongsTo(Category, {
         foreignKey: 'categoryId',
-        as: 'category'
+        as: 'category',
     });
 
-
-    TicketRow.belongsTo(Ticket, {
-        foreignKey: 'ticketId'
+    //TicketRow Relationship
+    OrderRow.belongsTo(Order, {
+        foreignKey: 'orderId',
     });
 
-    TicketRow.belongsTo(Product, {
-        foreignKey: 'productId'
+    OrderRow.belongsTo(Product, {
+        foreignKey: 'productId',
     });
-
 
     OptIngredient.belongsToMany(Product, {
         through: OptIngredientProduct,
@@ -78,34 +86,28 @@ export const initRelationships = () => {
         otherKey: 'productId',
     });
 
-
-
-
+    //category Relationship
     Category.hasMany(SubCategory, {
         foreignKey: 'categoryId',
-        as: 'subCategories'
+        as: 'subCategories',
     });
 
     Category.hasMany(Product, {
         foreignKey: 'categoryId',
     });
 
-
-
-
-
+    //SubCategory Relationship
     SubCategory.belongsTo(Category, {
-        foreignKey: 'categoryId'
+        foreignKey: 'categoryId',
     });
 
     SubCategory.hasMany(Product, {
-        foreignKey: 'subCategoryId'
+        foreignKey: 'subCategoryId',
     });
 
-
-
+    //Card Relationship
     Table.hasMany(Ticket, {
         foreignKey: 'tableId',
-        as: 'tickets'
+        as: 'tickets',
     });
-}
+};

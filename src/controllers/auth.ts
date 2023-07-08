@@ -12,9 +12,9 @@ export interface AuthRequest extends Request {
     token?: string;
 }
 
-export const signUp = async (req: Request, res: Response, next: NextFunction) => {
+export const signUp = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const body = req.body;
+        const body = request.body;
         const userExists = await checkIfUserExists(body.email);
         if (!userExists) {
             const passHash = await hash(body.password, 10);
@@ -27,7 +27,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
                 type: body.type,
                 password: passHash,
             });
-            return res.status(201).json({ message: 'User created', user: newUser });
+            return response.status(201).json({ message: 'User created', user: newUser });
         } else {
             throw USER_ALREADY_EXISTS;
         }
@@ -36,9 +36,9 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-export const signIn = async (req: Request, res: Response, next: NextFunction) => {
+export const signIn = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const body = req.body;
+        const body = request.body;
         const user = await User.findOne({ where: { email: body.email } });
         if (user) {
             const passMatch = await compare(body.password, user.password);
@@ -52,7 +52,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
                     },
                     process.env.TOKEN_SIGN ? process.env.TOKEN_SIGN : 'HOLA'
                 );
-                const response = {
+                const responseBody = {
                     userId: user.id,
                     email: user.email,
                     firstName: user.firstName,
@@ -60,10 +60,10 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
                     type: user.type,
                     token: token,
                 };
-                return res
+                return response
                     .status(200)
                     .cookie('token', token, { httpOnly: true })
-                    .json({ message: 'User logged in', user: response });
+                    .json({ message: 'User logged in', user: responseBody });
             } else {
                 throw INCORRECT_CREDENTIALS;
             }
@@ -75,11 +75,11 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-export const signOut = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const signOut = async (request: AuthRequest, response: Response, next: NextFunction) => {
     try {
-        const user = req.user;
+        const user = request.user;
         if (user) {
-            res.clearCookie('token').status(200).json({ message: 'User logged out' });
+            response.clearCookie('token').status(200).json({ message: 'User logged out' });
         }
     } catch (error) {
         next(error);
