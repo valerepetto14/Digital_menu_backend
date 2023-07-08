@@ -36,8 +36,7 @@ export const initRelationships = () => {
     //Order Relationship
     Order.belongsToMany(Product, {
         through: OrderRow,
-        foreignKey: 'ticketId',
-        as: 'products',
+        foreignKey: 'orderId',
     });
 
     Order.belongsTo(Card, {

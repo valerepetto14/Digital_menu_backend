@@ -1,4 +1,4 @@
-export interface IOptIngredientProductTicketRow {
+export interface IOptIngredientProductOrderRow {
     optIngredientId: string;
     name?: string;
     quantity: number;
@@ -13,6 +13,12 @@ export enum ProductStatus {
     ACTIVE = 'active',
     INACTIVE = 'inactive',
     SIN_STOCK = 'sin stock',
+}
+
+export enum OrderStatus {
+    SENT = 'sent',
+    IN_PROGRESS = 'in progress',
+    DONE = 'done',
 }
 
 export enum TicketStatus {

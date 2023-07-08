@@ -49,8 +49,8 @@ export const initOrder = (sequelize: Sequelize) => {
             status: {
                 type: DataTypes.STRING(20),
                 allowNull: false,
-                values: [OrderStatus.SEND, OrderStatus.IN_PROGRESS, OrderStatus.DONE],
-                defaultValue: OrderStatus.IN_PROGRESS,
+                values: [OrderStatus.SENT, OrderStatus.IN_PROGRESS, OrderStatus.DONE],
+                defaultValue: OrderStatus.SENT,
             },
         },
         {

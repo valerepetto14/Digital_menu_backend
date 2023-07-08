@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Order } from './order';
 import { Product } from './product';
-import { IOptIngredientProductTicketRow } from '../utils/types/interfaces';
+import { IOptIngredientProductOrderRow } from '../utils/types/interfaces';
 
 export class OrderRow extends Model {
     public id!: string;
@@ -9,12 +9,12 @@ export class OrderRow extends Model {
     public productId!: string;
     public quantity!: number;
     public unitPrice!: number;
-    public optIngredient!: Array<IOptIngredientProductTicketRow>;
+    public optIngredient!: Array<IOptIngredientProductOrderRow>;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
 
-export const initTicketRow = (sequelize: Sequelize) => {
+export const initOrderRow = (sequelize: Sequelize) => {
     OrderRow.init(
         {
             orderId: {
@@ -48,7 +48,7 @@ export const initTicketRow = (sequelize: Sequelize) => {
         },
         {
             sequelize,
-            tableName: 'ticketRows',
+            tableName: 'OrdersRows',
             timestamps: true,
         }
     );

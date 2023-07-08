@@ -8,9 +8,10 @@ import { initReview } from './review';
 import { initSubCategory } from './subCategory';
 import { initTable } from './table';
 import { initTicket } from './ticket';
-import { initTicketRow } from './orderRow';
+import { initOrderRow } from './orderRow';
 import { initUser } from './user';
 import { initRelationships } from './relationships';
+import { initOrder } from './order';
 
 export const initModels = (sequelize: Sequelize) => {
     try {
@@ -23,7 +24,8 @@ export const initModels = (sequelize: Sequelize) => {
         initOptIngredientProduct(sequelize);
         initTable(sequelize);
         initTicket(sequelize);
-        initTicketRow(sequelize);
+        initOrder(sequelize);
+        initOrderRow(sequelize);
         initReview(sequelize);
         initRelationships();
     } catch (error) {

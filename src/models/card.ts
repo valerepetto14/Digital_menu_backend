@@ -1,5 +1,5 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-
+import { Model, DataTypes, Sequelize, Identifier } from 'sequelize';
+import { CARD_NOT_FOUND } from '../utils/errors';
 export class Card extends Model {
   public id!: string;
   public number!: number;
@@ -25,4 +25,17 @@ export const initCard = (sequelize: Sequelize) => {
           timestamps: true
         }
       );
+}
+
+
+export const getCard = async (cardId: Identifier ): Promise<Card> => {
+	try {
+		const card = await Card.findByPk(cardId);
+		if (card) {
+      return card;
+    }
+    throw CARD_NOT_FOUND;
+	} catch (error) {
+		throw error;
+	}
 }

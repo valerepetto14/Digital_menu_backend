@@ -5,15 +5,15 @@ import uuid4 from "uuid4";
 import { CATEGORY_NOT_FOUND, CATEGORY_ALREADY_EXIST } from "../utils/errors";
 
 
-export const addCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const addCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const existCategory = await Category.findOne({where: {title: req.body.title}});
+        const existCategory = await Category.findOne({where: {title: request.body.title}});
         if(!existCategory){
             const newCategory = await Category.create({
                 id: uuid4(),
-                title: req.body.title
+                title: request.body.title
             })
-            return res.status(201).json({message: "Category created", category: newCategory});
+            return response.status(201).json({message: "Category created", category: newCategory});
         }
         throw CATEGORY_ALREADY_EXIST;
     } catch (error) {
@@ -21,9 +21,9 @@ export const addCategory = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
-export const deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const category = await Category.findByPk(req.params.id);
+        const category = await Category.findByPk(request.params.id);
         if (category){
             await category.update({
                 status: false
@@ -36,15 +36,15 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
 }
 
 
-export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const id = req.params.id
+        const id = request.params.id
         const getCategory = await Category.findOne({where: {id: id}});
         if (getCategory){
             const categoryUpdated = await getCategory.update({
-                title: req.body.title
+                title: request.body.title
             });
-            return res.status(200).json({message: "Category updated"});
+            return response.status(200).json({message: "Category updated"});
         } else {
             throw CATEGORY_NOT_FOUND;
         } 
@@ -53,7 +53,7 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
+export const getCategories = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const categories = await Category.findAll({
             include: [
@@ -64,7 +64,7 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
                 }
             ]
         });
-        return res.status(200).json({message: "Categories found", categories: categories});
+        return response.status(200).json({message: "Categories found", categories: categories});
     } catch (error) {
         next(error);
     }

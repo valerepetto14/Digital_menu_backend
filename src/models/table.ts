@@ -1,5 +1,6 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-
+import { Model, DataTypes, Sequelize, Identifier } from 'sequelize';
+import { Order } from './order';
+import { TABLE_NOT_FOUND } from '../utils/errors';
 export class Table extends Model {
 	public id!: string;
 	public number!: number;
@@ -23,4 +24,17 @@ export const initTable = (sequelize:Sequelize) => {
 		tableName: 'tables',
 		timestamps: true
 	});
+}
+
+
+export const checkIfTableExists = async (tableId: Identifier): Promise<Table> => {
+	try {
+		const table = await Table.findByPk(tableId);
+		if (table) {
+			return table
+		}
+		throw TABLE_NOT_FOUND;
+	} catch (error) {
+		throw error;
+	}
 }

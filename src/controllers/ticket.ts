@@ -1,29 +1,39 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, response } from 'express';
 import { Ticket } from '../models/ticket';
-import { OrderRow } from '../models/orderRow';
-import { Product } from '../models/product';
-import { OptIngredient } from '../models/optIngredient';
 import { Table } from '../models/table';
 import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from '../utils/errors';
-import { IOptIngredientProductTicketRow } from '../utils/types/interfaces';
 
-export const addTicket = async (req: Request, res: Response, next: NextFunction) => {
+export const createTicket = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { tableId, cardId } = req.body;
-        const ticketActive = await Ticket.findOne({
+        const { tableId, cardId } = request.body;
+        let ticketActive = await Ticket.findOne({
             where: {
                 tableId: tableId,
                 status: 'IN_PROGRESS',
             },
         });
+        if (!ticketActive) {
+            const table = await Table.findByPk(tableId);
+            if (table) {
+                ticketActive = await Ticket.create({
+                    tableId: table.id,
+                    cardId: cardId,
+                });
+            } else {
+                throw TABLE_NOT_FOUND;
+            }
+        }
+
+        response.locals.ticket = ticketActive;
+        next();
     } catch (error) {
         next(error);
     }
 };
 
-export const getTicket = async (req: Request, res: Response, next: NextFunction) => {
+export const getTicket = async (request: Request, _response: Response, next: NextFunction) => {
     try {
-        const { id } = req.params;
+        const { id } = request.params;
         const ticket = await Ticket.findByPk(id, {
             attributes: ['id', 'status', 'createdAt'],
         });
@@ -33,7 +43,7 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
                 ...ticket.toJSON(),
                 ticketRows: ticketRows,
             };
-            return res.status(200).json({
+            return response.status(200).json({
                 message: 'Ticket found',
                 ticket: response,
             });
@@ -55,24 +65,3 @@ export const getTicket = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-const getOptingredientToTicketRow = async (optIngredients: Array<IOptIngredientProductTicketRow>) => {
-    try {
-        const response: Array<IOptIngredientProductTicketRow> = [];
-        for (const optIngredient of optIngredients) {
-            const optIngredientFound = await OptIngredient.findByPk(optIngredient.optIngredientId);
-            if (optIngredientFound) {
-                response.push({
-                    optIngredientId: optIngredientFound.id,
-                    name: optIngredientFound.name,
-                    quantity: optIngredient.quantity,
-                    unitPrice: optIngredientFound.price,
-                });
-            } else {
-                continue;
-            }
-        }
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
