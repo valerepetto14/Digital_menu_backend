@@ -1,17 +1,36 @@
-import { Product } from "../models/product";
-import { Category } from "../models/category";
-import { SubCategory } from "../models/subCategory";
-import { OptIngredient } from "../models/optIngredient";
-import { Request, Response, NextFunction, response } from "express";
-import { checkCategoryExists, checkSubCategoryExists } from "../utils/functions";
-import { PRODUCT_NOT_FOUND, PRODUCT_ALREADY_EXIST, CATEGORY_NOT_FOUND, MISSING_CATEGORY_ID, CATEGORY_OR_SUBCATEGORY_NOT_FOUND, SUB_CATEGORY_NOT_FOUND, MISSING_SEARCH } from "../utils/errors";
-import { Op } from "sequelize";
+import { Product } from '../models/product';
+import { Category } from '../models/category';
+import { SubCategory } from '../models/subCategory';
+import { OptIngredient } from '../models/optIngredient';
+import { Request, Response, NextFunction, response } from 'express';
+import { checkCategoryExists, checkSubCategoryExists } from '../utils/functions';
+import {
+    PRODUCT_NOT_FOUND,
+    PRODUCT_ALREADY_EXIST,
+    CATEGORY_NOT_FOUND,
+    MISSING_CATEGORY_ID,
+    CATEGORY_OR_SUBCATEGORY_NOT_FOUND,
+    SUB_CATEGORY_NOT_FOUND,
+    MISSING_SEARCH,
+} from '../utils/errors';
+import { Op } from 'sequelize';
 
 export const addProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { name, description, currentPrice, status, image, cookingTime, available, categoryId, optIngredients, subCategoryId } = request.body;
-        const existProduct = await Product.findOne({where: {name: request.body.name}});
-        if(!existProduct){
+        const {
+            name,
+            description,
+            currentPrice,
+            status,
+            image,
+            cookingTime,
+            available,
+            categoryId,
+            optIngredients,
+            subCategoryId,
+        } = request.body;
+        const existProduct = await Product.findOne({ where: { name: request.body.name } });
+        if (!existProduct) {
             const categoryExist = await checkCategoryExists(categoryId);
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
             if (categoryExist && subCategoryExist) {
@@ -48,7 +67,7 @@ export const addProduct = async (request: Request, response: Response, next: Nex
                     );
                     await newProduct.addOptIngredients(ingredientsOpt);
                 }
-                return response.status(201).json({message: "Product created", product: newProduct});
+                return response.status(201).json({ message: 'Product created', product: newProduct });
             }
             throw CATEGORY_OR_SUBCATEGORY_NOT_FOUND;
         }
@@ -61,28 +80,30 @@ export const addProduct = async (request: Request, response: Response, next: Nex
 export const updateProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { categoryId, subCategoryId, name, description, currentPrice, status } = request.body;
-        const id = request.params.id
-        const getProduct = await Product.findOne({where: {id: id}});
-        if (getProduct){
+        const id = request.params.id;
+        const getProduct = await Product.findOne({ where: { id: id } });
+        if (getProduct) {
             const categoryExist = await checkCategoryExists(categoryId);
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
-            if(categoryExist && subCategoryExist){
+            if (categoryExist && subCategoryExist) {
                 const productUpdated = await getProduct.update({
                     name: name,
                     description: description,
                     currentPrice: currentPrice,
                     status: status,
                     categoryId: categoryId,
-                    subCategoryId: subCategoryId
+                    subCategoryId: subCategoryId,
                 });
-                if(request.body.optIngredientsId && request.body.optIngredientsId.length > 0){
-                    let ingredientsOpt: OptIngredient[] = await Promise.all(request.body.optIngredientsId.map(async (ingredientId: string) => {
-                        let ingredient = await OptIngredient.findByPk(ingredientId);
-                        return ingredient!;
-                    }));
+                if (request.body.optIngredientsId && request.body.optIngredientsId.length > 0) {
+                    let ingredientsOpt: OptIngredient[] = await Promise.all(
+                        request.body.optIngredientsId.map(async (ingredientId: string) => {
+                            let ingredient = await OptIngredient.findByPk(ingredientId);
+                            return ingredient!;
+                        })
+                    );
                     await productUpdated.addOptIngredients(ingredientsOpt);
                 }
-                return response.status(200).json({message: "Product updated", product: productUpdated});
+                return response.status(200).json({ message: 'Product updated', product: productUpdated });
             }
             throw CATEGORY_OR_SUBCATEGORY_NOT_FOUND;
         } else {
@@ -111,14 +132,13 @@ export const getProducts = async (request: Request, response: Response, next: Ne
                 {
                     model: OptIngredient,
                     as: 'optIngredients',
-                    attributes: ['id', 'name', 'price'],
                     through: { attributes: [] },
                 },
             ],
         });
 
         let responseBody = {
-            message: "Products found",
+            message: 'Products found',
             products: products,
         };
 
@@ -131,8 +151,8 @@ export const getProducts = async (request: Request, response: Response, next: Ne
 export const getProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id = request.params.id;
-        if(id){
-            const getProduct = await Product.findOne({ 
+        if (id) {
+            const getProduct = await Product.findOne({
                 where: { id: id },
                 attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
                 include: [
@@ -158,6 +178,8 @@ export const getProduct = async (request: Request, response: Response, next: Nex
                 const productToJSON = getProduct.toJSON();
                 for (const optIngredient of productToJSON.optIngredients) {
                     let variantsIds = optIngredient.OptIngredientProduct.variants;
+                    optIngredient.defaultQuantity = optIngredient.OptIngredientProduct.defaultQuantity;
+                    optIngredient.maxQuantity = optIngredient.OptIngredientProduct.maxQuantity;
                     delete optIngredient.OptIngredientProduct;
                     optIngredient.variants = [];
                     if (variantsIds && variantsIds.length > 0) {
@@ -170,9 +192,9 @@ export const getProduct = async (request: Request, response: Response, next: Nex
                     }
                 }
                 let responseBody = {
-                    message: "Product found",
+                    message: 'Product found',
                     product: productToJSON,
-                }
+                };
                 return response.status(200).json(responseBody);
             }
             throw PRODUCT_NOT_FOUND;
@@ -185,7 +207,7 @@ export const getProduct = async (request: Request, response: Response, next: Nex
 export const getProductsByCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const categoryId = request.params.categoryId;
-        if(categoryId){
+        if (categoryId) {
             const categoryExist = await checkCategoryExists(categoryId);
             if (categoryExist) {
                 const products = await Product.findAll({
@@ -203,13 +225,13 @@ export const getProductsByCategory = async (request: Request, response: Response
                         },
                         {
                             model: OptIngredient,
-                            as : 'optIngredients',
-                            attributes : ['id', 'name', 'price', 'status'],
-                            through: { attributes: [] }
-                        }
-                    ] 
-                })
-                return response.status(200).json({message: "Products found", products: products});
+                            as: 'optIngredients',
+                            attributes: ['id', 'name', 'price', 'status'],
+                            through: { attributes: [] },
+                        },
+                    ],
+                });
+                return response.status(200).json({ message: 'Products found', products: products });
             }
             throw CATEGORY_NOT_FOUND;
         }
@@ -222,7 +244,7 @@ export const getProductsByCategory = async (request: Request, response: Response
 export const getProductsBySubCategory = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { subCategoryId } = request.params;
-        if(subCategoryId){
+        if (subCategoryId) {
             const subCategoryExist = await checkSubCategoryExists(subCategoryId);
             if (subCategoryExist) {
                 const products = await Product.findAll({
@@ -240,13 +262,13 @@ export const getProductsBySubCategory = async (request: Request, response: Respo
                         },
                         {
                             model: OptIngredient,
-                            as : 'optIngredients',
-                            attributes : ['id', 'name', 'price', 'status'],
-                            through: { attributes: [] }
-                        }
-                    ] 
-                })
-                return response.status(200).json({message: "Products found", products: products});
+                            as: 'optIngredients',
+                            attributes: ['id', 'name', 'price', 'status'],
+                            through: { attributes: [] },
+                        },
+                    ],
+                });
+                return response.status(200).json({ message: 'Products found', products: products });
             }
             throw SUB_CATEGORY_NOT_FOUND;
         }
@@ -264,8 +286,8 @@ export const deleteProduct = async (request: Request, response: Response, next: 
             await getProduct.update({
                 status: false,
             });
-            return response.status(200).json({message: "Product deleted"});
-        } 
+            return response.status(200).json({ message: 'Product deleted' });
+        }
         throw PRODUCT_NOT_FOUND;
     } catch (error) {
         next(error);
@@ -301,7 +323,7 @@ export const searchProducts = async (request: Request, response: Response, next:
                     },
                 ],
             });
-            return response.status(200).json({message: "Products found", products: products});
+            return response.status(200).json({ message: 'Products found', products: products });
         } else {
             throw MISSING_SEARCH;
         }

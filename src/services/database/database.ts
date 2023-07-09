@@ -60,7 +60,7 @@ class database {
             await this.sequelize.authenticate();
             console.log('Connection has been established successfully.');
             initModels(this.sequelize);
-            await this.sequelize.sync({ force: true });
+            await this.sequelize.sync({ force: false });
             console.log('All models were synchronized successfully.');
         } catch (error) {
             console.error('Error initializing database:', error);
