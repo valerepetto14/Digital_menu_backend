@@ -15,8 +15,8 @@ export class Product extends Model {
     public cookingTime!: number;
     public categoryId!: string;
     public subCategoryId!: string;
-    public category !: Category;
-    public subCategory !: SubCategory;
+    public category!: Category;
+    public subCategory!: SubCategory;
     public optIngredients!: OptIngredient[];
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -25,12 +25,12 @@ export class Product extends Model {
     public addOptIngredients = async (optIngredients: OptIngredient[], options?: Object) => {
         try {
             await OptIngredientProduct.bulkCreate(
-                optIngredients.map(optIngredient => ({
+                optIngredients.map((optIngredient) => ({
                     productId: this.id,
                     optIngredientId: optIngredient.id,
                     defaultQuantity: optIngredient.defaultQuantity,
                     maxQuantity: optIngredient.maxQuantity,
-                    variants : optIngredient.variants
+                    variants: optIngredient.variants,
                 }))
             );
         } catch (error) {
@@ -40,62 +40,60 @@ export class Product extends Model {
 }
 
 export const initProduct = (sequelize: Sequelize) => {
-    Product.init({
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
+    Product.init(
+        {
+            id: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            name: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+            },
+            description: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+            },
+            currentPrice: {
+                type: DataTypes.DECIMAL(10, 2),
+                defaultValue: 0,
+                allowNull: false,
+            },
+            status: {
+                type: DataTypes.STRING(20),
+                values: [ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.SIN_STOCK],
+                defaultValue: ProductStatus.ACTIVE,
+            },
+            image: {
+                type: DataTypes.STRING(256),
+                allowNull: false,
+            },
+            cookingTime: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            categoryId: {
+                type: DataTypes.UUID,
+                allowNull: false,
+                references: {
+                    model: Category,
+                    key: 'id',
+                },
+            },
+            subCategoryId: {
+                type: DataTypes.UUID,
+                allowNull: false,
+                references: {
+                    model: SubCategory,
+                    key: 'id',
+                },
+            },
         },
-        name: {
-            type: DataTypes.STRING(50),
-            allowNull: false
-        },
-        description: {
-            type: DataTypes.STRING(100),
-            allowNull: false
-        },
-        currentPrice: {
-            type: DataTypes.DECIMAL(10,2),
-            defaultValue: 0,
-            allowNull: false
-        },
-        status: {
-            type: DataTypes.STRING(20),
-            values: [ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.SIN_STOCK],
-<<<<<<< Updated upstream
-            defaultValue: ProductStatus.ACTIVE
-=======
-            defaultValue: true
->>>>>>> Stashed changes
-        },
-        image: {
-            type: DataTypes.STRING(256),
-            allowNull: false
-        },
-        cookingTime: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        categoryId: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            references : {
-            model: Category,
-            key: 'id'
-            }
-        },
-        subCategoryId: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            references : {
-            model: SubCategory,
-            key: 'id'
-            }
-        }
-        },{
-        sequelize,
-        tableName: 'products',
-        timestamps: true
+        {
+            sequelize,
+            tableName: 'products',
+            timestamps: true,
         }
     );
 };
