@@ -62,7 +62,11 @@ export const initProduct = (sequelize: Sequelize) => {
         status: {
             type: DataTypes.STRING(20),
             values: [ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.SIN_STOCK],
+<<<<<<< Updated upstream
             defaultValue: ProductStatus.ACTIVE
+=======
+            defaultValue: true
+>>>>>>> Stashed changes
         },
         image: {
             type: DataTypes.STRING(256),

@@ -22,7 +22,7 @@ export enum OrderStatus {
 }
 
 export enum TicketStatus {
-    PAID = 'PAID',
+    PAID = 'paid',
     IN_PROGRESS = 'in progress',
 }
 

@@ -1,11 +1,9 @@
-import { Model, DataTypes, BelongsToManyAddAssociationMixin, Sequelize } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Table } from './table';
 import { Card } from './card';
 import { Product } from './product';
-import { OrderRow } from './orderRow';
+import { Order } from './order';
 import { TicketStatus } from '../utils/types/interfaces';
-import { Category } from './category';
-import { SubCategory } from './subCategory';
 
 export class Ticket extends Model {
     public id!: string;
@@ -16,36 +14,16 @@ export class Ticket extends Model {
     public products!: Product[];
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    //function that add products to ticket because of the many to many relationship
-    public addProduct!: BelongsToManyAddAssociationMixin<Product, string>;
 
-    public getTicketRows = async () => {
+    public getOrders = async () => {
         try {
-            const ticketRows = await OrderRow.findAll({
+            const orders = await Order.findAll({
                 where: {
                     ticketId: this.id,
                 },
-                attributes: ['quantity', 'unitPrice', 'optIngredients'],
-                include: [
-                    {
-                        model: Product,
-                        attributes: ['id', 'name', 'currentPrice'],
-                        include: [
-                            {
-                                model: Category,
-                                attributes: ['title'],
-                                as: 'categories',
-                            },
-                            {
-                                model: SubCategory,
-                                attributes: ['title'],
-                                as: 'subCategories',
-                            },
-                        ],
-                    },
-                ],
+                attributes: ['id', 'status', 'createdAt', 'updatedAt'],
             });
-            return ticketRows;
+            return orders;
         } catch (error) {
             throw error;
         }

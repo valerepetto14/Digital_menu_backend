@@ -47,7 +47,7 @@ export const createOrder = async (request: Request, response: Response, next: Ne
         const table = await getTable(tableId);
         const card = await getCard(cardId);
         const ticket = response.locals.ticket;
-        
+
         const newOrder = await Order.create({
             ticketId: ticket.id,
             tableId: table.id,
@@ -58,7 +58,7 @@ export const createOrder = async (request: Request, response: Response, next: Ne
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const addProductsToOrder = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -80,12 +80,13 @@ export const addProductsToOrder = async (request: Request, response: Response, n
             }
         }
         response.status(201).json({
-            message: 'Order created successfully'
+            message: 'Order created successfully',
+            ticket: response.locals.ticket,
         });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const getOptingredientToOrderRow = async (optIngredients: Array<IOptIngredientProductOrderRow>) => {
     try {

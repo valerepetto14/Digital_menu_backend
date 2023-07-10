@@ -31,32 +31,22 @@ export const createTicket = async (request: Request, response: Response, next: N
     }
 };
 
-export const getTicket = async (request: Request, _response: Response, next: NextFunction) => {
+export const getTicket = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { id } = request.params;
         const ticket = await Ticket.findByPk(id, {
             attributes: ['id', 'status', 'createdAt'],
         });
         if (ticket) {
-            const ticketRows = await ticket.getTicketRows();
-            const response = {
+            const orders = await ticket.getOrders();
+            const responseBody = {
                 ...ticket.toJSON(),
-                ticketRows: ticketRows,
+                orders: orders,
             };
             return response.status(200).json({
                 message: 'Ticket found',
-                ticket: response,
+                ticket: responseBody,
             });
-            // if (ticket && ticket.length > 0) {
-            //     const totalPrice = ticket[0].products.reduce((total, product) => {
-            //         return total + product.TicketRowModel.unitPrice;
-            //     }, 0);
-
-            //     ticket[0].setDataValue('totalPrice', totalPrice);
-            //     return res.status(200).json({
-            //         message: 'Ticket found',
-            //         ticket: ticket[0]
-            //     });
         } else {
             throw TICKET_NOT_FOUND;
         }
@@ -64,4 +54,3 @@ export const getTicket = async (request: Request, _response: Response, next: Nex
         next(error);
     }
 };
-
