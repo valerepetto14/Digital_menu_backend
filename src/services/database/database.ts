@@ -2,51 +2,20 @@ import { Sequelize } from 'sequelize';
 import { db } from '../../config/index';
 import { initModels } from '../../models/index';
 
-// const initDatabase = async () => {
-//     try {
-//         console.log('INITIALIZING DATABASE')
-//         //uri = `postgres://${db.user}:${db.password}@${db.host}`;
-//         const sequelize = new Sequelize(
-//             db.database,
-//             db.username,
-//             db.password,
-//             {
-//                 host: db.host,
-//                 dialect: 'postgres',
-//                 logging: false,
-//             }
-//         );
-
-//         await sequelize.authenticate();
-//         console.log('Connection has been established successfully.');
-//         initModels(sequelize);
-//         await sequelize.sync(
-//             { force: true }
-//         );
-//         console.log('All models were synchronized successfully.');
-//     } catch (error) {
-//         throw error
-//     }
-// }
-
-class database {
+class Database {
+    private static instance: Database | null = null;
     private sequelize: Sequelize | null = null;
     public isConnect: boolean = false;
 
-    constructor() {
+    private constructor() {
         this.isConnect = false;
     }
 
-    public getInstance(): Sequelize {
-        if (!this.sequelize) {
-            this.sequelize = new Sequelize(db.database, db.username, db.password, {
-                host: db.host,
-                dialect: 'postgres',
-                logging: false,
-            });
-            this.isConnect = true;
+    public static getInstance(): Database {
+        if (!Database.instance) {
+            Database.instance = new Database();
         }
-        return this.sequelize;
+        return Database.instance;
     }
 
     async initDatabase() {
@@ -69,4 +38,4 @@ class database {
     }
 }
 
-export default database;
+export default Database;

@@ -1,8 +1,8 @@
-import database from './database/database';
+import Database from './database/database';
 import { setVariables } from '../config';
 import { startPopulate } from './database/populate';
 
-const db = new database();
+const db = Database.getInstance();
 
 const initServices = async () => {
     try {
