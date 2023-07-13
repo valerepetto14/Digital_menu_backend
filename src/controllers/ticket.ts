@@ -6,6 +6,7 @@ import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from '../utils/errors';
 export const createTicket = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { tableId, cardId } = request.body;
+
         let ticketActive = await Ticket.findOne({
             where: {
                 tableId: tableId,

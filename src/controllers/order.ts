@@ -68,12 +68,13 @@ export const addProductsToOrder = async (request: Request, response: Response, n
         for (const product of products) {
             const productFound = await Product.findByPk(product.productId);
             if (productFound) {
+                const optIngredients = await getOptingredientToOrderRow(product.optIngredients);
                 await OrderRow.create({
                     orderId: order.id,
                     productId: productFound.id,
-                    quantity: product.quantity,
+                    quantity: 1,
                     unitPrice: productFound.currentPrice,
-                    optIngredients: await getOptingredientToOrderRow(product.optIngredients),
+                    optIngredients: optIngredients,
                 });
             } else {
                 continue;
