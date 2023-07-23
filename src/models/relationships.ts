@@ -39,14 +39,14 @@ export const initRelationships = () => {
         foreignKey: 'orderId',
     });
 
-    Order.belongsTo(Card, {
-        foreignKey: 'cardId',
-    });
+    // Order.belongsTo(Card, {
+    //     foreignKey: 'cardId',
+    // });
 
-    Order.belongsTo(Table, {
-        foreignKey: 'tableId',
-        as: 'table',
-    });
+    // Order.belongsTo(Table, {
+    //     foreignKey: 'tableId',
+    //     as: 'table',
+    // });
 
     //Product Relationship
     Product.belongsToMany(Order, {

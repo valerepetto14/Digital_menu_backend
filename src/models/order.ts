@@ -7,8 +7,7 @@ import { OrderStatus } from '../utils/types/interfaces';
 export class Order extends Model {
     id!: string;
     ticketId!: string;
-    tableId!: string;
-    cardId!: string;
+    price!: number;
     status!: string;
     readonly createdAt!: Date;
     readonly updatedAt!: Date;
@@ -29,6 +28,11 @@ export const initOrder = (sequelize: Sequelize) => {
                     model: Ticket,
                     key: 'id',
                 },
+            },
+            price: {
+                type: DataTypes.DECIMAL(10, 2),
+                allowNull: true,
+                defaultValue: 0.0,
             },
             status: {
                 type: DataTypes.STRING(20),

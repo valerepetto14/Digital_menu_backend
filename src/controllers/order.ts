@@ -6,6 +6,7 @@ import { Order } from '../models/order';
 import { Card, getCard } from '../models/card';
 import { IOptIngredientProductOrderRow } from '../utils/types/interfaces';
 import { OptIngredient } from '../models/optIngredient';
+
 // export const addOrder = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const { tableId, products } = req.body;
@@ -47,7 +48,7 @@ export const createOrder = async (request: Request, response: Response, next: Ne
         const newOrder = await Order.create({
             ticketId: ticket.id,
         });
-        
+
         response.locals.order = newOrder;
         next();
     } catch (error) {
@@ -59,7 +60,7 @@ export const addProductsToOrder = async (request: Request, response: Response, n
     try {
         const products = request.body.products;
         const order = response.locals.order;
-
+        let totalPrice = 0;
         for (const product of products) {
             const productFound = await Product.findByPk(product.productId);
             if (productFound) {
@@ -69,6 +70,10 @@ export const addProductsToOrder = async (request: Request, response: Response, n
                     quantity: product.quantity,
                     unitPrice: productFound.currentPrice,
                     optIngredients: await getOptingredientToOrderRow(product.optIngredients),
+                });
+                totalPrice += productFound.currentPrice * product.quantity;
+                await order.update({
+                    price: totalPrice,
                 });
             } else {
                 continue;

@@ -9,7 +9,7 @@ export class Product extends Model {
     public id!: string;
     public name!: string;
     public description!: string;
-    public currentPrice!: string;
+    public currentPrice!: number;
     public status!: ProductStatus.ACTIVE | ProductStatus.INACTIVE | ProductStatus.SIN_STOCK;
     public image!: string;
     public cookingTime!: number;
@@ -57,7 +57,7 @@ export const initProduct = (sequelize: Sequelize) => {
             },
             currentPrice: {
                 type: DataTypes.DECIMAL(10, 2),
-                defaultValue: 0,
+                defaultValue: 0.0,
                 allowNull: false,
             },
             status: {
