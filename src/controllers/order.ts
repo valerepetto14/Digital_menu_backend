@@ -42,17 +42,12 @@ import { OptIngredient } from '../models/optIngredient';
 
 export const createOrder = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { tableId, cardId } = request.body;
-
-        const table = await getTable(tableId);
-        const card = await getCard(cardId);
         const ticket = response.locals.ticket;
 
         const newOrder = await Order.create({
             ticketId: ticket.id,
-            tableId: table.id,
-            cardId: card.id,
         });
+        
         response.locals.order = newOrder;
         next();
     } catch (error) {
@@ -91,6 +86,7 @@ export const addProductsToOrder = async (request: Request, response: Response, n
 const getOptingredientToOrderRow = async (optIngredients: Array<IOptIngredientProductOrderRow>) => {
     try {
         const response: Array<IOptIngredientProductOrderRow> = [];
+        if (!optIngredients) return response;
         for (const optIngredient of optIngredients) {
             const optIngredientFound = await OptIngredient.findByPk(optIngredient.optIngredientId);
             if (optIngredientFound) {

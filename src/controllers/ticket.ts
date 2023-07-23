@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, response } from 'express';
 import { Ticket } from '../models/ticket';
 import { Table } from '../models/table';
 import { TABLE_NOT_FOUND, TICKET_NOT_FOUND } from '../utils/errors';
+import { TicketStatus } from '../utils/types/interfaces';
 
 export const createTicket = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -9,7 +10,8 @@ export const createTicket = async (request: Request, response: Response, next: N
         let ticketActive = await Ticket.findOne({
             where: {
                 tableId: tableId,
-                status: 'IN_PROGRESS',
+                cardId: cardId,
+                status: TicketStatus.IN_PROGRESS,
             },
         });
         if (!ticketActive) {
@@ -34,6 +36,9 @@ export const createTicket = async (request: Request, response: Response, next: N
 export const getTicket = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { id } = request.params;
+        if (!id) {
+            throw TICKET_NOT_FOUND;
+        }
         const ticket = await Ticket.findByPk(id, {
             attributes: ['id', 'status', 'createdAt'],
         });

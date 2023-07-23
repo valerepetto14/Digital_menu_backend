@@ -30,22 +30,6 @@ export const initOrder = (sequelize: Sequelize) => {
                     key: 'id',
                 },
             },
-            tableId: {
-                type: DataTypes.UUID,
-                allowNull: false,
-                references: {
-                    model: Table,
-                    key: 'id',
-                },
-            },
-            cardId: {
-                type: DataTypes.UUID,
-                allowNull: false,
-                references: {
-                    model: Card,
-                    key: 'id',
-                },
-            },
             status: {
                 type: DataTypes.STRING(20),
                 allowNull: false,
