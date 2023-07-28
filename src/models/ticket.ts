@@ -21,7 +21,7 @@ export class Ticket extends Model {
                 where: {
                     ticketId: this.id,
                 },
-                attributes: ['id', 'status', 'createdAt', 'updatedAt'],
+                attributes: ['id', 'status', 'price', 'createdAt', 'updatedAt'],
             });
             return orders;
         } catch (error) {

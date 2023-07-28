@@ -14,6 +14,7 @@ import {
     MISSING_SEARCH,
 } from '../utils/errors';
 import { Op } from 'sequelize';
+import { pagination } from '../utils/functions';
 
 export const addProduct = async (request: Request, response: Response, next: NextFunction) => {
     try {
@@ -116,7 +117,9 @@ export const updateProduct = async (request: Request, response: Response, next: 
 
 export const getProducts = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const products = await Product.findAll({
+        const { limit, page } = request.query as any;
+        const { offset, pagina, limite } = pagination(limit, page);
+        const products = await Product.findAndCountAll({
             attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
             include: [
                 {
@@ -135,11 +138,16 @@ export const getProducts = async (request: Request, response: Response, next: Ne
                     through: { attributes: [] },
                 },
             ],
+            limit: limite,
+            offset: offset,
         });
 
         let responseBody = {
             message: 'Products found',
-            products: products,
+            products: products.rows,
+            totalPages: Math.ceil(products.count / limite),
+            pagina: pagina,
+            limite: limite,
         };
 
         return response.status(200).json(responseBody);
@@ -298,35 +306,35 @@ export const searchProducts = async (request: Request, response: Response, next:
     try {
         const { search } = request.query as any;
         console.log(search);
+        let where = {};
         if (search && search != '' && search != undefined) {
-            const products = await Product.findAll({
-                where: {
-                    name: {
-                        [Op.iLike]: `%${search}%`,
-                    },
+            where = {
+                name: {
+                    [Op.iLike]: `%${search}%`,
                 },
-                include: [
-                    {
-                        model: Category,
-                        attributes: ['id', 'title'],
-                        as: 'category',
-                    },
-                    {
-                        model: SubCategory,
-                        attributes: ['id', 'title'],
-                        as: 'subCategory',
-                    },
-                    {
-                        model: OptIngredient,
-                        attributes: ['id', 'name', 'price'],
-                        as: 'optIngredients',
-                    },
-                ],
-            });
-            return response.status(200).json({ message: 'Products found', products: products });
-        } else {
-            throw MISSING_SEARCH;
+            };
         }
+        const products = await Product.findAll({
+            where: where,
+            include: [
+                {
+                    model: Category,
+                    attributes: ['id', 'title'],
+                    as: 'category',
+                },
+                {
+                    model: SubCategory,
+                    attributes: ['id', 'title'],
+                    as: 'subCategory',
+                },
+                {
+                    model: OptIngredient,
+                    attributes: ['id', 'name', 'price'],
+                    as: 'optIngredients',
+                },
+            ],
+        });
+        return response.status(200).json({ message: 'Products found', products: products });
     } catch (error) {
         next(error);
     }

@@ -4,8 +4,7 @@ import { compare, hash } from 'bcrypt';
 import uuid4 from 'uuid4';
 import jwt from 'jsonwebtoken';
 import { checkIfUserExists } from '../utils/checks';
-import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS } from '../utils/errors';
-import { extend } from 'joi';
+import { INCORRECT_CREDENTIALS, USER_ALREADY_EXISTS, UNAUTHORIZED } from '../utils/errors';
 
 export interface AuthRequest extends Request {
     user?: any;
@@ -77,10 +76,7 @@ export const signIn = async (request: Request, response: Response, next: NextFun
 
 export const signOut = async (request: AuthRequest, response: Response, next: NextFunction) => {
     try {
-        const user = request.user;
-        if (user) {
-            response.clearCookie('token').status(200).json({ message: 'User logged out' });
-        }
+        response.clearCookie('token').status(200).json({ message: 'User logged out' });
     } catch (error) {
         next(error);
     }

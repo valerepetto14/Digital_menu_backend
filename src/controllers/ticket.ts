@@ -44,8 +44,13 @@ export const getTicket = async (request: Request, response: Response, next: Next
         });
         if (ticket) {
             const orders = await ticket.getOrders();
+            let totalPrice = 0;
+            orders.forEach((order) => {
+                totalPrice += order.price;
+            });
             const responseBody = {
                 ...ticket.toJSON(),
+                totalPrice: totalPrice,
                 orders: orders,
             };
             return response.status(200).json({

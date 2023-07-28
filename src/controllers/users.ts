@@ -1,69 +1,84 @@
-import { User } from "../models/user";
-import { Request, Response, NextFunction } from "express";
-import { USER_NOT_FOUND } from "../utils/errors";
-import { AuthRequest } from "./auth";
+import { User } from '../models/user';
+import { Request, Response, NextFunction } from 'express';
+import { USER_NOT_FOUND } from '../utils/errors';
+import { AuthRequest } from './auth';
 
-
-export const validateUser = async (request:AuthRequest, response:Response, next:NextFunction) => {
+export const validateUser = async (request: AuthRequest, response: Response, next: NextFunction) => {
     try {
         const user = request.user;
-        if(user){
+        if (user) {
             const userData = await User.findOne({
                 where: {
-                    email: user.email
-                }
+                    email: user.email,
+                },
             });
-            if(userData){
-                return response.status(200).json({message: "User found", user: userData});
+            if (userData) {
+                return response.status(200).json({ message: 'User found', user: userData });
             }
         }
         throw USER_NOT_FOUND;
     } catch (error) {
         next(error);
     }
-}
+};
 
-
-export const deleteUser = async (request:Request, response:Response, next:NextFunction) => {
+export const deleteUser = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id = request.params.id;
         const user = await User.findByPk(id);
-        if(user){
+        if (user) {
             await user.destroy();
-            return response.status(200).json({message: "User deleted"});
+            return response.status(200).json({ message: 'User deleted' });
         }
         throw USER_NOT_FOUND;
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const updateUser = async (request:Request, response:Response, next:NextFunction) => {
+export const updateUser = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const id = request.params.id;
         const user = await User.findByPk(id);
-        if(user){
+        if (user) {
             const { email, firstName, lastName, phoneNumber, type } = request.body;
             const userUpdated = await user.update({
                 email,
                 firstName,
                 lastName,
                 phoneNumber,
-                type
+                type,
             });
-            return response.status(200).json({message: "User updated"});
+            return response.status(200).json({ message: 'User updated' });
         }
         throw USER_NOT_FOUND;
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const getUsers = async (request:Request, response:Response, next:NextFunction) => {
+export const getUsers = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const users = await User.findAll();
-        return response.status(200).json({message: "Users found", users: users});
+        return response.status(200).json({ message: 'Users found', users: users });
     } catch (error) {
         next(error);
     }
-}
+};
+
+export const returnUser = async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const user = response.locals.user;
+        const userBody = {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            type: user.type,
+        };
+        response.status(200).json({ message: 'User found', user: userBody });
+    } catch (error) {
+        throw error;
+    }
+};

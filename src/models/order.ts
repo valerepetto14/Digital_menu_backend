@@ -1,9 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Ticket } from './ticket';
-import { Table } from './table';
-import { Card } from './card';
 import { OrderStatus } from '../utils/types/interfaces';
-
+import { OrderRow } from './orderRow';
 export class Order extends Model {
     id!: string;
     ticketId!: string;
@@ -11,6 +9,19 @@ export class Order extends Model {
     status!: string;
     readonly createdAt!: Date;
     readonly updatedAt!: Date;
+
+    getRows = async () => {
+        try {
+            const rows = await OrderRow.findAll({
+                where: {
+                    orderId: this.id,
+                },
+            });
+            return rows;
+        } catch (error) {
+            throw error;
+        }
+    };
 }
 
 export const initOrder = (sequelize: Sequelize) => {

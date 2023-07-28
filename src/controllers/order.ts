@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { OrderRow } from '../models/orderRow';
 import { Product } from '../models/product';
-import { getTable } from '../models/table';
 import { Order } from '../models/order';
-import { Card, getCard } from '../models/card';
 import { IOptIngredientProductOrderRow } from '../utils/types/interfaces';
 import { OptIngredient } from '../models/optIngredient';
-
+import { MISSING_ID, ORDER_NOT_FOUND } from '../utils/errors';
 // export const addOrder = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const { tableId, products } = req.body;
@@ -108,5 +106,29 @@ const getOptingredientToOrderRow = async (optIngredients: Array<IOptIngredientPr
         return response;
     } catch (error) {
         throw error;
+    }
+};
+
+export const getOrder = async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const id = request.params.id;
+        if (!id) {
+            throw MISSING_ID;
+        }
+        const order = await Order.findByPk(id);
+        if (order) {
+            const rows = await order.getRows();
+            const responseBody = {
+                ...order.toJSON(),
+                rows: rows,
+            };
+            return response.status(200).json({
+                message: 'Order found',
+                order: responseBody,
+            });
+        }
+        throw ORDER_NOT_FOUND;
+    } catch (error) {
+        next(error);
     }
 };
