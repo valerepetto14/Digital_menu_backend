@@ -304,14 +304,19 @@ export const deleteProduct = async (request: Request, response: Response, next: 
 
 export const searchProducts = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { search } = request.query as any;
-        console.log(search);
+        const { word, status } = request.query as any;
         let where = {};
-        if (search && search != '' && search != undefined) {
+        if (word && word != '' && word != undefined) {
             where = {
                 name: {
-                    [Op.iLike]: `%${search}%`,
+                    [Op.iLike]: `%${word}%`,
                 },
+            };
+        }
+        if (status && status != '' && status != undefined && status != 'all') {
+            where = {
+                ...where,
+                status: status,
             };
         }
         const products = await Product.findAll({
