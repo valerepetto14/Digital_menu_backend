@@ -61,7 +61,7 @@ export const signIn = async (request: Request, response: Response, next: NextFun
                 };
                 return response
                     .status(200)
-                    .cookie('token', token, { httpOnly: true })
+                    .cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
                     .json({ message: 'User logged in', user: responseBody });
             } else {
                 throw INCORRECT_CREDENTIALS;

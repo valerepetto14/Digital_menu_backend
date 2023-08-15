@@ -11,7 +11,6 @@ import {
     MISSING_CATEGORY_ID,
     CATEGORY_OR_SUBCATEGORY_NOT_FOUND,
     SUB_CATEGORY_NOT_FOUND,
-    MISSING_SEARCH,
 } from '../utils/errors';
 import { Op } from 'sequelize';
 import { pagination } from '../utils/functions';
@@ -140,6 +139,10 @@ export const getProducts = async (request: Request, response: Response, next: Ne
             ],
             limit: limite,
             offset: offset,
+        });
+
+        products.rows.forEach((product: Product) => {
+            product.image = `${process.env.BUCKET_PRODUCT_IMAGES}${product.id}.jpg`;
         });
 
         let responseBody = {
