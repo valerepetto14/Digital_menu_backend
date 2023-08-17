@@ -7,10 +7,12 @@ import { UserTypes } from '../utils/types/interfaces';
 
 export const isAuthenticated = async (request: AuthRequest, response: Response, next: NextFunction) => {
     try {
-        const token = request.cookies.token;
-        if (!token) {
+        const bearerToken = request.headers.authorization as string;
+        if (!bearerToken) {
             throw UNAUTHORIZED;
         }
+
+        const token = bearerToken.split(' ')[1];
         const payload = verify(token, process.env.TOKEN_SIGN as string) as any;
 
         const user = await User.findOne({

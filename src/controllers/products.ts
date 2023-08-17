@@ -118,6 +118,7 @@ export const getProducts = async (request: Request, response: Response, next: Ne
     try {
         const { limit, page } = request.query as any;
         const { offset, pagina, limite } = pagination(limit, page);
+        console.log(offset, pagina, limite);
         const products = await Product.findAndCountAll({
             attributes: ['id', 'name', 'description', 'currentPrice', 'status', 'image', 'cookingTime'],
             include: [

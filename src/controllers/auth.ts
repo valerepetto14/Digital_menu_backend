@@ -26,7 +26,18 @@ export const signUp = async (request: Request, response: Response, next: NextFun
                 type: body.type,
                 password: passHash,
             });
-            return response.status(201).json({ message: 'User created', user: newUser });
+            const responseBody = {
+                message: 'User created',
+                user: {
+                    id: newUser.id,
+                    email: newUser.email,
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    phoneNumber: newUser.phoneNumber,
+                    type: newUser.type,
+                },
+            };
+            return response.status(201).json(responseBody);
         } else {
             throw USER_ALREADY_EXISTS;
         }
@@ -52,17 +63,17 @@ export const signIn = async (request: Request, response: Response, next: NextFun
                     process.env.TOKEN_SIGN ? process.env.TOKEN_SIGN : 'HOLA'
                 );
                 const responseBody = {
-                    userId: user.id,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    type: user.type,
+                    message: 'User logged in',
+                    user: {
+                        id: user.id,
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        type: user.type,
+                    },
                     token: token,
                 };
-                return response
-                    .status(200)
-                    .cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
-                    .json({ message: 'User logged in', user: responseBody });
+                return response.status(200).json(responseBody);
             } else {
                 throw INCORRECT_CREDENTIALS;
             }
