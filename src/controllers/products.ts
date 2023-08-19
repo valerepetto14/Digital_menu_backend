@@ -149,6 +149,7 @@ export const getProducts = async (request: Request, response: Response, next: Ne
         let responseBody = {
             message: 'Products found',
             products: products.rows,
+            totalProducts: products.count,
             totalPages: Math.ceil(products.count / limite),
             pagina: pagina,
             limite: limite,
