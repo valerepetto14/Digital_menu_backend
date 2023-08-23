@@ -25,5 +25,4 @@ jobs:
           touch .env
           echo "${{ secrets.DEV_ENV }}" > .env
           tsc
-          pm2 delete all
-          pm2 start dist/src/index.js
+          pm2 reload index
