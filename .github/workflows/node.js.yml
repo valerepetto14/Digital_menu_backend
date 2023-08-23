@@ -1,0 +1,28 @@
+name: CI/CD para la rama develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v2
+
+      - name: Ejecutar comandos SSH en la instancia EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
+            cd /home/ubuntu/Digital_menu_backend
+            pm2 delete all
+            git checkout develop
+            git pull origin develop
+            npm install
+            tsc
+            pm2 start dist/src/index.js
+          '
+        env:
+          APP_NAME: backend
